@@ -1,10 +1,11 @@
 using UnityEngine;
+using TMPro;
 using UnityEngine.UI;
 public class HealthBar : MonoBehaviour
 {
 
     private Slider slide;
-    public Text healthText;
+    public TextMeshProUGUI healthText;
     public GameObject enemyState;
     private float currentHealth, maxHealth;
     void Awake()

@@ -439,6 +439,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8c3a0a702f568f46989e0c76d695d66, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enemy: {fileID: 1654792430}
   currentHealth: 0
   maxHealth: 100
 --- !u!4 &110745476
@@ -1603,7 +1604,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 098dd09c90f05c64586758f3c334b284, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  healthText: {fileID: 0}
+  healthText: {fileID: 595813957}
   enemyState: {fileID: 110745474}
 --- !u!114 &632751065
 MonoBehaviour:
