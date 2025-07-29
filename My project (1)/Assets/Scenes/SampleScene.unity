@@ -409,9 +409,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: b1b5c56203f90884a957ec167c937f0f, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1220233106}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: b1b5c56203f90884a957ec167c937f0f, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1220233107}
   m_SourcePrefab: {fileID: 100100000, guid: b1b5c56203f90884a957ec167c937f0f, type: 3}
 --- !u!1 &173004492
 GameObject:
@@ -711,6 +708,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f84ebf7a9373aa4a94cac5509df34a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerCanInteract: 0
   interaction_Info_UI: {fileID: 465142070}
 --- !u!4 &362902189
 Transform:
@@ -1718,8 +1716,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f76570f1b530424cb097717e96b3b90, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerInRange: 0
   ItemName: Katana
+  SelectionManager: {fileID: 362902188}
 --- !u!65 &1220233103
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1789,27 +1787,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!65 &1220233107
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1220233100}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 2, y: 2, z: 2}
-  m_Center: {x: 0, y: 0.35, z: 0}
 --- !u!1 &1401302774
 GameObject:
   m_ObjectHideFlags: 0
