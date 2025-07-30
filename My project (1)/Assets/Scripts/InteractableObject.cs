@@ -32,9 +32,7 @@ public class InteractableObject : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.E))
             {
-                if (currentWeapon != null)
-                    Drop();
-
+                if (currentWeapon == null)
                 Pickup();
             }
         }
@@ -55,12 +53,10 @@ public class InteractableObject : MonoBehaviour
             if (hit.transform.tag == "Item")
             {
                 Debug.Log("can interact");
-               // canGrab = true;
                 Weapon = hit.transform.gameObject;
             }
         }
-        //
-          //  canGrab = false;
+       
     }
     
     private void Pickup()
