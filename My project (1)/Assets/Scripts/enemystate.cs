@@ -7,6 +7,7 @@ public class Enemystate : MonoBehaviour
     public float currentHealth;
     public float maxHealth;
     [SerializeField] private Transform player;
+    public InteractableObject interactableObject;
 
 
     void Awake()
@@ -30,7 +31,7 @@ public class Enemystate : MonoBehaviour
     {
         RaycastHit hit;
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        if (Physics.Raycast(ray, out hit) && Input.GetKeyDown(KeyCode.Mouse0) && hit.distance < 5)
+        if (Physics.Raycast(ray, out hit) && Input.GetKeyDown(KeyCode.Mouse0) && hit.distance < 5 && interactableObject.equipped == true)
         {
             currentHealth -= 10;
             if (currentHealth == 0)

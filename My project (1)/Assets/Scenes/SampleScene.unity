@@ -391,6 +391,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Katana1
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: b1b5c56203f90884a957ec167c937f0f, type: 3}
+      propertyPath: m_TagString
+      value: Item
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 65702495048144492, guid: b1b5c56203f90884a957ec167c937f0f, type: 3}
@@ -443,6 +447,7 @@ MonoBehaviour:
   currentHealth: 0
   maxHealth: 100
   player: {fileID: 173004496}
+  interactableObject: {fileID: 1220233102}
 --- !u!4 &110745476
 Transform:
   m_ObjectHideFlags: 0
@@ -482,13 +487,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 154460504}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: 0.35805908, y: -0.1673084, z: -0.020290809, w: 0.9183627}
+  m_LocalPosition: {x: 0.545, y: 0.974, z: 0.575}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 173004496}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 40.607, y: -25.082, z: -11.941}
 --- !u!1 &173004492
 GameObject:
   m_ObjectHideFlags: 0
@@ -501,6 +506,7 @@ GameObject:
   - component: {fileID: 173004495}
   - component: {fileID: 173004494}
   - component: {fileID: 173004493}
+  - component: {fileID: 173004497}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -584,9 +590,27 @@ Transform:
   - {fileID: 330585546}
   - {fileID: 1154625608}
   - {fileID: 154460505}
-  - {fileID: 1337284919}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &173004497
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 173004492}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f76570f1b530424cb097717e96b3b90, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  emptyIM: {fileID: 284882166}
+  swordIM: {fileID: 677009662}
+  ItemName: Katana
+  SelectionManager: {fileID: 362902188}
+  gunPos: {fileID: 154460505}
+  range: 10
+  equipped: 0
 --- !u!1 &196884436
 GameObject:
   m_ObjectHideFlags: 0
@@ -1740,69 +1764,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &626876549
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 173004496}
-    m_Modifications:
-    - target: {fileID: -8679921383154817045, guid: b1b5c56203f90884a957ec167c937f0f, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0.48
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: b1b5c56203f90884a957ec167c937f0f, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0.963
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: b1b5c56203f90884a957ec167c937f0f, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0.605
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: b1b5c56203f90884a957ec167c937f0f, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: -0.12176257
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: b1b5c56203f90884a957ec167c937f0f, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0.025143122
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: b1b5c56203f90884a957ec167c937f0f, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0.98089445
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: b1b5c56203f90884a957ec167c937f0f, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0.14962547
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: b1b5c56203f90884a957ec167c937f0f, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: -16.703
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: b1b5c56203f90884a957ec167c937f0f, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: -194.907
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: b1b5c56203f90884a957ec167c937f0f, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 5.137
-      objectReference: {fileID: 0}
-    - target: {fileID: 919132149155446097, guid: b1b5c56203f90884a957ec167c937f0f, type: 3}
-      propertyPath: m_Name
-      value: Katana1
-      objectReference: {fileID: 0}
-    - target: {fileID: 919132149155446097, guid: b1b5c56203f90884a957ec167c937f0f, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects:
-    - {fileID: -8700617353114198275, guid: b1b5c56203f90884a957ec167c937f0f, type: 3}
-    - {fileID: 65702495048144492, guid: b1b5c56203f90884a957ec167c937f0f, type: 3}
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: b1b5c56203f90884a957ec167c937f0f, type: 3}
 --- !u!1 &632751062
 GameObject:
   m_ObjectHideFlags: 0
@@ -2481,7 +2442,9 @@ MonoBehaviour:
   swordIM: {fileID: 677009662}
   ItemName: Katana
   SelectionManager: {fileID: 362902188}
-  Weapon: {fileID: 1337284918}
+  gunPos: {fileID: 154460505}
+  range: 10
+  equipped: 0
 --- !u!65 &1220233103
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2653,16 +2616,6 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
---- !u!1 &1337284918 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: b1b5c56203f90884a957ec167c937f0f, type: 3}
-  m_PrefabInstance: {fileID: 626876549}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &1337284919 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: b1b5c56203f90884a957ec167c937f0f, type: 3}
-  m_PrefabInstance: {fileID: 626876549}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1401302774
 GameObject:
   m_ObjectHideFlags: 0
