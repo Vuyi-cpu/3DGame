@@ -6,7 +6,8 @@ using UnityEngine;
 public class InteractableObject : MonoBehaviour
 {
     public GameObject emptyIM;
-    public GameObject weaponIM;
+    public GameObject swordIM;
+    public GameObject sytheIM;
     public string ItemName;
     public SelectionManager SelectionManager;
     GameObject Weapon;
@@ -21,7 +22,8 @@ public class InteractableObject : MonoBehaviour
 
     public void Start()
     {
-        weaponIM.SetActive(false);
+        swordIM.SetActive(false);
+        sytheIM.SetActive(false);
     }
 
     private void Update()
@@ -48,7 +50,11 @@ public class InteractableObject : MonoBehaviour
 
         if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, range))
         {
-            if (hit.transform.tag == "Item")
+            if (hit.transform.tag == "sword")
+            {
+                Debug.Log("can interact");
+                Weapon = hit.transform.gameObject;
+            }else if(hit.transform.tag == "sythe")
             {
                 Debug.Log("can interact");
                 Weapon = hit.transform.gameObject;
@@ -61,9 +67,18 @@ public class InteractableObject : MonoBehaviour
     {
         currentWeapon = Weapon;
         equipped = true;
-        emptyIM.SetActive(false);
-        weaponIM.SetActive(true);
-        currentWeapon.transform.position = gunPos.position;
+        if (currentWeapon.tag == "sword")
+        {
+            emptyIM.SetActive(false);
+            swordIM.SetActive(true);
+        } else if (currentWeapon.tag == "sythe")
+        {
+            emptyIM.SetActive(false);
+            sytheIM.SetActive(true);
+        }
+
+
+            currentWeapon.transform.position = gunPos.position;
         currentWeapon.transform.parent = gunPos;
         currentWeapon.transform.localEulerAngles = new Vector3(0f, 180f, 0f);
         currentWeapon.GetComponent<Rigidbody>().isKinematic = true;
@@ -72,7 +87,8 @@ public class InteractableObject : MonoBehaviour
     private void Drop()
     {
         equipped = false;
-        weaponIM.SetActive(false);
+        swordIM.SetActive(false);
+        sytheIM.SetActive(false);
         emptyIM.SetActive(true);
         currentWeapon.transform.parent = null;
         currentWeapon.GetComponent<Rigidbody>().isKinematic = false;
