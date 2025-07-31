@@ -6,10 +6,10 @@ using UnityEngine;
 public class InteractableObject : MonoBehaviour
 {
     public GameObject emptyIM;
-    public GameObject swordIM;
+    public GameObject weaponIM;
     public string ItemName;
     public SelectionManager SelectionManager;
-     GameObject Weapon;
+    GameObject Weapon;
 
     //vuyi edits
     public Transform gunPos;
@@ -21,20 +21,18 @@ public class InteractableObject : MonoBehaviour
 
     public void Start()
     {
-        swordIM.SetActive(false);
+        weaponIM.SetActive(false);
     }
 
     private void Update()
     {
         CheckWeapons();
         
-        if (SelectionManager.playerCanInteract == true)
+        if (Input.GetKeyDown(KeyCode.E)&&SelectionManager.playerCanInteract == true)
         {
-            if (Input.GetKeyDown(KeyCode.E))
-            {
                 if (currentWeapon == null)
                 Pickup();
-            }
+            
         }
 
         if (currentWeapon != null)
@@ -64,7 +62,7 @@ public class InteractableObject : MonoBehaviour
         currentWeapon = Weapon;
         equipped = true;
         emptyIM.SetActive(false);
-        swordIM.SetActive(true);
+        weaponIM.SetActive(true);
         currentWeapon.transform.position = gunPos.position;
         currentWeapon.transform.parent = gunPos;
         currentWeapon.transform.localEulerAngles = new Vector3(0f, 180f, 0f);
@@ -74,7 +72,7 @@ public class InteractableObject : MonoBehaviour
     private void Drop()
     {
         equipped = false;
-        swordIM.SetActive(false);
+        weaponIM.SetActive(false);
         emptyIM.SetActive(true);
         currentWeapon.transform.parent = null;
         currentWeapon.GetComponent<Rigidbody>().isKinematic = false;
