@@ -7,7 +7,7 @@ public class InteractableObject : MonoBehaviour
 {
     public GameObject emptyIM;
     public GameObject swordIM;
-    public GameObject sytheIM;
+    public GameObject scytheIM;
     public string ItemName;
     public SelectionManager SelectionManager;
     GameObject Weapon;
@@ -15,6 +15,7 @@ public class InteractableObject : MonoBehaviour
 
     //vuyi edits
     public Transform gunPos;
+    public Transform gunPos2;
     public float range = 10f;
     GameObject currentWeapon;
   
@@ -24,7 +25,7 @@ public class InteractableObject : MonoBehaviour
     public void Start()
     {
         swordIM.SetActive(false);
-        sytheIM.SetActive(false);
+        scytheIM.SetActive(false);
     }
 
     private void Update()
@@ -55,7 +56,7 @@ public class InteractableObject : MonoBehaviour
             {
                 Debug.Log("can interact");
                 Weapon = hit.transform.gameObject;
-            }else if(hit.transform.tag == "sythe")
+            }else if(hit.transform.tag == "scythe")
             {
                 Debug.Log("can interact");
                 Weapon = hit.transform.gameObject;
@@ -77,12 +78,12 @@ public class InteractableObject : MonoBehaviour
             currentWeapon.transform.localEulerAngles = new Vector3(0f, 180f, 0f);
             currentWeapon.GetComponent<Rigidbody>().isKinematic = true;
 
-        } else if (currentWeapon.tag == "sythe")
+        } else if (currentWeapon.tag == "scythe")
         {
             emptyIM.SetActive(false);
-            sytheIM.SetActive(true);
-            currentWeapon.transform.position = gunPos.position;
-            currentWeapon.transform.parent = gunPos;
+            scytheIM.SetActive(true);
+            currentWeapon.transform.position = gunPos2.position;
+            currentWeapon.transform.parent = gunPos2;
             currentWeapon.transform.localEulerAngles = new Vector3(0f, 180f, 0f);
             currentWeapon.GetComponent<Rigidbody>().isKinematic = true;
         }
@@ -95,7 +96,7 @@ public class InteractableObject : MonoBehaviour
     {
         equipped = false;
         swordIM.SetActive(false);
-        sytheIM.SetActive(false);
+        scytheIM.SetActive(false);
         emptyIM.SetActive(true);
         currentWeapon.transform.parent = null;
         currentWeapon.GetComponent<Rigidbody>().isKinematic = false;
