@@ -12,6 +12,7 @@ public class InteractableObject : MonoBehaviour
     public SelectionManager SelectionManager;
     GameObject Weapon;
 
+
     //vuyi edits
     public Transform gunPos;
     public float range = 10f;
@@ -71,17 +72,23 @@ public class InteractableObject : MonoBehaviour
         {
             emptyIM.SetActive(false);
             swordIM.SetActive(true);
+            currentWeapon.transform.position = gunPos.position;
+            currentWeapon.transform.parent = gunPos;
+            currentWeapon.transform.localEulerAngles = new Vector3(0f, 180f, 0f);
+            currentWeapon.GetComponent<Rigidbody>().isKinematic = true;
+
         } else if (currentWeapon.tag == "sythe")
         {
             emptyIM.SetActive(false);
             sytheIM.SetActive(true);
+            currentWeapon.transform.position = gunPos.position;
+            currentWeapon.transform.parent = gunPos;
+            currentWeapon.transform.localEulerAngles = new Vector3(0f, 180f, 0f);
+            currentWeapon.GetComponent<Rigidbody>().isKinematic = true;
         }
 
 
-            currentWeapon.transform.position = gunPos.position;
-        currentWeapon.transform.parent = gunPos;
-        currentWeapon.transform.localEulerAngles = new Vector3(0f, 180f, 0f);
-        currentWeapon.GetComponent<Rigidbody>().isKinematic = true;
+  
     }
 
     private void Drop()
