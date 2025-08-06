@@ -1,4 +1,5 @@
 using System.Collections;
+using TMPro;
 using Unity.Mathematics;
 using UnityEngine;
 
@@ -12,11 +13,15 @@ public class DoorRotate : MonoBehaviour
     private Quaternion rotationshut;
     private Quaternion rotationopen;
     private Coroutine coroutine;
+    public GameObject interaction_Info_UI;
+    TextMeshProUGUI interaction_text;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         rotationshut = transform.rotation;
         rotationopen = Quaternion.Euler(transform.eulerAngles + new Vector3(0, -open + mult*35f, 0));
+        interaction_text = interaction_Info_UI.GetComponent<TextMeshProUGUI>();
     }
 
     // Update is called once per frame
@@ -24,14 +29,17 @@ public class DoorRotate : MonoBehaviour
     {
         RaycastHit hit;
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        if (Physics.Raycast(ray, out hit) && Input.GetKeyDown(KeyCode.O) && hit.distance < 5)
+        if (Physics.Raycast(ray, out hit) &&  hit.distance < 5 && (hit.transform.tag == "Left Handle" || hit.transform.tag == "Right Handle"))
         {
-            if (hit.transform.tag == "Left Handle" || hit.transform.tag == "Right Handle")
+            interaction_text.text = "[E] to interact.";
+            interaction_Info_UI.SetActive(true);
+            if (Input.GetKeyDown(KeyCode.E))
             {
                 if (coroutine != null) StopCoroutine(coroutine);
                 coroutine = StartCoroutine(MoveDoor());
             }
         }
+        else { interaction_Info_UI.SetActive(false); }
     }
 
    private IEnumerator MoveDoor()
