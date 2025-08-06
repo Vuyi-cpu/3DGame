@@ -2,9 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class PlayerMovement : MonoBehaviour
 {
     public CharacterController controller;
+  
 
     public float speed = 12f;
     public float gravity = -9.81f * 2;
@@ -19,6 +21,8 @@ public class PlayerMovement : MonoBehaviour
     bool isGrounded;
 
     // Update is called once per frame
+  
+
     void Update()
     {
         //checking if we hit the ground to reset our falling velocity, otherwise we will fall faster the next time

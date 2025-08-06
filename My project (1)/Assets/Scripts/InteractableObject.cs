@@ -32,7 +32,7 @@ public class InteractableObject : MonoBehaviour
     {
         CheckWeapons();
         
-        if (Input.GetKeyDown(KeyCode.E)&&SelectionManager.playerCanInteract == true)
+        if (Input.GetKeyDown(KeyCode.E) &&SelectionManager.playerCanInteract == true)
         {
                 if (currentWeapon == null)
                 Pickup();
