@@ -31,15 +31,22 @@ public class DoorRotate : MonoBehaviour
     {
         RaycastHit hit;
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        if (Physics.Raycast(ray, out hit) && hit.distance < 5 && (hit.transform == handle1 || hit.transform== handle2))
+        if (Physics.Raycast(ray, out hit) && hit.distance < 5)
         {
-            interaction_text.text = "[E] to interact.";
-            interaction_Info_UI.SetActive(true);
-            if (Input.GetKeyDown(KeyCode.E))
+            if (hit.transform == handle1 || hit.transform == handle2)
             {
-                if (coroutine != null) StopCoroutine(coroutine);
-                coroutine = StartCoroutine(MoveDoor());
+                
+                    interaction_text.text = "[E] to interact.";
+                    interaction_Info_UI.SetActive(true);
+                    if (Input.GetKeyDown(KeyCode.E))
+                    {
+                        if (coroutine != null) StopCoroutine(coroutine);
+                        coroutine = StartCoroutine(MoveDoor());
+                    }
+                
             }
+
+
         }
         else { interaction_Info_UI.SetActive(false); }
     }
