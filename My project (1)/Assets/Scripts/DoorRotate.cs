@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class DoorRotate : MonoBehaviour
 {
-  
+
     public float open = 90f;
     public float speed = 2f;
     public int mult;
@@ -15,12 +15,14 @@ public class DoorRotate : MonoBehaviour
     private Coroutine coroutine;
     public GameObject interaction_Info_UI;
     TextMeshProUGUI interaction_text;
+    public Transform handle1;
+    public Transform handle2;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         rotationshut = transform.rotation;
-        rotationopen = Quaternion.Euler(transform.eulerAngles + new Vector3(0, -open + mult*35f, 0));
+        rotationopen = Quaternion.Euler(transform.eulerAngles + new Vector3(0, -open + mult * 35f, 0));
         interaction_text = interaction_Info_UI.GetComponent<TextMeshProUGUI>();
     }
 
@@ -29,7 +31,7 @@ public class DoorRotate : MonoBehaviour
     {
         RaycastHit hit;
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        if (Physics.Raycast(ray, out hit) &&  hit.distance < 5 && (hit.transform.tag == "Left Handle" || hit.transform.tag == "Right Handle"))
+        if (Physics.Raycast(ray, out hit) && hit.distance < 5 && (hit.transform == handle1 || hit.transform== handle2))
         {
             interaction_text.text = "[E] to interact.";
             interaction_Info_UI.SetActive(true);
@@ -42,22 +44,22 @@ public class DoorRotate : MonoBehaviour
         else { interaction_Info_UI.SetActive(false); }
     }
 
-   private IEnumerator MoveDoor()
+    private IEnumerator MoveDoor()
     {
-       Quaternion endRotate;
-if (isopen)
-{
-    endRotate = rotationshut;
-}
-else
-{
-    endRotate = rotationopen;
-}
+        Quaternion endRotate;
+        if (isopen)
+        {
+            endRotate = rotationshut;
+        }
+        else
+        {
+            endRotate = rotationopen;
+        }
 
-            isopen = !isopen;
+        isopen = !isopen;
         while (Quaternion.Angle(transform.rotation, endRotate) > 0.01f)
         {
-            transform.rotation = Quaternion.Lerp(transform.rotation, endRotate,Time.deltaTime*speed);
+            transform.rotation = Quaternion.Lerp(transform.rotation, endRotate, Time.deltaTime * speed);
             yield return null;
         }
         transform.rotation = endRotate;

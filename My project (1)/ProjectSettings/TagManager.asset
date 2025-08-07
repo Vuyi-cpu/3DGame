@@ -8,6 +8,8 @@ TagManager:
   - scythe
   - Right Handle
   - Left Handle
+  - Left Handle2
+  - Right Handle2
   layers:
   - Default
   - TransparentFX

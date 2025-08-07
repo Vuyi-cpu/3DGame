@@ -1,13 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.InputSystem;
+using UnityEngine.UIElements;
 
 public class PlayerMovement : MonoBehaviour
 {
     public CharacterController controller;
-  
 
+    PlayerControls controls;
     public float speed = 12f;
     public float gravity = -9.81f * 2;
     public float jumpHeight = 3f;
@@ -20,8 +21,14 @@ public class PlayerMovement : MonoBehaviour
 
     bool isGrounded;
 
+    private void Awake()
+    {
+        controls = new PlayerControls();
+       // controls.Player.Jump.performed += ctx => rotate = ctx.ReadValue<Vector2>();
+       // controls.Player.Jump.canceled += ctx => rotate = Vector2.zero;
+    }
+
     // Update is called once per frame
-  
 
     void Update()
     {
