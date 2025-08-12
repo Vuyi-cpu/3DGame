@@ -7,6 +7,7 @@ using UnityEngine.InputSystem;
 public class MouseMovement : MonoBehaviour
 {
     public float mouseSens = 100f;
+    public float controllerSens = 300f; 
 
     PlayerControls controls;
     private Vector2 rotate;
@@ -36,17 +37,43 @@ public class MouseMovement : MonoBehaviour
         //Locking the cursor to the middle of the screen and making it invisible
         Cursor.lockState = CursorLockMode.Locked;
     }
+
     void Update()
     {
-        float mouseX = rotate.x * mouseSens * Time.deltaTime;
-        float mouseY = rotate.y * mouseSens * Time.deltaTime;
+
+        bool isMouse = false;
+
+        if (controls.Player.look.activeControl != null)
+        {
+           isMouse = controls.Player.look.activeControl.device is Mouse;// detect what device is giving input
+
+        }
+
+        float sens;
+        float deltaMultiplier;
+
+
+        if (isMouse)
+        {
+            sens = mouseSens;
+            deltaMultiplier = 1f;
+        }
+        else
+        {
+            sens = controllerSens;
+            deltaMultiplier = Time.deltaTime;
+        }
+
+        float mouseX = rotate.x * sens * deltaMultiplier;
+        float mouseY = rotate.y * sens * deltaMultiplier;
+       
+       
 
         //control rotation around x axis (Look up and down)
         xLook -= mouseY;
 
         //we clamp the rotation so we cant Over-rotate (like in real life)
         xLook = Mathf.Clamp(xLook, -90f, 90f);
-        //yLook = Mathf.Clamp(yLook, -90f, 90f);
 
         //control rotation around y axis (Look up and down)
         yLook += mouseX;
@@ -55,4 +82,17 @@ public class MouseMovement : MonoBehaviour
         transform.localRotation = Quaternion.Euler(xLook, yLook, 0f);
     }
 }
+
+
+
+//    void Update()
+//    {
+//        float mouseX = rotate.x * mouseSens * Time.deltaTime;
+//        float mouseY = rotate.y * mouseSens * Time.deltaTime;
+
+//        //yLook = Mathf.Clamp(yLook, -90f, 90f);
+
+
+
+
 
