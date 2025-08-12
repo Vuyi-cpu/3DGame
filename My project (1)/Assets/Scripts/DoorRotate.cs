@@ -33,7 +33,7 @@ public class DoorRotate : MonoBehaviour
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(ray, out hit) && hit.distance < 5)
         {
-            if (hit.transform == handle1 || hit.transform == handle2)
+           if (hit.transform == handle1 || hit.transform == handle2)
             {
                 
                     interaction_text.text = "[E] to interact.";
