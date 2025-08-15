@@ -2,9 +2,8 @@ using UnityEngine;
 
 public class BulletHit : MonoBehaviour
 {
-    public GameObject bullet;
-    void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider other)
     {
-        bullet.SetActive(false);
+        if (other.CompareTag("Player") || other.CompareTag("Environment")) Destroy(gameObject);
     }
 }

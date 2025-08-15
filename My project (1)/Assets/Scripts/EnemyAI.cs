@@ -2,7 +2,7 @@ using Unity.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 using static UnityEngine.GraphicsBuffer;
-public class NewMonoBehaviourScript : MonoBehaviour
+public class EnemyAI : MonoBehaviour
 {
     public NavMeshAgent agent;
     public Transform player;
@@ -15,7 +15,7 @@ public class NewMonoBehaviourScript : MonoBehaviour
     public float walkPointRange;
 
     //Attacking
-    public float timeDelayAttacks;
+    public float timeDelayAttacks, timeDelayBurst, burst;
     bool Attacked;
 
     //States
@@ -46,8 +46,8 @@ public class NewMonoBehaviourScript : MonoBehaviour
 
     private void SearchWalkPoint()
     {
-        float randZ = Random.RandomRange(-walkPointRange, walkPointRange);
-        float randX = Random.RandomRange(-walkPointRange, walkPointRange);
+        float randZ = Random.Range(-walkPointRange, walkPointRange);
+        float randX = Random.Range(-walkPointRange, walkPointRange);
 
         walkPoint = new Vector3(transform.position.x + randX, transform.position.y, transform.position.z + randZ);
         if(Physics.Raycast(walkPoint, -transform.up, 2f, GroundCheck)) walkPointSet = true;
@@ -59,12 +59,17 @@ public class NewMonoBehaviourScript : MonoBehaviour
         transform.LookAt(player);
         if(!Attacked)
         {
+            burst++;
             Rigidbody rb = Instantiate(projectile, transform.position, Quaternion.identity).GetComponent<Rigidbody>();
             projectile.SetActive(true);
             rb.AddForce(transform.forward * 32f, ForceMode.Impulse);
             //rb.AddForce(transform.up * 8f, ForceMode.Impulse);
-            Invoke(nameof(ResetAttack), timeDelayAttacks);
-            Attacked = true;
+            if (burst < 3f) Invoke(nameof(ResetAttack), timeDelayAttacks);
+            else { 
+                Invoke(nameof(ResetAttack), timeDelayBurst);
+                burst = 0;
+            }
+                Attacked = true;
         }
     }
 
