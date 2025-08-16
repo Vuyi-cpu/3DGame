@@ -63,7 +63,6 @@ public class EnemyAI : MonoBehaviour
             Rigidbody rb = Instantiate(projectile, transform.position, Quaternion.identity).GetComponent<Rigidbody>();
             projectile.SetActive(true);
             rb.AddForce(transform.forward * 20f, ForceMode.Impulse);
-            //rb.AddForce(transform.up * 8f, ForceMode.Impulse);
             if (burst < 3f) Invoke(nameof(ResetAttack), timeDelayAttacks);
             else { 
                 Invoke(nameof(ResetAttack), timeDelayBurst);

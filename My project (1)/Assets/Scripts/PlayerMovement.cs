@@ -14,6 +14,9 @@ public class PlayerMovement : MonoBehaviour
     public float speed = 12f;
     public float gravity = -9.81f * 2;
     public float jumpHeight = 3f;
+    public float DashSpd = 2.5f;
+    public float DashDelay = 1f;
+    public bool DashReady;
 
     public Transform groundCheck;
     public float groundDistance = 0.4f;
@@ -30,6 +33,8 @@ public class PlayerMovement : MonoBehaviour
         controls.Player.Move.canceled += ctx => move = Vector2.zero;
 
         controls.Player.Jump.performed += ctx => jumpPressed = true;
+
+        DashReady = true;
     }
 
     // Update is called once per frame
@@ -45,6 +50,12 @@ public class PlayerMovement : MonoBehaviour
                }
 
         Vector3 moveDir = transform.right * move.x + transform.forward * move.y;
+        if (Input.GetKey(KeyCode.LeftShift) && isGrounded) //Dash reset doesn't work :(
+        { 
+            controller.Move(moveDir * speed * Time.deltaTime * DashSpd);
+            Invoke(nameof(Reset), DashDelay);
+            DashReady = false;
+        }
         controller.Move(moveDir * speed * Time.deltaTime);
 
         //check if the player is on the ground so he can jump
@@ -60,6 +71,11 @@ public class PlayerMovement : MonoBehaviour
 
       
         controller.Move(velocity * Time.deltaTime);
+    }
+
+    private void Reset()
+    {
+        DashReady = true;
     }
 
     private void OnEnable()
