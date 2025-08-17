@@ -3,7 +3,7 @@ using UnityEngine;
 public class ButtonGotIt : MonoBehaviour
 {
     public GameObject tutorial;
-    private void gotIt()
+    public void gotIt()
     {
         tutorial.SetActive(false);
     }
