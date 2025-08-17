@@ -1,3 +1,4 @@
+using UnityEditor.ShaderGraph;
 using UnityEngine;
 
 public class Enemystate : MonoBehaviour
@@ -8,6 +9,7 @@ public class Enemystate : MonoBehaviour
     public float maxHealth;
     [SerializeField] private Transform player;
     public InteractableObject interactableObject;
+    PlayerControls controls;
 
 
     void Awake()
@@ -20,24 +22,46 @@ public class Enemystate : MonoBehaviour
         {
             Instance = this;
         }
+
+        controls = new PlayerControls();
+        controls.Player.Attack.performed += ctx =>
+        {
+            RaycastHit hit;
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+            if (Physics.Raycast(ray, out hit) && hit.distance < 5 && interactableObject.equipped == true)
+            {
+                currentHealth -= 10;
+                if (currentHealth == 0)
+                {
+                    enemy.SetActive(false);
+                }
+            }
+
+        };
     }
     void Start()
     {
         currentHealth = maxHealth;
     }
 
+
+
     // Update is called once per frame
     void Update()
     {
-        RaycastHit hit;
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        if (Physics.Raycast(ray, out hit) && Input.GetKeyDown(KeyCode.Mouse0) && hit.distance < 5 && interactableObject.equipped == true)
-        {
-            currentHealth -= 10;
-            if (currentHealth == 0)
-            {
-                enemy.SetActive(false);
-            }
-        }
+ 
+    }
+
+
+
+    private void OnEnable()
+    {
+        controls.Player.Enable();
+    }
+
+    private void OnDisable()
+    {
+        controls.Player.Disable();
     }
 }

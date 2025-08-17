@@ -41,6 +41,12 @@ public class PlayerMovement : MonoBehaviour
 
         controls.Player.Jump.performed += ctx => jumpPressed = true;
 
+
+        controls.Player.Dash.performed += ctx =>
+        {
+
+        };
+
         DashReady = true;
     }
 
