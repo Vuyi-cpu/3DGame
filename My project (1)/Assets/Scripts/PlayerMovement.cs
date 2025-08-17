@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem; 
+using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -14,7 +14,7 @@ public class PlayerMovement : MonoBehaviour
     public float speed = 12f;
     public float gravity = -9.81f * 2;
     public float jumpHeight = 3f;
-    
+
 
     public Transform groundCheck;
     public float groundDistance = 0.4f;
@@ -41,7 +41,7 @@ public class PlayerMovement : MonoBehaviour
         controls.Player.Dash.performed += ctx =>
         {
             StartCoroutine(Dash());
-            
+
         };
     }
 
@@ -64,13 +64,13 @@ public class PlayerMovement : MonoBehaviour
         {
             //the equation for jumping
             velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
-            jumpPressed = false; 
+            jumpPressed = false;
         }
 
-      
+
         velocity.y += gravity * Time.deltaTime;
 
-      
+
         controller.Move(velocity * Time.deltaTime);
     }
 
@@ -86,7 +86,7 @@ public class PlayerMovement : MonoBehaviour
             yield return null;
         }
     }
-    
+
     private void resetFov()
     {
         cam.DoFov(60f);
