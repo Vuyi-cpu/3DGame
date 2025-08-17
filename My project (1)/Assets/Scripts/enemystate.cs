@@ -1,4 +1,4 @@
-using UnityEditor.ShaderGraph;
+//using UnityEditor.ShaderGraph;
 using UnityEngine;
 
 public class Enemystate : MonoBehaviour
@@ -10,11 +10,8 @@ public class Enemystate : MonoBehaviour
     public InteractableObject interactableObject;
     PlayerControls controls;
 
-
     void Awake()
     {
-     
-
         controls = new PlayerControls();
         controls.Player.Attack.performed += ctx =>
         {
@@ -37,17 +34,6 @@ public class Enemystate : MonoBehaviour
     {
         currentHealth = maxHealth;
     }
-
-
-
-    // Update is called once per frame
-    void Update()
-    {
- 
-    }
-
-
-
     private void OnEnable()
     {
         controls.Player.Enable();
