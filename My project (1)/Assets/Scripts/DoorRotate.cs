@@ -69,8 +69,12 @@ public class DoorRotate : MonoBehaviour
                 return;
             }
         }
+        else
+        {
+             interaction_Info_UI.SetActive(false);
+        }
 
-        interaction_Info_UI.SetActive(false);
+
     }
 
     private IEnumerator MoveDoor()
