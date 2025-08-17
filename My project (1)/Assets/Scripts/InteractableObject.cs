@@ -13,13 +13,11 @@ public class InteractableObject : MonoBehaviour
     GameObject Weapon;
     PlayerControls controls;
 
-
     //vuyi edits
     public Transform gunPos;
     public Transform gunPos2;
     public float range = 10f;
     GameObject currentWeapon;
-  
 
     public bool equipped;
 
@@ -34,20 +32,13 @@ public class InteractableObject : MonoBehaviour
 
             if ( SelectionManager.playerCanInteract == true)
             {
-                if (currentWeapon == null)
-                    Pickup();
-
+                if (currentWeapon == null) Pickup();
             }
             
         };
             controls.Player.Drop.performed += ctx =>
             {
-
-
-                if (currentWeapon != null)
-                {
-                        Drop();
-                }
+                if (currentWeapon != null) Drop();
             };
             
     }
@@ -61,7 +52,6 @@ public class InteractableObject : MonoBehaviour
     {
         controls.Player.Disable();
     }
-
 
     public void Start()
     {
@@ -82,11 +72,10 @@ public class InteractableObject : MonoBehaviour
         {
             if (hit.transform.tag == "sword")
             {
-                Debug.Log("can interact");
                 Weapon = hit.transform.gameObject;
-            }else if(hit.transform.tag == "scythe")
+            }
+            else if(hit.transform.tag == "scythe")
             {
-                Debug.Log("can interact");
                 Weapon = hit.transform.gameObject;
             }
         }
@@ -106,7 +95,8 @@ public class InteractableObject : MonoBehaviour
             currentWeapon.transform.localEulerAngles = new Vector3(0f, 180f, 0f);
             currentWeapon.GetComponent<Rigidbody>().isKinematic = true;
 
-        } else if (currentWeapon.tag == "scythe")
+        } 
+        else if (currentWeapon.tag == "scythe")
         {
             emptyIM.SetActive(false);
             scytheIM.SetActive(true);
