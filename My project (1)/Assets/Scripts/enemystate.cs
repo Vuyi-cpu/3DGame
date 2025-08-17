@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class Enemystate : MonoBehaviour
 {
-    public static Enemystate Instance { get; set; }
     public GameObject enemy;
     public float currentHealth;
     public float maxHealth;
@@ -14,14 +13,7 @@ public class Enemystate : MonoBehaviour
 
     void Awake()
     {
-        if (Instance != null && Instance != this)
-        {
-            Destroy(enemy);
-        }
-        else
-        {
-            Instance = this;
-        }
+     
 
         controls = new PlayerControls();
         controls.Player.Attack.performed += ctx =>
@@ -29,14 +21,15 @@ public class Enemystate : MonoBehaviour
             RaycastHit hit;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-            if (Physics.Raycast(ray, out hit) && hit.distance < 5 && interactableObject.equipped == true)
+            if (Physics.Raycast(ray, out hit) && hit.distance < 5 && interactableObject.equipped == true && hit.transform.gameObject == enemy)
             {
-                currentHealth -= 10;
-                if (currentHealth == 0)
-                {
-                    enemy.SetActive(false);
+               
+                    currentHealth -= 10;
+                    if (currentHealth == 0)
+                    {
+                      Destroy(enemy);
+                    }
                 }
-            }
 
         };
     }
