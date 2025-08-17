@@ -11,6 +11,7 @@ public class InteractableObject : MonoBehaviour
     public string ItemName;
     public SelectionManager SelectionManager;
     GameObject Weapon;
+    PlayerControls controls;
 
 
     //vuyi edits
@@ -22,6 +23,46 @@ public class InteractableObject : MonoBehaviour
 
     public bool equipped;
 
+    private Vector2 pickup;
+
+    private void Awake()
+    {
+        controls = new PlayerControls();
+
+        controls.Player.Interact.performed += ctx =>
+        {
+
+            if ( SelectionManager.playerCanInteract == true)
+            {
+                if (currentWeapon == null)
+                    Pickup();
+
+            }
+            
+        };
+            controls.Player.Drop.performed += ctx =>
+            {
+
+
+                if (currentWeapon != null)
+                {
+                        Drop();
+                }
+            };
+            
+    }
+
+    void OnEnable()
+    {
+        controls.Player.Enable();
+    }
+
+    void OnDisable()
+    {
+        controls.Player.Disable();
+    }
+
+
     public void Start()
     {
         swordIM.SetActive(false);
@@ -31,19 +72,6 @@ public class InteractableObject : MonoBehaviour
     private void Update()
     {
         CheckWeapons();
-        
-        if (Input.GetKeyDown(KeyCode.E) &&SelectionManager.playerCanInteract == true)
-        {
-                if (currentWeapon == null)
-                Pickup();
-            
-        }
-
-        if (currentWeapon != null)
-        {
-            if (Input.GetKeyDown(KeyCode.Q))
-                Drop();
-        }
     }
 
     private void CheckWeapons()
@@ -102,24 +130,6 @@ public class InteractableObject : MonoBehaviour
         currentWeapon.GetComponent<Rigidbody>().isKinematic = false;
         currentWeapon = null;
     }
-
-
-
-
-    //end vuyi edits
-
-    //private void Update()
-    //{
-    //  
-    //    if (Input.GetKeyDown(KeyCode.E) && SelectionManager.playerCanInteract == true)
-    //    {
-    //        Debug.Log("Item added to inventory");
-    //        Destroy(gameObject);
-    //        
-    //     
-    //        Weapon.SetActive(true);
-    //    }
-    //}
 
     public string GetItemName()
     {
