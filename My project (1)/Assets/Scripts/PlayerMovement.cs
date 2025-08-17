@@ -26,11 +26,8 @@ public class PlayerMovement : MonoBehaviour
     //Dashing
     public float dashFov;
     public PlayerCam cam;
-    public float DashSpd = 2.5f;
-    public float DashDelay = 1f;
-    public bool DashReady;
-    private float DashCdTimer;
-    private float DashCd = 1f;
+    public float DashSpd;
+    public float DashTime;
 
     private void Awake()
     {
@@ -41,13 +38,11 @@ public class PlayerMovement : MonoBehaviour
 
         controls.Player.Jump.performed += ctx => jumpPressed = true;
 
-
         controls.Player.Dash.performed += ctx =>
         {
-
+            StartCoroutine(Dash());
+            
         };
-
-        DashReady = true;
     }
 
     // Update is called once per frame
@@ -63,19 +58,6 @@ public class PlayerMovement : MonoBehaviour
 
         Vector3 moveDir = transform.right * move.x + transform.forward * move.y;
         controller.Move(moveDir * speed * Time.deltaTime);
-        
-        if (DashCdTimer > 0) DashCdTimer -= Time.deltaTime;
-        if (Input.GetKey(KeyCode.LeftShift) && isGrounded) //Dash reset doesn't work :(
-        {
-            //if (DashCdTimer > 0) return;
-            //else DashCdTimer = DashCd;
-
-            //if (!DashReady) return;
-            DashReady = false;
-            controller.Move(moveDir * speed * Time.deltaTime * DashSpd);
-            cam.DoFov(dashFov);
-            Invoke(nameof(Reset), DashDelay);
-        }
 
         //check if the player is on the ground so he can jump
         if (jumpPressed && isGrounded)
@@ -92,10 +74,21 @@ public class PlayerMovement : MonoBehaviour
         controller.Move(velocity * Time.deltaTime);
     }
 
-    
-    private void Reset()
+    IEnumerator Dash()
     {
-        DashReady = true;
+        float startTime = Time.time;
+        Vector3 moveDir = transform.right * move.x + transform.forward * move.y;
+        cam.DoFov(dashFov);
+        while (Time.time < startTime + DashTime)
+        {
+            controller.Move(moveDir * DashSpd * Time.deltaTime);
+            Invoke(nameof(resetFov), DashTime);
+            yield return null;
+        }
+    }
+    
+    private void resetFov()
+    {
         cam.DoFov(60f);
     }
 
