@@ -14,9 +14,7 @@ public class PlayerMovement : MonoBehaviour
     public float speed = 12f;
     public float gravity = -9.81f * 2;
     public float jumpHeight = 3f;
-    public float DashSpd = 2.5f;
-    public float DashDelay = 1f;
-    public bool DashReady;
+    
 
     public Transform groundCheck;
     public float groundDistance = 0.4f;
@@ -24,6 +22,15 @@ public class PlayerMovement : MonoBehaviour
 
     Vector3 velocity;
     bool isGrounded;
+
+    //Dashing
+    public float dashFov;
+    public PlayerCam cam;
+    public float DashSpd = 2.5f;
+    public float DashDelay = 1f;
+    public bool DashReady;
+    private float DashCdTimer;
+    private float DashCd = 1f;
 
     private void Awake()
     {
@@ -41,22 +48,28 @@ public class PlayerMovement : MonoBehaviour
     private void Update()
     {
         //checking if we hit the ground to reset our falling velocity, otherwise we will fall faster the next time
-               isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
+        isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
 
-
-                if (isGrounded && velocity.y < 0)
-                {
-                    velocity.y = -2f;
-               }
+        if (isGrounded && velocity.y < 0)
+        {
+            velocity.y = -2f;
+        }
 
         Vector3 moveDir = transform.right * move.x + transform.forward * move.y;
-        if (Input.GetKey(KeyCode.LeftShift) && isGrounded) //Dash reset doesn't work :(
-        { 
-            controller.Move(moveDir * speed * Time.deltaTime * DashSpd);
-            Invoke(nameof(Reset), DashDelay);
-            DashReady = false;
-        }
         controller.Move(moveDir * speed * Time.deltaTime);
+        
+        if (DashCdTimer > 0) DashCdTimer -= Time.deltaTime;
+        if (Input.GetKey(KeyCode.LeftShift) && isGrounded) //Dash reset doesn't work :(
+        {
+            //if (DashCdTimer > 0) return;
+            //else DashCdTimer = DashCd;
+
+            //if (!DashReady) return;
+            DashReady = false;
+            controller.Move(moveDir * speed * Time.deltaTime * DashSpd);
+            cam.DoFov(dashFov);
+            Invoke(nameof(Reset), DashDelay);
+        }
 
         //check if the player is on the ground so he can jump
         if (jumpPressed && isGrounded)
@@ -73,9 +86,11 @@ public class PlayerMovement : MonoBehaviour
         controller.Move(velocity * Time.deltaTime);
     }
 
+    
     private void Reset()
     {
         DashReady = true;
+        cam.DoFov(60f);
     }
 
     private void OnEnable()
