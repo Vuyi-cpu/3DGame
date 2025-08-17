@@ -46,7 +46,6 @@ public class MouseMovement : MonoBehaviour
         if (controls.Player.look.activeControl != null)
         {
            isMouse = controls.Player.look.activeControl.device is Mouse;// detect what device is giving input
-
         }
 
         float sens;
@@ -83,14 +82,6 @@ public class MouseMovement : MonoBehaviour
     }
 }
 
-
-
-//    void Update()
-//    {
-//        float mouseX = rotate.x * mouseSens * Time.deltaTime;
-//        float mouseY = rotate.y * mouseSens * Time.deltaTime;
-
-//        //yLook = Mathf.Clamp(yLook, -90f, 90f);
 
 
 

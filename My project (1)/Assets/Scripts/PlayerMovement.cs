@@ -35,14 +35,8 @@ public class PlayerMovement : MonoBehaviour
 
         controls.Player.Move.performed += ctx => move = ctx.ReadValue<Vector2>();
         controls.Player.Move.canceled += ctx => move = Vector2.zero;
-
         controls.Player.Jump.performed += ctx => jumpPressed = true;
-
-        controls.Player.Dash.performed += ctx =>
-        {
-            StartCoroutine(Dash());
-
-        };
+        controls.Player.Dash.performed += ctx => StartCoroutine(Dash());
     }
 
     // Update is called once per frame
@@ -66,11 +60,7 @@ public class PlayerMovement : MonoBehaviour
             velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
             jumpPressed = false;
         }
-
-
         velocity.y += gravity * Time.deltaTime;
-
-
         controller.Move(velocity * Time.deltaTime);
     }
 
