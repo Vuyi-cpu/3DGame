@@ -68,8 +68,6 @@ public class PlayerMovement : MonoBehaviour
     IEnumerator Dash()
     {
         Vector3 dashDir = (transform.right * move.x + transform.forward * move.y).normalized;
-
-        // Smooth FOV up
         cam.DoFov(dashFov, 0.1f);
 
         float dashSpeed = DashSpd;
@@ -81,23 +79,17 @@ public class PlayerMovement : MonoBehaviour
             elapsed += Time.deltaTime;
             yield return null;
         }
-
-        // after dash ends, keep momentum and smoothly reduce it
+        cam.DoFov(60f, 0.2f);
+        //after dash ends, keep momentum and smoothly reduce it
         float momentum = dashSpeed;
         while (momentum > 0.1f)
         {
-            momentum = Mathf.Lerp(momentum, 0f, Time.deltaTime * decay); // tweak factor 3f for slower/faster decay
+            momentum = Mathf.Lerp(momentum, 0f, Time.deltaTime * decay); 
             controller.Move(dashDir * momentum * Time.deltaTime);
             yield return null;
         }
-
-        // Smooth FOV back down
-        cam.DoFov(60f, 0.2f);
+        
     }
-
-
-
-
 
     private void resetFov()
     {
