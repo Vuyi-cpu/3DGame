@@ -88,12 +88,6 @@ public class PlayerMovement : MonoBehaviour
             controller.Move(dashDir * momentum * Time.deltaTime);
             yield return null;
         }
-        
-    }
-
-    private void resetFov()
-    {
-        cam.DoFov(60f);
     }
 
     private void OnEnable()

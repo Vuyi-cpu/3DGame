@@ -24,8 +24,9 @@ public class EnemyAI : MonoBehaviour
 
     private void Awake()
     {
-        player = GameObject.Find("Player").transform;
-        agent = GetComponent<NavMeshAgent>();
+        agent.updateRotation = false; 
+        agent.updateUpAxis = false;
+        walkPointSet = false;
     }
 
     private void Update()
@@ -38,10 +39,21 @@ public class EnemyAI : MonoBehaviour
     }
     private void Patrolling()
     {
-        if (!walkPointSet) SearchWalkPoint();
-        else { agent.SetDestination(walkPoint); }
-        Vector3 distanceToWalkPoint = transform.position - walkPoint;
-        if (distanceToWalkPoint.magnitude < 1f) walkPointSet = false;
+        if (!walkPointSet)
+        {
+            SearchWalkPoint();
+        }
+
+        if (walkPointSet)
+        {
+            agent.SetDestination(walkPoint);
+
+            Vector3 distanceToWalkPoint = transform.position - walkPoint;
+            if (distanceToWalkPoint.magnitude < 1f)
+            {
+                Invoke(nameof(ResetWalkPoint), Random.Range(1f, 3f));
+            }
+        }
     }
 
     private void SearchWalkPoint()
@@ -49,8 +61,24 @@ public class EnemyAI : MonoBehaviour
         float randZ = Random.Range(-walkPointRange, walkPointRange);
         float randX = Random.Range(-walkPointRange, walkPointRange);
 
-        walkPoint = new Vector3(transform.position.x + randX, transform.position.y, transform.position.z + randZ);
-        if(Physics.Raycast(walkPoint, -transform.up, 2f, GroundCheck)) walkPointSet = true;
+        Vector3 potentialPoint = new Vector3(
+            transform.position.x + randX,
+            transform.position.y + 5f,
+            transform.position.z + randZ
+        );
+
+        // Cast down to find the ground
+        if (Physics.Raycast(potentialPoint, Vector3.down, out RaycastHit hit, 20f, GroundCheck))
+        {
+            walkPoint = hit.point;
+            walkPointSet = true;
+            Debug.Log("WalkPoint set");
+        }
+    }
+
+    private void ResetWalkPoint()
+    {
+        walkPointSet = false; 
     }
 
     private void AttackPlayer()
