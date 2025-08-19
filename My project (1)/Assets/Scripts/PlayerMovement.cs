@@ -28,6 +28,7 @@ public class PlayerMovement : MonoBehaviour
     public PlayerCam cam;
     public float DashSpd;
     public float DashTime;
+    public float decay;
 
     private void Awake()
     {
@@ -66,16 +67,37 @@ public class PlayerMovement : MonoBehaviour
 
     IEnumerator Dash()
     {
-        float startTime = Time.time;
-        Vector3 moveDir = transform.right * move.x + transform.forward * move.y;
-        cam.DoFov(dashFov);
-        while (Time.time < startTime + DashTime)
+        Vector3 dashDir = (transform.right * move.x + transform.forward * move.y).normalized;
+
+        // Smooth FOV up
+        cam.DoFov(dashFov, 0.1f);
+
+        float dashSpeed = DashSpd;
+
+        float elapsed = 0f;
+        while (elapsed < DashTime)
         {
-            controller.Move(moveDir * DashSpd * Time.deltaTime);
-            Invoke(nameof(resetFov), DashTime);
+            controller.Move(dashDir * dashSpeed * Time.deltaTime);
+            elapsed += Time.deltaTime;
             yield return null;
         }
+
+        // after dash ends, keep momentum and smoothly reduce it
+        float momentum = dashSpeed;
+        while (momentum > 0.1f)
+        {
+            momentum = Mathf.Lerp(momentum, 0f, Time.deltaTime * decay); // tweak factor 3f for slower/faster decay
+            controller.Move(dashDir * momentum * Time.deltaTime);
+            yield return null;
+        }
+
+        // Smooth FOV back down
+        cam.DoFov(60f, 0.2f);
     }
+
+
+
+
 
     private void resetFov()
     {
