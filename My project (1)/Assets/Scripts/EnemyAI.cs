@@ -24,8 +24,6 @@ public class EnemyAI : MonoBehaviour
 
     private void Awake()
     {
-        agent.updateRotation = false; 
-        agent.updateUpAxis = false;
         walkPointSet = false;
     }
 
