@@ -9,6 +9,7 @@ public class Enemystate : MonoBehaviour
     [SerializeField] private Transform player;
     public InteractableObject interactableObject;
     PlayerControls controls;
+    public GameObject healthBar;
 
     void Awake()
     {
@@ -20,13 +21,13 @@ public class Enemystate : MonoBehaviour
 
             if (Physics.Raycast(ray, out hit) && hit.distance < 5 && interactableObject.equipped == true && hit.transform.gameObject == enemy)
             {
-               
-                    currentHealth -= 10;
-                    if (currentHealth == 0)
-                    {
-                      Destroy(enemy);
-                    }
+
+                currentHealth -= 10;
+                if (currentHealth == 0)
+                {
+                    Destroy(enemy);
                 }
+            }
 
         };
     }
@@ -42,5 +43,27 @@ public class Enemystate : MonoBehaviour
     private void OnDisable()
     {
         controls.Player.Disable();
+    }
+    void Update()
+    {
+        RaycastHit hit;
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+        if (Physics.Raycast(ray, out hit) && hit.distance < 8)
+        {
+            if (hit.transform.gameObject == enemy)
+            {
+                healthBar.SetActive(true);
+            }
+            else
+            {
+                healthBar.SetActive(false);
+            }
+        }
+        else
+        {
+            healthBar.SetActive(false);
+        }
+
     }
 }
