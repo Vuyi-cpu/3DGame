@@ -15,8 +15,8 @@ public class DoorRotate : MonoBehaviour
     public GameObject interaction_Info_UI;
     private TextMeshProUGUI interaction_text;
 
-    public Transform handle1;
-    public Transform handle2;
+    public Transform door1;
+    public Transform door2;
 
     PlayerControls controls;
 
@@ -30,7 +30,7 @@ public class DoorRotate : MonoBehaviour
 
             if (Physics.Raycast(ray, out RaycastHit hit, 5f))
             {
-                if (hit.transform == handle1 || hit.transform == handle2)
+                if (hit.transform == door1 || hit.transform == door2)
                 {
                     if (coroutine != null) StopCoroutine(coroutine);
                     coroutine = StartCoroutine(MoveDoor());
@@ -62,7 +62,7 @@ public class DoorRotate : MonoBehaviour
 
         if (Physics.Raycast(ray, out RaycastHit hit, 5f))
         {
-            if (hit.transform == handle1 || hit.transform == handle2)
+            if (hit.transform == door1 || hit.transform == door2)
             {
                 interaction_text.text = "[E] to interact.";
                 interaction_Info_UI.SetActive(true);

@@ -11,6 +11,7 @@ TagManager:
   - Left Handle2
   - Right Handle2
   - Environment
+  - Bullet
   layers:
   - Default
   - TransparentFX
