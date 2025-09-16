@@ -99,6 +99,10 @@ public class InteractableObject : MonoBehaviour
         else if (currentWeapon.tag == "scythe")
         {
             //ThrowWeapon.holdingScythe = false; - Gives an error
+           // ThrowWeapon = currentWeapon.GetComponent<ThrowWeapon>(); ---- vuyi added, not needed for now in terms of error
+            if (ThrowWeapon != null)
+                ThrowWeapon.holdingScythe = true;
+
             emptyIM.SetActive(false);
             scytheIM.SetActive(true);
             currentWeapon.transform.position = gunPos2.position;
@@ -113,14 +117,18 @@ public class InteractableObject : MonoBehaviour
 
     private void Drop()
     {
-        ThrowWeapon.holdingScythe = false;
         equipped = false;
         swordIM.SetActive(false);
         scytheIM.SetActive(false);
         emptyIM.SetActive(true);
         currentWeapon.transform.parent = null;
         currentWeapon.GetComponent<Rigidbody>().isKinematic = false;
+
+        if (ThrowWeapon != null)
+            ThrowWeapon.holdingScythe = false;
+
         currentWeapon = null;
+     
     }
 
     public string GetItemName()
