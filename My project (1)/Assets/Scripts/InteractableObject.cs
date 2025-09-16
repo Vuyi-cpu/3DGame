@@ -12,6 +12,7 @@ public class InteractableObject : MonoBehaviour
     public SelectionManager SelectionManager;
     GameObject Weapon;
     PlayerControls controls;
+    ThrowWeapon ThrowWeapon;
 
     //vuyi edits
     public Transform gunPos;
@@ -25,8 +26,8 @@ public class InteractableObject : MonoBehaviour
 
     private void Awake()
     {
+        
         controls = new PlayerControls();
-
         controls.Player.Interact.performed += ctx =>
         {
 
@@ -64,7 +65,7 @@ public class InteractableObject : MonoBehaviour
         CheckWeapons();
     }
 
-    private void CheckWeapons()
+    public void CheckWeapons()
     {
         RaycastHit hit;
 
@@ -79,7 +80,6 @@ public class InteractableObject : MonoBehaviour
                 Weapon = hit.transform.gameObject;
             }
         }
-       
     }
     
     private void Pickup()
@@ -98,6 +98,7 @@ public class InteractableObject : MonoBehaviour
         } 
         else if (currentWeapon.tag == "scythe")
         {
+            //ThrowWeapon.holdingScythe = false; - Gives an error
             emptyIM.SetActive(false);
             scytheIM.SetActive(true);
             currentWeapon.transform.position = gunPos2.position;
@@ -112,6 +113,7 @@ public class InteractableObject : MonoBehaviour
 
     private void Drop()
     {
+        ThrowWeapon.holdingScythe = false;
         equipped = false;
         swordIM.SetActive(false);
         scytheIM.SetActive(false);

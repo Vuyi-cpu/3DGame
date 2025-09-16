@@ -33,7 +33,6 @@ public class PlayerMovement : MonoBehaviour
     private void Awake()
     {
         controls = new PlayerControls();
-
         controls.Player.Move.performed += ctx => move = ctx.ReadValue<Vector2>();
         controls.Player.Move.canceled += ctx => move = Vector2.zero;
         controls.Player.Jump.performed += ctx => jumpPressed = true;
