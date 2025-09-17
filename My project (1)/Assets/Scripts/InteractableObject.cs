@@ -20,7 +20,8 @@ public class InteractableObject : MonoBehaviour
     public float range = 10f;
     GameObject currentWeapon;
 
-    public bool equipped;
+    public bool swordEquipped;
+    public bool scytheEquipped;
 
     private Vector2 pickup;
 
@@ -86,9 +87,9 @@ public class InteractableObject : MonoBehaviour
     private void Pickup()
     {
         currentWeapon = Weapon;
-        equipped = true;
         if (currentWeapon.tag == "sword")
         {
+            swordEquipped = true;
             emptyIM.SetActive(false);
             swordIM.SetActive(true);
             currentWeapon.transform.position = gunPos.position;
@@ -99,6 +100,7 @@ public class InteractableObject : MonoBehaviour
         }
         else if (currentWeapon.tag == "scythe")
         {
+            scytheEquipped = true;
             throwWeapon.enabled = true;
             emptyIM.SetActive(false);
             scytheIM.SetActive(true);
@@ -114,13 +116,16 @@ public class InteractableObject : MonoBehaviour
 
     private void Drop()
     {
+
         throwWeapon.enabled = false;
-        equipped = false;
+        scytheEquipped = false;
+        swordEquipped = false;
         swordIM.SetActive(false);
         scytheIM.SetActive(false);
         emptyIM.SetActive(true);
         currentWeapon.transform.parent = null;
         currentWeapon.GetComponent<Rigidbody>().isKinematic = false;
+        currentWeapon.GetComponent<Rigidbody>().useGravity = true;
 
         currentWeapon = null;
      

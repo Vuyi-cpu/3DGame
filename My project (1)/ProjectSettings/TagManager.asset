@@ -12,6 +12,7 @@ TagManager:
   - Right Handle2
   - Environment
   - Bullet
+  - Enemy
   layers:
   - Default
   - TransparentFX

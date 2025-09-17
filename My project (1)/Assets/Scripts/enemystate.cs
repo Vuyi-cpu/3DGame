@@ -19,7 +19,7 @@ public class Enemystate : MonoBehaviour
             RaycastHit hit;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-            if (Physics.Raycast(ray, out hit) && hit.distance < 5 && interactableObject.equipped == true && hit.transform.gameObject == enemy)
+            if (Physics.Raycast(ray, out hit) && hit.distance < 5 && interactableObject.swordEquipped == true && hit.transform.gameObject == enemy)
             {
 
                 currentHealth -= 10;
