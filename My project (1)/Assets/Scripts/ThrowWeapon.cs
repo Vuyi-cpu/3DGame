@@ -5,31 +5,28 @@ public class ThrowWeapon : MonoBehaviour
 {
     [SerializeField] GameObject scythe; //Game object reference to scythe. Used to move scythe
     [SerializeField] Transform scytheLocation; //Original scythe location
-    //[SerializeField] Transform scytheRotation; //Original scythe rotation - commented cuz idk original rotation rn
+    //Transform scytheRotation; //Original scythe rotation - commented cuz idk original rotation rn
     [SerializeField] float scytheDistance; //How far can we throw this thing
     [SerializeField] float throwSpeed; //Throw speed of this thing
     [SerializeField] LayerMask layerMask; //Layer mask for raycast check. Looking for environment layer
+    [SerializeField] private Transform player;
 
-    bool isThrown; //Bool that gets set when thrown
+    public bool isThrown; //Bool that gets set when thrown
     public bool isReturning; //Bool that get set after hitting the middle point
-    public bool holdingScythe;
 
     [SerializeField] Vector3 throwPosition; //This is where the scythe is traveling to.
-    Rotator rotator; //Rotator on scythe object. Gets turned on when thrown. And off when not.
+    [SerializeField] Rotator rotator; //Rotator on scythe object. Gets turned on when thrown. And off when not.
 
     [SerializeField] float damage; //How much damage does this object do?
     Enemystate enemy; //Any enemy object hit if any
 
-    private void Start()
+    private void Awake()
     {
-        holdingScythe = false;
-        //rotator.enabled = false; - commented because it gives an error
+        rotator.enabled = false;
     }
 
     void Update()
     {
-        if (holdingScythe)
-        {
             //If we press left mouse down
             if (Input.GetKeyDown(KeyCode.Mouse0))
             {
@@ -44,9 +41,6 @@ public class ThrowWeapon : MonoBehaviour
                 //Set new position to move towards and apply to scythe transform.
                 Vector3 newPos = Vector3.MoveTowards(scythe.transform.position, throwPosition, throwSpeed * Time.deltaTime);
                 scythe.transform.position = newPos;
-
-                //Turn on the scythe's mesh collider
-                scythe.GetComponent<MeshCollider>().enabled = true;
 
                 //If the scythe's position is equal to the throw position
                 if (scythe.transform.position == throwPosition)
@@ -78,8 +72,7 @@ public class ThrowWeapon : MonoBehaviour
                     isReturning = false;
                     rotator.enabled = false;
                     scythe.transform.parent = scytheLocation;
-                    //scythe.transform.rotation = scytheRotation.rotation;
-                }
+                    scythe.transform.localEulerAngles = new Vector3(0f, 180f, 0f);
             }
         }
     }
@@ -109,11 +102,13 @@ public class ThrowWeapon : MonoBehaviour
         else
         {
             //Set throw position to scythe.forward times boomerangdistance
-            throwPosition = scytheLocation.forward * scytheDistance;
+            scytheLocation.localEulerAngles = new Vector3(0f, 0f, 0f);
+            throwPosition = player.transform.position + scytheLocation.forward * scytheDistance;
             //Set parent to null, enable rotator, and set isthrowm to true so it starts to travel
             scythe.transform.parent = null;
             rotator.enabled = true;
             isThrown = true;
+            scytheLocation.localEulerAngles = new Vector3(63f, -195.3f, -267.07f);
         }
     }
 }

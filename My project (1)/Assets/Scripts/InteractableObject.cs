@@ -12,7 +12,7 @@ public class InteractableObject : MonoBehaviour
     public SelectionManager SelectionManager;
     GameObject Weapon;
     PlayerControls controls;
-    ThrowWeapon ThrowWeapon;
+    [SerializeField] private ThrowWeapon throwWeapon;
 
     //vuyi edits
     public Transform gunPos;
@@ -26,7 +26,7 @@ public class InteractableObject : MonoBehaviour
 
     private void Awake()
     {
-        
+        throwWeapon.enabled = false;
         controls = new PlayerControls();
         controls.Player.Interact.performed += ctx =>
         {
@@ -79,6 +79,7 @@ public class InteractableObject : MonoBehaviour
             {
                 Weapon = hit.transform.gameObject;
             }
+
         }
     }
     
@@ -95,14 +96,10 @@ public class InteractableObject : MonoBehaviour
             currentWeapon.transform.localEulerAngles = new Vector3(0f, 180f, 0f);
             currentWeapon.GetComponent<Rigidbody>().isKinematic = true;
 
-        } 
+        }
         else if (currentWeapon.tag == "scythe")
         {
-            //ThrowWeapon.holdingScythe = false; - Gives an error
-           // ThrowWeapon = currentWeapon.GetComponent<ThrowWeapon>(); ---- vuyi added, not needed for now in terms of error
-            if (ThrowWeapon != null)
-                ThrowWeapon.holdingScythe = true;
-
+            throwWeapon.enabled = true;
             emptyIM.SetActive(false);
             scytheIM.SetActive(true);
             currentWeapon.transform.position = gunPos2.position;
@@ -110,22 +107,20 @@ public class InteractableObject : MonoBehaviour
             currentWeapon.transform.localEulerAngles = new Vector3(0f, 180f, 0f);
             currentWeapon.GetComponent<Rigidbody>().isKinematic = true;
         }
-
+        
 
   
     }
 
     private void Drop()
     {
+        throwWeapon.enabled = false;
         equipped = false;
         swordIM.SetActive(false);
         scytheIM.SetActive(false);
         emptyIM.SetActive(true);
         currentWeapon.transform.parent = null;
         currentWeapon.GetComponent<Rigidbody>().isKinematic = false;
-
-        if (ThrowWeapon != null)
-            ThrowWeapon.holdingScythe = false;
 
         currentWeapon = null;
      
