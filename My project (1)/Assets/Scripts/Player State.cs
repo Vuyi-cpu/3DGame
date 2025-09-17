@@ -1,4 +1,6 @@
 using UnityEngine;
+using UnityEngine.InputSystem.Processors;
+using UnityEngine.SceneManagement;
 
 public class PlayerState : MonoBehaviour
 {
@@ -6,11 +8,22 @@ public class PlayerState : MonoBehaviour
     public float currentHealth;
     public float maxHealth;
     public GameObject healthBar;
+    public GameObject gameOverUI;
     public GameObject bullet;
+    public float restartDelay = 2f;
+    private PlayerMovement playerMovement;
+    private MouseMovement mouseMovement;
 
     void Start()
     {
+        healthBar.SetActive(true);
         currentHealth = maxHealth;
+        playerMovement = player.GetComponent<PlayerMovement>();
+        mouseMovement = player.GetComponent<MouseMovement>();
+        playerMovement.enabled = true;
+        mouseMovement.enabled = true;
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -25,8 +38,26 @@ public class PlayerState : MonoBehaviour
 
             if (currentHealth == 0)
             {
-                Debug.Log("Player is dead!");
+                dead();
             }
         }
+    }
+
+
+    void dead()
+    {
+        healthBar.SetActive(false);
+        gameOverUI.SetActive(true);
+        playerMovement.enabled = false;
+        mouseMovement.enabled = false;
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
+        Time.timeScale = 0f;
+    }
+
+    public void RestartLevel()
+    {
+        Time.timeScale = 1f;
+        SceneManager.LoadScene(0);
     }
 }
