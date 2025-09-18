@@ -38,6 +38,7 @@ public class PlayerState : MonoBehaviour
 
             if (currentHealth == 0)
             {
+
                 dead();
             }
         }
