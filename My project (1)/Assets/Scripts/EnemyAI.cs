@@ -28,7 +28,7 @@ public class EnemyAI : MonoBehaviour
     public float chaseSpeed = 6f;
     private float defaultSpeed;
 
-    public float stopDistance = 1.5f;
+   // public float stopDistance = 1.5f;
 
     private void Awake()
     {
@@ -118,7 +118,7 @@ public class EnemyAI : MonoBehaviour
     private void ChasePlayer()
     {
         Vector3 direction = (player.position - transform.position).normalized;
-        Vector3 targetPosition = player.position - direction * stopDistance;
+        Vector3 targetPosition = player.position - direction ;
         agent.SetDestination(targetPosition);
     }
 
@@ -160,7 +160,6 @@ public class EnemyAI : MonoBehaviour
 
             if (distanceMoved < 0.5f && !playerSeenDistance)
             {
-                Debug.Log("Enemy seems stuck - picking a new patrol point.");
                 walkPointSet = false;
                 SearchWalkPoint();
             }
