@@ -1,3 +1,4 @@
+using UnityEditor.ShaderGraph;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -22,22 +23,25 @@ public class ThrowWeapon : MonoBehaviour
     [SerializeField] float damage; //How much damage does this object do?
     Enemystate enemy; //Any enemy object hit if any
     private float currentReturnSpeed;
+    PlayerControls controls;
 
     private void Awake()
     {
         rotator.enabled = false;
+        controls = new PlayerControls();
+        controls.Player.Attack.performed += ctx =>
+        {
+            //If isThrown or isReturning is true, go away, else check distance
+            if (isThrown || isReturning) return;
+            CheckDistance();
+
+        };
+
     }
 
     void Update()
     {
-            //If we press left mouse down
-            if (Input.GetKeyDown(KeyCode.Mouse0))
-            {
-                //If isThrown or isReturning is true, go away, else check distance
-                if (isThrown || isReturning) return;
-                CheckDistance();
-            }
-
+        
             //If isThrown is true
             if (isThrown)
             {
@@ -123,6 +127,17 @@ public class ThrowWeapon : MonoBehaviour
             }
         }
     }
+
+    void OnEnable()
+    {
+        controls.Player.Enable();
+    }
+
+    void OnDisable()
+    {
+        controls.Player.Disable();
+    }
+
 }
 
 
