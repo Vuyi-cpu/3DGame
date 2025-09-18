@@ -36,7 +36,13 @@ public class EnemyAI : MonoBehaviour
         defaultSpeed = patrolSpeed;
         agent.speed = defaultSpeed;
 
-       
+        Rigidbody rb = GetComponent<Rigidbody>();
+        if (rb != null)
+        {
+            rb.isKinematic = true;
+            rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
+        }
+
         agent.acceleration = 40f;
         agent.angularSpeed = 999f;
     }
