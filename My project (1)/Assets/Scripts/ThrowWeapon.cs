@@ -67,7 +67,7 @@ public class ThrowWeapon : MonoBehaviour
             if (isReturning)
             {
                 scytheRb.isKinematic = true;
-                currentReturnSpeed = throwSpeed;
+                currentReturnSpeed = throwSpeed+2;
                 //currentReturnSpeed += (float)(throwSpeed + 0.5 * Time.deltaTime);
                 //Set the new position back to the scythe's original position
                 Vector3 newPos = Vector3.MoveTowards(scythe.transform.position, scytheLocation.position, currentReturnSpeed * Time.deltaTime);
@@ -113,6 +113,10 @@ public class ThrowWeapon : MonoBehaviour
                 if (enemy != null)
                 {
                     enemy.currentHealth -= damage;
+                    if (enemy.currentHealth <= 0)
+                    {
+                        Destroy(enemy.enemy);
+                    }
                 }
             }
         }
