@@ -50,13 +50,6 @@ public class ThrowWeapon : MonoBehaviour
                 //If the scythe's position is equal to the throw position
                 if (scythe.transform.position == throwPosition)
                 {
-                    //If there is an enemy object
-                    /*if (enemy != null)
-                    {
-                        //Damage the enemy object
-                        enemy.currentHealth = enemy.currentHealth - damage;
-                        enemy = null;
-                    }*/
                     //Reset both throw variables
                     isThrown = false;
                     isReturning = true;
@@ -81,8 +74,8 @@ public class ThrowWeapon : MonoBehaviour
                     rotator.enabled = false;
                     scythe.transform.parent = scytheLocation;
                     scythe.transform.localEulerAngles = new Vector3(0f, 180f, 0f);
+                }
             }
-        }
     }
 
     //Called from update, Checks distance then throws scythe
@@ -104,7 +97,14 @@ public class ThrowWeapon : MonoBehaviour
     {
         if (isThrown)
         {
-            //Set throw postion to hit.point, set parent to null, turn rotator on an set isthrown to true so that it starts to travel.
+            //Set throw position to collision point
+            isThrown = false;
+            isReturning = true;
+        }
+
+        //Damage enemy if hit when returning or throwing
+        if (isThrown || isReturning)
+        {
             isThrown = false;
             isReturning = true;
             if (collision.gameObject.CompareTag("Enemy"))

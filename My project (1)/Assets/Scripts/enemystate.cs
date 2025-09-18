@@ -21,7 +21,6 @@ public class Enemystate : MonoBehaviour
 
             if (Physics.Raycast(ray, out hit) && hit.distance < 5 && interactableObject.swordEquipped == true && hit.transform.gameObject == enemy)
             {
-
                 currentHealth -= 10;
                 if (currentHealth == 0)
                 {
@@ -46,24 +45,7 @@ public class Enemystate : MonoBehaviour
     }
     void Update()
     {
-        RaycastHit hit;
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-        if (Physics.Raycast(ray, out hit) && hit.distance < 8)
-        {
-            if (hit.transform.gameObject == enemy)
-            {
-                healthBar.SetActive(true);
-            }
-            else
-            {
-                healthBar.SetActive(false);
-            }
-        }
-        else
-        {
-            healthBar.SetActive(false);
-        }
+        
 
     }
 }
