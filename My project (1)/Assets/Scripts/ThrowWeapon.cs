@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEditor.ShaderGraph;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -7,11 +8,12 @@ public class ThrowWeapon : MonoBehaviour
     [SerializeField] GameObject scythe; //Game object reference to scythe. Used to move scythe
     [SerializeField] Rigidbody scytheRb;
     [SerializeField] Transform scytheLocation; //Original scythe location
-    //Transform scytheRotation; //Original scythe rotation - commented cuz idk original rotation rn
     [SerializeField] float scytheDistance; //How far can we throw this thing
     [SerializeField] float throwSpeed; //Throw speed of this thing
     [SerializeField] LayerMask layerMask; //Layer mask for raycast check. Looking for environment layer
     [SerializeField] private Transform player; //Player transform
+    public GameObject neuronInfo;
+    TextMeshProUGUI neuronText;
 
     public bool isThrown; //Bool that gets set when thrown
     public bool isReturning; //Bool that get set after hitting the middle point
@@ -23,10 +25,12 @@ public class ThrowWeapon : MonoBehaviour
     [SerializeField] float damage; //How much damage does this object do?
     Enemystate enemy; //Any enemy object hit if any
     private float currentReturnSpeed;
+    private float neuronCount;
     PlayerControls controls;
 
     private void Awake()
     {
+        neuronText = neuronInfo.GetComponent<TextMeshProUGUI>();
         rotator.enabled = false;
         controls = new PlayerControls();
         controls.Player.Attack.performed += ctx =>
@@ -34,7 +38,6 @@ public class ThrowWeapon : MonoBehaviour
             //If isThrown or isReturning is true, go away, else check distance
             if (isThrown || isReturning) return;
             CheckDistance();
-
         };
 
     }
@@ -122,6 +125,8 @@ public class ThrowWeapon : MonoBehaviour
                         Destroy(enemy.enemy);
                         playerHealth.currentHealth += 100;
                         if(playerHealth.currentHealth >= playerHealth.maxHealth) playerHealth.currentHealth = playerHealth.maxHealth;
+                        neuronCount += 50f;
+                        neuronText.text = neuronCount.ToString();
                     }
                 }
             }

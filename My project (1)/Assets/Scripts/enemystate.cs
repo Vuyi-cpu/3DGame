@@ -1,4 +1,5 @@
 //using UnityEditor.ShaderGraph;
+using TMPro;
 using UnityEngine;
 
 public class Enemystate : MonoBehaviour
@@ -11,9 +12,13 @@ public class Enemystate : MonoBehaviour
     PlayerControls controls;
     public GameObject healthBar;
     [SerializeField] PlayerState playerHealth;
+    public GameObject neuronInfo;
+    TextMeshProUGUI neuronText;
+    private float neuronCount;
 
     void Awake()
     {
+        neuronText = neuronInfo.GetComponent<TextMeshProUGUI>();
         controls = new PlayerControls();
         controls.Player.Attack.performed += ctx =>
         {
@@ -28,6 +33,8 @@ public class Enemystate : MonoBehaviour
                     Destroy(enemy);
                     playerHealth.currentHealth += 100;
                     if (playerHealth.currentHealth >= playerHealth.maxHealth) playerHealth.currentHealth = playerHealth.maxHealth;
+                    neuronCount += 50f;
+                    neuronText.text = neuronCount.ToString();
                 }
             }
 
