@@ -28,7 +28,6 @@ public class EnemyAI : MonoBehaviour
     public float chaseSpeed = 6f;
     private float defaultSpeed;
 
-   // public float stopDistance = 1.5f;
 
     private void Awake()
     {
@@ -104,7 +103,6 @@ public class EnemyAI : MonoBehaviour
             {
                 walkPoint = hit.point;
                 walkPointSet = true;
-                Debug.Log("New WalkPoint: " + walkPoint);
                 return;
             }
         }
