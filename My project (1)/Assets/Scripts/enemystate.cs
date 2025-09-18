@@ -10,6 +10,7 @@ public class Enemystate : MonoBehaviour
     public InteractableObject interactableObject;
     PlayerControls controls;
     public GameObject healthBar;
+    [SerializeField] PlayerState playerHealth;
 
     void Awake()
     {
@@ -25,6 +26,8 @@ public class Enemystate : MonoBehaviour
                 if (currentHealth == 0)
                 {
                     Destroy(enemy);
+                    playerHealth.currentHealth += 100;
+                    if (playerHealth.currentHealth >= playerHealth.maxHealth) playerHealth.currentHealth = playerHealth.maxHealth;
                 }
             }
 

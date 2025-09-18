@@ -10,18 +10,18 @@ public class ThrowWeapon : MonoBehaviour
     [SerializeField] float scytheDistance; //How far can we throw this thing
     [SerializeField] float throwSpeed; //Throw speed of this thing
     [SerializeField] LayerMask layerMask; //Layer mask for raycast check. Looking for environment layer
-    [SerializeField] private Transform player;
+    [SerializeField] private Transform player; //Player transform
 
     public bool isThrown; //Bool that gets set when thrown
     public bool isReturning; //Bool that get set after hitting the middle point
 
     [SerializeField] Vector3 throwPosition; //This is where the scythe is traveling to.
     [SerializeField] Rotator rotator; //Rotator on scythe object. Gets turned on when thrown. And off when not.
+    [SerializeField] PlayerState playerHealth;
 
     [SerializeField] float damage; //How much damage does this object do?
     Enemystate enemy; //Any enemy object hit if any
     private float currentReturnSpeed;
-    private float returnAcceleration;
 
     private void Awake()
     {
@@ -116,6 +116,8 @@ public class ThrowWeapon : MonoBehaviour
                     if (enemy.currentHealth <= 0)
                     {
                         Destroy(enemy.enemy);
+                        playerHealth.currentHealth += 100;
+                        if(playerHealth.currentHealth >= playerHealth.maxHealth) playerHealth.currentHealth = playerHealth.maxHealth;
                     }
                 }
             }

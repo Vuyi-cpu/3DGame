@@ -2,12 +2,12 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 
-public class PlayerHealthbar : MonoBehaviour
+public class PlayerHealthBar : MonoBehaviour
 {
     private Slider slide;
     public TextMeshProUGUI healthText;
     public GameObject state;
-    private float currentHealth, maxHealth;
+    public float currentHealth, maxHealth;
     void Awake()
     {
         slide = GetComponent<Slider>();
