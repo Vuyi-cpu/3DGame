@@ -21,8 +21,8 @@ public class EnemyAI : MonoBehaviour
     bool Attacked;
 
     // States
-    public float sightDistance, attackDistance;
-    public bool playerSeenDistance, playerAttackDistance;
+    public float sightDistance, attackDistance, rejectDistance;
+    public bool playerSeenDistance, playerAttackDistance, playerRejectDistance;
 
     public float patrolSpeed = 3.5f;
     public float chaseSpeed = 6f;
@@ -50,6 +50,7 @@ public class EnemyAI : MonoBehaviour
     {
         playerSeenDistance = Physics.CheckSphere(transform.position, sightDistance, PlayerCheck);
         playerAttackDistance = Physics.CheckSphere(transform.position, attackDistance, PlayerCheck);
+        playerRejectDistance = Physics.CheckSphere(transform.position, rejectDistance, PlayerCheck);
 
         if (!playerSeenDistance && !playerAttackDistance)
         {
@@ -63,8 +64,14 @@ public class EnemyAI : MonoBehaviour
         }
         if (playerSeenDistance && playerAttackDistance)
         {
-            agent.speed = chaseSpeed; 
-            ChasePlayer();           
+            agent.SetDestination(transform.position);
+            if(playerRejectDistance)
+            {
+                Vector3 dirToPlayer = (transform.position - player.position).normalized;
+                // target position = player's position + offset
+                Vector3 targetPos = player.position + dirToPlayer * rejectDistance;
+                agent.SetDestination(targetPos);
+            }
             AttackPlayer();
         }
 
@@ -122,12 +129,16 @@ public class EnemyAI : MonoBehaviour
 
     private void AttackPlayer()
     {
-        transform.LookAt(player); 
-
+        Vector3 targetPos = new Vector3(player.position.x, transform.position.y, player.position.z);
+        transform.LookAt(targetPos);
+        /*Vector3 direction = (player.position - transform.position).normalized;
+        Vector3 targetPosition = player.position - direction;
+        agent.SetDestination(targetPosition);*/
         if (!Attacked)
         {
             burst++;
-            Rigidbody rb = Instantiate(projectile, transform.position, Quaternion.identity).GetComponent<Rigidbody>();
+            Vector3 enemyGun = new Vector3(transform.position.x, transform.position.y - 1f, transform.position.z);
+            Rigidbody rb = Instantiate(projectile, enemyGun, Quaternion.identity).GetComponent<Rigidbody>();
             projectile.SetActive(true);
             rb.AddForce(transform.forward * 20f, ForceMode.Impulse);
 
