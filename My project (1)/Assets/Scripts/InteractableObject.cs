@@ -80,7 +80,6 @@ public class InteractableObject : MonoBehaviour
             {
                 Weapon = hit.transform.gameObject;
             }
-
         }
     }
     
@@ -135,6 +134,11 @@ public class InteractableObject : MonoBehaviour
 
             rb.AddForce(Camera.main.transform.forward * 2f, ForceMode.Impulse);
         }
+    }
+
+    public string GetItemName()
+    {
+        return ItemName;
     }
 }
 
