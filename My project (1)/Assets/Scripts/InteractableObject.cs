@@ -18,7 +18,7 @@ public class InteractableObject : MonoBehaviour
     public Transform gunPos;
     public Transform gunPos2;
     public float range = 10f;
-   public GameObject currentWeapon;
+    public GameObject currentWeapon;
 
     public bool swordEquipped;
     public bool scytheEquipped;
@@ -111,29 +111,12 @@ public class InteractableObject : MonoBehaviour
         }
     }
 
-  public void Drop()
-{
-    if (currentWeapon == null) return;
-
-    throwWeapon.enabled = false;
-    scytheEquipped = false;
-    swordEquipped = false;
-    swordIM.SetActive(false);
-    scytheIM.SetActive(false);
-    emptyIM.SetActive(true);
-    currentWeapon.transform.parent = null;
-
-    Collider col = currentWeapon.GetComponent<Collider>();
-    if (col != null) col.enabled = true;
-    Rigidbody rb = currentWeapon.GetComponent<Rigidbody>();
-    if (rb != null)
+    public void Drop()
     {
-<<<<<<< Updated upstream
-        rb.isKinematic = false;
-        rb.useGravity = true;
+        if (currentWeapon == null) return;
 
-        rb.AddForce(Camera.main.transform.forward * 2f, ForceMode.Impulse);
-=======
+        currentWeapon.GetComponent<Rigidbody>().isKinematic = false;
+        currentWeapon.GetComponent<Rigidbody>().useGravity = true;
         throwWeapon.enabled = false;
         scytheEquipped = false;
         swordEquipped = false;
@@ -141,20 +124,18 @@ public class InteractableObject : MonoBehaviour
         scytheIM.SetActive(false);
         emptyIM.SetActive(true);
         currentWeapon.transform.parent = null;
-        currentWeapon.GetComponent<Rigidbody>().isKinematic = false;
-        currentWeapon.GetComponent<Rigidbody>().useGravity = true;
 
-        currentWeapon = null;
-     
->>>>>>> Stashed changes
-    }
+        Collider col = currentWeapon.GetComponent<Collider>();
+        if (col != null) col.enabled = true;
+        Rigidbody rb = currentWeapon.GetComponent<Rigidbody>();
+        if (rb != null)
+        {
+            rb.isKinematic = false;
+            rb.useGravity = true;
 
-    currentWeapon = null;
-}
-
-
-    public string GetItemName()
-    {
-        return ItemName;
+            rb.AddForce(Camera.main.transform.forward * 2f, ForceMode.Impulse);
+        }
     }
 }
+
+   
