@@ -9,7 +9,8 @@ public class PlayerMovement : MonoBehaviour
 
     PlayerControls controls;
     Vector2 move;
-    bool jumpPressed;
+    bool jumpPressed, active;
+    public GameObject shop;
 
     public float speed = 12f;
     public float gravity = -9.81f * 2;
@@ -29,9 +30,11 @@ public class PlayerMovement : MonoBehaviour
     public float DashSpd;
     public float DashTime;
     public float decay;
+    float count;
 
     private void Awake()
     {
+        active = false;
         controls = new PlayerControls();
         controls.Player.Move.performed += ctx => move = ctx.ReadValue<Vector2>();
         controls.Player.Move.canceled += ctx => move = Vector2.zero;
@@ -42,6 +45,19 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
+        if(Input.GetKeyDown(KeyCode.R))
+        {
+            if (!active)
+            {
+                shop.SetActive(true);
+                active = true;
+            }
+            else if (active)
+            { 
+                shop.SetActive(false);
+                active = false;
+            }
+        }
         //checking if we hit the ground to reset our falling velocity, otherwise we will fall faster the next time
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
 

@@ -7,6 +7,7 @@ public class Enemystate : MonoBehaviour
     public GameObject enemy;
     public float currentHealth;
     public float maxHealth;
+    public float katanaDamage;
     [SerializeField] private Transform player;
     public InteractableObject interactableObject;
     PlayerControls controls;
@@ -14,7 +15,7 @@ public class Enemystate : MonoBehaviour
     [SerializeField] PlayerState playerHealth;
     public GameObject neuronInfo;
     TextMeshProUGUI neuronText;
-    private float neuronCount;
+    Shop shop;
 
     void Awake()
     {
@@ -27,14 +28,14 @@ public class Enemystate : MonoBehaviour
 
             if (Physics.Raycast(ray, out hit) && hit.distance < 5 && interactableObject.swordEquipped == true && hit.transform.gameObject == enemy)
             {
-                currentHealth -= 10;
+                currentHealth -= katanaDamage;
                 if (currentHealth == 0)
                 {
                     Destroy(enemy);
                     playerHealth.currentHealth += 100;
                     if (playerHealth.currentHealth >= playerHealth.maxHealth) playerHealth.currentHealth = playerHealth.maxHealth;
-                    neuronCount += 50f;
-                    neuronText.text = neuronCount.ToString();
+                    shop.neuronCount += 50f;
+                    neuronText.text = shop.neuronCount.ToString();
                 }
             }
 

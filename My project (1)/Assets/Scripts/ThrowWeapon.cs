@@ -22,10 +22,10 @@ public class ThrowWeapon : MonoBehaviour
     [SerializeField] Rotator rotator; //Rotator on scythe object. Gets turned on when thrown. And off when not.
     [SerializeField] PlayerState playerHealth;
 
-    [SerializeField] float damage; //How much damage does this object do?
+    public float scytheDamage; //How much scytheDamage does this object do?
     Enemystate enemy; //Any enemy object hit if any
     private float currentReturnSpeed;
-    private float neuronCount;
+    Shop shop;
     PlayerControls controls;
 
     private void Awake()
@@ -66,7 +66,6 @@ public class ThrowWeapon : MonoBehaviour
             //Is isReturning
             if (isReturning)
             {
-                scytheRb.isKinematic = true;
                 currentReturnSpeed = throwSpeed+2;
                 //currentReturnSpeed += (float)(throwSpeed + 0.5 * Time.deltaTime);
                 //Set the new position back to the scythe's original position
@@ -77,6 +76,7 @@ public class ThrowWeapon : MonoBehaviour
                 if (scythe.transform.position == scytheLocation.position)
                 {
                     //Set isReturning to false, turn off rotator, set parent and rotation
+                    scytheRb.isKinematic = true;
                     isReturning = false;
                     rotator.enabled = false;
                     scythe.transform.parent = scytheLocation;
@@ -102,15 +102,8 @@ public class ThrowWeapon : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (isThrown)
-        {
-            //Set throw position to collision point
-            isThrown = false;
-            isReturning = true;
-        }
-
         //Damage enemy if hit when returning or throwing
-        if (isThrown || isReturning)
+        if (isReturning || isThrown)
         {
             isThrown = false;
             isReturning = true;
@@ -119,14 +112,14 @@ public class ThrowWeapon : MonoBehaviour
                 Enemystate enemy = collision.gameObject.GetComponentInParent<Enemystate>();
                 if (enemy != null)
                 {
-                    enemy.currentHealth -= damage;
+                    enemy.currentHealth -= scytheDamage;
                     if (enemy.currentHealth <= 0)
                     {
                         Destroy(enemy.enemy);
                         playerHealth.currentHealth += 100;
                         if(playerHealth.currentHealth >= playerHealth.maxHealth) playerHealth.currentHealth = playerHealth.maxHealth;
-                        neuronCount += 50f;
-                        neuronText.text = neuronCount.ToString();
+                        shop.neuronCount += 50f;
+                        neuronText.text = shop.neuronCount.ToString();
                     }
                 }
             }
