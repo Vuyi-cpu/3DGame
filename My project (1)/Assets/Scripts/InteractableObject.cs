@@ -109,9 +109,6 @@ public class InteractableObject : MonoBehaviour
             currentWeapon.transform.localEulerAngles = new Vector3(0f, 180f, 0f);
             currentWeapon.GetComponent<Rigidbody>().isKinematic = true;
         }
-        
-
-  
     }
 
   public void Drop()
@@ -131,10 +128,25 @@ public class InteractableObject : MonoBehaviour
     Rigidbody rb = currentWeapon.GetComponent<Rigidbody>();
     if (rb != null)
     {
+<<<<<<< Updated upstream
         rb.isKinematic = false;
         rb.useGravity = true;
 
         rb.AddForce(Camera.main.transform.forward * 2f, ForceMode.Impulse);
+=======
+        throwWeapon.enabled = false;
+        scytheEquipped = false;
+        swordEquipped = false;
+        swordIM.SetActive(false);
+        scytheIM.SetActive(false);
+        emptyIM.SetActive(true);
+        currentWeapon.transform.parent = null;
+        currentWeapon.GetComponent<Rigidbody>().isKinematic = false;
+        currentWeapon.GetComponent<Rigidbody>().useGravity = true;
+
+        currentWeapon = null;
+     
+>>>>>>> Stashed changes
     }
 
     currentWeapon = null;
