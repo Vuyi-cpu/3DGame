@@ -13,6 +13,7 @@ public class PlayerState : MonoBehaviour
     public float restartDelay = 2f;
     private PlayerMovement playerMovement;
     private MouseMovement mouseMovement;
+    private InteractableObject interact;
 
     void Start()
     {
@@ -24,6 +25,7 @@ public class PlayerState : MonoBehaviour
         mouseMovement.enabled = true;
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
+        interact = player.GetComponent<InteractableObject>();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -31,7 +33,7 @@ public class PlayerState : MonoBehaviour
       
         if (other.CompareTag("Bullet"))
         {
-            currentHealth -= 10;
+            currentHealth -= 1000;
          
             currentHealth = Mathf.Max(currentHealth, 0);
 
@@ -47,13 +49,17 @@ public class PlayerState : MonoBehaviour
 
     void dead()
     {
+      
+
         healthBar.SetActive(false);
         gameOverUI.SetActive(true);
         playerMovement.enabled = false;
         mouseMovement.enabled = false;
+      
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
         Time.timeScale = 0f;
+      
     }
 
     public void RestartLevel()

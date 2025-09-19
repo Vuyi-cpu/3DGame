@@ -18,7 +18,7 @@ public class InteractableObject : MonoBehaviour
     public Transform gunPos;
     public Transform gunPos2;
     public float range = 10f;
-    GameObject currentWeapon;
+   public GameObject currentWeapon;
 
     public bool swordEquipped;
     public bool scytheEquipped;
@@ -114,22 +114,32 @@ public class InteractableObject : MonoBehaviour
   
     }
 
-    private void Drop()
+  public void Drop()
+{
+    if (currentWeapon == null) return;
+
+    throwWeapon.enabled = false;
+    scytheEquipped = false;
+    swordEquipped = false;
+    swordIM.SetActive(false);
+    scytheIM.SetActive(false);
+    emptyIM.SetActive(true);
+    currentWeapon.transform.parent = null;
+
+    Collider col = currentWeapon.GetComponent<Collider>();
+    if (col != null) col.enabled = true;
+    Rigidbody rb = currentWeapon.GetComponent<Rigidbody>();
+    if (rb != null)
     {
+        rb.isKinematic = false;
+        rb.useGravity = true;
 
-        throwWeapon.enabled = false;
-        scytheEquipped = false;
-        swordEquipped = false;
-        swordIM.SetActive(false);
-        scytheIM.SetActive(false);
-        emptyIM.SetActive(true);
-        currentWeapon.transform.parent = null;
-        currentWeapon.GetComponent<Rigidbody>().isKinematic = false;
-        currentWeapon.GetComponent<Rigidbody>().useGravity = true;
-
-        currentWeapon = null;
-     
+        rb.AddForce(Camera.main.transform.forward * 2f, ForceMode.Impulse);
     }
+
+    currentWeapon = null;
+}
+
 
     public string GetItemName()
     {
