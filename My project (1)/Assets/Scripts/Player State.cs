@@ -14,6 +14,7 @@ public class PlayerState : MonoBehaviour
     private PlayerMovement playerMovement;
     private MouseMovement mouseMovement;
     private InteractableObject interact;
+    public GameObject criticalHealth;
 
     void Start()
     {
@@ -37,10 +38,17 @@ public class PlayerState : MonoBehaviour
          
             currentHealth = Mathf.Max(currentHealth, 0);
 
+            if (currentHealth <= 100&& currentHealth >0)
+            {
+                criticalHealth.SetActive(true);
+            }
+            else
+            {
+                criticalHealth.SetActive(false);
+            }
 
             if (currentHealth == 0)
             {
-
                 dead();
             }
         }
