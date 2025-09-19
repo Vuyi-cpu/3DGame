@@ -33,7 +33,7 @@ public class PlayerState : MonoBehaviour
       
         if (other.CompareTag("Bullet"))
         {
-            currentHealth -= 1000;
+            currentHealth -= 10;
          
             currentHealth = Mathf.Max(currentHealth, 0);
 
