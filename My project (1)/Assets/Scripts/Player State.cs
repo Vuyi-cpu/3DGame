@@ -15,7 +15,7 @@ public class PlayerState : MonoBehaviour
     private MouseMovement mouseMovement;
     private InteractableObject interact;
     public GameObject criticalHealth;
-
+   private DamageHit hit;
     void Start()
     {
         healthBar.SetActive(true);
@@ -27,13 +27,19 @@ public class PlayerState : MonoBehaviour
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
         interact = player.GetComponent<InteractableObject>();
+        hit = player.GetComponent<DamageHit>();
     }
 
     private void OnTriggerEnter(Collider other)
     {
-      
+
         if (other.CompareTag("Bullet"))
         {
+            if (hit != null)
+            {
+                hit.TriggerDamageEffect();
+            }
+
             currentHealth -= 10;
          
             currentHealth = Mathf.Max(currentHealth, 0);

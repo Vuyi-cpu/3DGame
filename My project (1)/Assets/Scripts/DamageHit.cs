@@ -5,7 +5,7 @@ using UnityEngine.Rendering.Universal;
 
 public class DamageHit : MonoBehaviour
 {
-    public float hitIntensity = 0.6f;  // fixed intensity applied on hit
+    public float hitIntensity = 0.6f;  
     private Volume volume;
     private Vignette vignette;
 
@@ -24,11 +24,8 @@ public class DamageHit : MonoBehaviour
         vignette.active = false;
     }
 
-    void Update()
-    {
-        if (Input.GetMouseButtonDown(0))
-            TriggerDamageEffect();
-    }
+   
+     
 
     public void TriggerDamageEffect()
     {
@@ -42,7 +39,7 @@ public class DamageHit : MonoBehaviour
     {
         vignette.active = true;
 
-        // Start from hitIntensity instead of using 'intense'
+       
         float intensity = hitIntensity;
         vignette.intensity.value = intensity;
 
