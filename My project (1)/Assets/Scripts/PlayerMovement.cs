@@ -33,7 +33,6 @@ public class PlayerMovement : MonoBehaviour
     public float DashSpd;
     public float DashTime;
     public float decay;
-    float count;
 
     private void Awake()
     {

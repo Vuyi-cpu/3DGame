@@ -33,7 +33,7 @@ public class Shop : MonoBehaviour
 
     public void scytheUpgrade ()
     {
-        if (neuronCount >= 0)
+        if (neuronCount >= 200)
         {
             throwWeapon.scytheDamage += 5;
             upgradeScytheText.text = "Damage: " + throwWeapon.scytheDamage.ToString() + " -> " + (throwWeapon.scytheDamage + 5f).ToString();
@@ -46,10 +46,11 @@ public class Shop : MonoBehaviour
 
     public void katanaUpgrade()
     {
-        if (neuronCount >= 0)
+        if (neuronCount >= 200)
         {
             enemystate.katanaDamage += 5;
             upgradeKatanaText.text = "Damage: " + enemystate.katanaDamage.ToString() + " -> " + (enemystate.katanaDamage + 5f).ToString();
+            enemystate.attack();
         }
         else
         {
@@ -59,7 +60,7 @@ public class Shop : MonoBehaviour
 
     public void healthUpgrade()
     {
-        if (neuronCount >= 0)
+        if (neuronCount >= 200)
         {
             playerState.maxHealth += 100;
             playerState.currentHealth += 100;

@@ -22,6 +22,14 @@ public class Enemystate : MonoBehaviour
         controls = new PlayerControls();
         controls.Player.Attack.performed += ctx =>
         {
+            attack();
+        };
+    }
+
+    public void attack()
+    {
+        controls.Player.Attack.performed += ctx =>
+        {
             RaycastHit hit;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
@@ -37,7 +45,6 @@ public class Enemystate : MonoBehaviour
                     neuronText.text = shop.neuronCount.ToString();
                 }
             }
-
         };
     }
     void Start()

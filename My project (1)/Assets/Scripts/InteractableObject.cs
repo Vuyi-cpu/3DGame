@@ -23,8 +23,6 @@ public class InteractableObject : MonoBehaviour
     public bool swordEquipped;
     public bool scytheEquipped;
 
-    private Vector2 pickup;
-
     private void Awake()
     {
         throwWeapon.enabled = false;
@@ -112,7 +110,7 @@ public class InteractableObject : MonoBehaviour
 
     public void Drop()
     {
-        if (currentWeapon == null) return;
+        if (currentWeapon == null || throwWeapon.isThrown || throwWeapon.isReturning) return;
 
         currentWeapon.GetComponent<Rigidbody>().isKinematic = false;
         currentWeapon.GetComponent<Rigidbody>().useGravity = true;
