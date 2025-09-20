@@ -2,7 +2,7 @@
 
 public class RotatorSwing : MonoBehaviour
 {
-    public Transform sword;
+    public GameObject sword;
     public float swingAngle = 90f;      // how far it swings
     public float swingSpeed = 360f;     // degrees per second
     public bool isSwinging = false;
@@ -14,7 +14,6 @@ public class RotatorSwing : MonoBehaviour
 
     void Update()
     {
-
         if (isSwinging)
         {
             HandleSwing();
@@ -26,7 +25,7 @@ public class RotatorSwing : MonoBehaviour
         isSwinging = true;
         swingingForward = true;
 
-        startRotation = sword.localEulerAngles.x;
+        startRotation = sword.transform.localEulerAngles.x;
         targetRotation = startRotation - swingAngle;
     }
 
@@ -37,13 +36,13 @@ public class RotatorSwing : MonoBehaviour
         if (swingingForward)
         {
             // Rotate towards target
-            sword.localEulerAngles = new Vector3(
-                Mathf.MoveTowardsAngle(-sword.localEulerAngles.x, targetRotation, step),
-                sword.localEulerAngles.y,
-                sword.localEulerAngles.z
+            sword.transform.localEulerAngles = new Vector3(
+                Mathf.MoveTowardsAngle(-sword.transform.localEulerAngles.x, targetRotation, step),
+                sword.transform.localEulerAngles.y,
+                sword.transform.localEulerAngles.z
             );
 
-            if (Mathf.Approximately(sword.localEulerAngles.x, targetRotation))
+            if (Mathf.Approximately(sword.transform.localEulerAngles.x, targetRotation))
             {
                 // Reached max swing start returning
                 swingingForward = false;
@@ -53,13 +52,13 @@ public class RotatorSwing : MonoBehaviour
         else
         {
             // Rotate back to start
-            sword.localEulerAngles = new Vector3(
-                Mathf.MoveTowardsAngle(-sword.localEulerAngles.x, targetRotation, step),
-                sword.localEulerAngles.y,
-                sword.localEulerAngles.z
+            sword.transform.localEulerAngles = new Vector3(
+                Mathf.MoveTowardsAngle(-sword.transform.localEulerAngles.x, targetRotation, step),
+                sword.transform.localEulerAngles.y,
+                sword.transform.localEulerAngles.z
             );
 
-            if (sword.localEulerAngles.x == targetRotation)
+            if (sword.transform.localEulerAngles.x == targetRotation)
             {
                 // Swing complete
                 isSwinging = false;

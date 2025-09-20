@@ -23,7 +23,7 @@ public class Enemystate : MonoBehaviour
         controls = new PlayerControls();
         controls.Player.Attack.performed += ctx =>
         {
-            if (!rotatorSwing.isSwinging) rotatorSwing.StartSwing();
+            //if (!rotatorSwing.isSwinging && interactableObject.swordEquipped == true) rotatorSwing.StartSwing();
         };
     }
 
