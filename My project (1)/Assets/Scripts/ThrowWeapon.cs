@@ -24,24 +24,20 @@ public class ThrowWeapon : MonoBehaviour
     public float scytheDamage; //How much scytheDamage does this object do?
     Enemystate enemy; //Any enemy object hit if any
     private float currentReturnSpeed;
-    public Shop shop;
+    Shop shop;
     PlayerControls controls;
-    public PlayerMovement PlayerMovement;
 
     private void Awake()
     {
         neuronText = neuronInfo.GetComponent<TextMeshProUGUI>();
         rotator.enabled = false;
         controls = new PlayerControls();
-        if (!PlayerMovement.active)
+        controls.Player.Attack.performed += ctx =>
         {
-            controls.Player.Attack.performed += ctx =>
-            {
-                //If isThrown or isReturning is true, go away, else check distance
-                if (isThrown || isReturning) return;
-                CheckDistance();
-            };
-        }
+            //If isThrown or isReturning is true, go away, else check distance
+            if (isThrown || isReturning) return;
+            CheckDistance();
+        };
 
     }
 

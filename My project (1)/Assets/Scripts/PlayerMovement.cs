@@ -9,11 +9,9 @@ public class PlayerMovement : MonoBehaviour
 
     PlayerControls controls;
     Vector2 move;
-    public bool jumpPressed, active;
+    bool jumpPressed, active;
     public GameObject shop;
     MouseMovement MouseMovement;
-    public ThrowWeapon throwWeapon;
-    public InteractableObject interactableObject;
 
     public float speed = 12f;
     public float gravity = -9.81f * 2;
@@ -68,28 +66,6 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-<<<<<<< Updated upstream
-=======
-        if(Input.GetKeyDown(KeyCode.R))
-        {
-            if (!active)
-            {
-                MouseMovement.enabled = false;
-                Cursor.lockState = CursorLockMode.None;
-                Cursor.visible = true;
-                shop.SetActive(true);
-                active = true;
-            }
-            else if (active)
-            {
-                shop.SetActive(false);
-                active = false;
-                MouseMovement.enabled = true;
-                Cursor.lockState = CursorLockMode.Locked;
-                Cursor.visible = false;
-            }
-        }
->>>>>>> Stashed changes
         //checking if we hit the ground to reset our falling velocity, otherwise we will fall faster the next time
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
 

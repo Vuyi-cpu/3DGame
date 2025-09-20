@@ -3,34 +3,30 @@ using UnityEngine;
 
 public class Shop : MonoBehaviour
 {
-    //public GameObject neuronInfo;
-    public TextMeshProUGUI neuronText;
-    //public GameObject upgradeKatanaInfo;
-    public TextMeshProUGUI upgradeKatanaText;
-    //public GameObject upgradeScytheInfo;
-    public TextMeshProUGUI upgradeScytheText;
-    //public GameObject upgradeHealthInfo;
-    public TextMeshProUGUI upgradeHealthText;
+    public GameObject neuronInfo;
+    TextMeshProUGUI neuronText;
+    public GameObject upgradeKatanaInfo;
+    TextMeshProUGUI upgradeKatanaText;
+    public GameObject upgradeScytheInfo;
+    TextMeshProUGUI upgradeScytheText;
+    public GameObject upgradeHealthInfo;
+    TextMeshProUGUI upgradeHealthText;
 
     public float neuronCount;
-    public ThrowWeapon throwWeapon;
-    public Enemystate enemystate;
-    public PlayerState playerState;
+    ThrowWeapon throwWeapon;
+    Enemystate enemystate;
+    PlayerState playerState;
 
    
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Awake()
     {
-<<<<<<< Updated upstream
        
        neuronText = neuronInfo.GetComponent<TextMeshProUGUI>();
         upgradeKatanaText = upgradeKatanaInfo.GetComponent<TextMeshProUGUI>();
         upgradeScytheText = upgradeScytheInfo.GetComponent<TextMeshProUGUI>();
         upgradeHealthText = upgradeHealthInfo.GetComponent<TextMeshProUGUI>();
-=======
-        
->>>>>>> Stashed changes
     }
 
     // Update is called once per frame
@@ -38,6 +34,8 @@ public class Shop : MonoBehaviour
     {
         
     }
+
+
 
     public void scytheUpgrade ()
     {
@@ -56,7 +54,7 @@ public class Shop : MonoBehaviour
     {
         if (neuronCount >= 0)
         {
-            enemystate.katanaDamage += 5;
+            throwWeapon.scytheDamage += 5;
             upgradeKatanaText.text = "Damage: " + enemystate.katanaDamage.ToString() + " -> " + (enemystate.katanaDamage + 5f).ToString();
         }
         else
