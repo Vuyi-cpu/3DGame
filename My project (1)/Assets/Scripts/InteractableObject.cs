@@ -18,7 +18,7 @@ public class InteractableObject : MonoBehaviour
     public Transform gunPos;
     public Transform gunPos2;
     public float range = 10f;
-    public GameObject currentWeapon;
+    GameObject currentWeapon;
 
     public bool swordEquipped;
     public bool scytheEquipped;
@@ -134,6 +134,7 @@ public class InteractableObject : MonoBehaviour
 
             rb.AddForce(Camera.main.transform.forward * 2f, ForceMode.Impulse);
         }
+        currentWeapon = null;
     }
 
     public string GetItemName()

@@ -14,7 +14,7 @@ public class Enemystate : MonoBehaviour
     [SerializeField] PlayerState playerHealth;
     public GameObject neuronInfo;
     TextMeshProUGUI neuronText;
-    Shop shop;
+    public Shop shop;
 
     void Awake()
     {

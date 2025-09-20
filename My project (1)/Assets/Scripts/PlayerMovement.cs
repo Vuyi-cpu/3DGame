@@ -9,9 +9,11 @@ public class PlayerMovement : MonoBehaviour
 
     PlayerControls controls;
     Vector2 move;
-    bool jumpPressed, active;
+    public bool jumpPressed, active;
     public GameObject shop;
     MouseMovement MouseMovement;
+    public ThrowWeapon throwWeapon;
+    public InteractableObject interactableObject;
 
     public float speed = 12f;
     public float gravity = -9.81f * 2;
@@ -42,26 +44,26 @@ public class PlayerMovement : MonoBehaviour
         controls.Player.Move.canceled += ctx => move = Vector2.zero;
         controls.Player.Jump.performed += ctx => jumpPressed = true;
         controls.Player.Dash.performed += ctx => StartCoroutine(Dash());
-        controls.Player.Shop.performed += ctx => {
-                if (!active)
-                {
-                    MouseMovement.enabled = false;
-                    Cursor.lockState = CursorLockMode.None;
-                    Cursor.visible = true;
-                    shop.SetActive(true);
-                    active = true;
-                }
-                else if (active)
-                {
-                    shop.SetActive(false);
-                    active = false;
-                    MouseMovement.enabled = true;
-                    Cursor.lockState = CursorLockMode.Locked;
-                    Cursor.visible = false;
-                }
-            
+        controls.Player.Shop.performed += ctx =>
+        {
+            if (!active)
+            {
+                MouseMovement.enabled = false;
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
+                shop.SetActive(true);
+                active = true;
+            }
+            else if (active)
+            {
+                shop.SetActive(false);
+                active = false;
+                MouseMovement.enabled = true;
+                Cursor.lockState = CursorLockMode.Locked;
+                Cursor.visible = false;
+            }
         };
-    }
+        }
 
     // Update is called once per frame
     private void Update()
