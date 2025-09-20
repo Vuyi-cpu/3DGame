@@ -32,6 +32,8 @@ public class Shop : MonoBehaviour
         
     }
 
+
+
     public void scytheUpgrade ()
     {
         if (neuronCount >= 0)

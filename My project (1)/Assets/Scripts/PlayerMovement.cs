@@ -11,6 +11,7 @@ public class PlayerMovement : MonoBehaviour
     Vector2 move;
     bool jumpPressed, active;
     public GameObject shop;
+    MouseMovement MouseMovement;
 
     public float speed = 12f;
     public float gravity = -9.81f * 2;
@@ -34,6 +35,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void Awake()
     {
+        MouseMovement = GetComponentInParent<MouseMovement>();
         active = false;
         controls = new PlayerControls();
         controls.Player.Move.performed += ctx => move = ctx.ReadValue<Vector2>();
@@ -49,6 +51,9 @@ public class PlayerMovement : MonoBehaviour
         {
             if (!active)
             {
+                MouseMovement.enabled = false;
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
                 shop.SetActive(true);
                 active = true;
             }
@@ -56,6 +61,9 @@ public class PlayerMovement : MonoBehaviour
             { 
                 shop.SetActive(false);
                 active = false;
+                MouseMovement.enabled = true;
+                Cursor.lockState = CursorLockMode.Locked;
+                Cursor.visible = false;
             }
         }
         //checking if we hit the ground to reset our falling velocity, otherwise we will fall faster the next time
