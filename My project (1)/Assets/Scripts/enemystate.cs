@@ -53,9 +53,4 @@ public class Enemystate : MonoBehaviour
     {
         controls.Player.Disable();
     }
-    void Update()
-    {
-        
-
-    }
 }
