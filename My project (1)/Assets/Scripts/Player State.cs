@@ -78,6 +78,11 @@ public class PlayerState : MonoBehaviour
       
     }
 
+    public void Quit()
+    {
+        Application.Quit();
+    }
+
     public void RestartLevel()
     {
         Time.timeScale = 1f;

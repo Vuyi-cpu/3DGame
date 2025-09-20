@@ -42,30 +42,30 @@ public class PlayerMovement : MonoBehaviour
         controls.Player.Move.canceled += ctx => move = Vector2.zero;
         controls.Player.Jump.performed += ctx => jumpPressed = true;
         controls.Player.Dash.performed += ctx => StartCoroutine(Dash());
+        controls.Player.Shop.performed += ctx => {
+                if (!active)
+                {
+                    MouseMovement.enabled = false;
+                    Cursor.lockState = CursorLockMode.None;
+                    Cursor.visible = true;
+                    shop.SetActive(true);
+                    active = true;
+                }
+                else if (active)
+                {
+                    shop.SetActive(false);
+                    active = false;
+                    MouseMovement.enabled = true;
+                    Cursor.lockState = CursorLockMode.Locked;
+                    Cursor.visible = false;
+                }
+            
+        };
     }
 
     // Update is called once per frame
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.R))
-        {
-            if (!active)
-            {
-                MouseMovement.enabled = false;
-                Cursor.lockState = CursorLockMode.None;
-                Cursor.visible = true;
-                shop.SetActive(true);
-                active = true;
-            }
-            else if (active)
-            { 
-                shop.SetActive(false);
-                active = false;
-                MouseMovement.enabled = true;
-                Cursor.lockState = CursorLockMode.Locked;
-                Cursor.visible = false;
-            }
-        }
         //checking if we hit the ground to reset our falling velocity, otherwise we will fall faster the next time
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
 

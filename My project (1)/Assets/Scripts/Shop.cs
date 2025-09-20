@@ -1,5 +1,5 @@
-using UnityEngine;
 using TMPro;
+using UnityEngine;
 
 public class Shop : MonoBehaviour
 {
@@ -17,10 +17,13 @@ public class Shop : MonoBehaviour
     Enemystate enemystate;
     PlayerState playerState;
 
+   
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Awake()
     {
-        neuronText = neuronInfo.GetComponent<TextMeshProUGUI>();
+       
+       neuronText = neuronInfo.GetComponent<TextMeshProUGUI>();
         upgradeKatanaText = upgradeKatanaInfo.GetComponent<TextMeshProUGUI>();
         upgradeScytheText = upgradeScytheInfo.GetComponent<TextMeshProUGUI>();
         upgradeHealthText = upgradeHealthInfo.GetComponent<TextMeshProUGUI>();
