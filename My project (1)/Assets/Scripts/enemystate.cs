@@ -15,6 +15,7 @@ public class Enemystate : MonoBehaviour
     public GameObject neuronInfo;
     TextMeshProUGUI neuronText;
     public Shop shop;
+    public RotatorSwing rotatorSwing;
 
     void Awake()
     {
@@ -22,31 +23,10 @@ public class Enemystate : MonoBehaviour
         controls = new PlayerControls();
         controls.Player.Attack.performed += ctx =>
         {
-            attack();
+            if (!rotatorSwing.isSwinging) rotatorSwing.StartSwing();
         };
     }
 
-    public void attack()
-    {
-        controls.Player.Attack.performed += ctx =>
-        {
-            RaycastHit hit;
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-            if (Physics.Raycast(ray, out hit) && hit.distance < 5 && interactableObject.swordEquipped == true && hit.transform.gameObject == enemy)
-            {
-                currentHealth -= katanaDamage;
-                if (currentHealth <= 0)
-                {
-                    Destroy(enemy);
-                    playerHealth.currentHealth += 100;
-                    if (playerHealth.currentHealth >= playerHealth.maxHealth) playerHealth.currentHealth = playerHealth.maxHealth;
-                    shop.neuronCount += 50f;
-                    neuronText.text = shop.neuronCount.ToString();
-                }
-            }
-        };
-    }
     void Start()
     {
         currentHealth = maxHealth;
@@ -59,5 +39,24 @@ public class Enemystate : MonoBehaviour
     private void OnDisable()
     {
         controls.Player.Disable();
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        RaycastHit hit;
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+        if (Physics.Raycast(ray, out hit) && hit.distance < 5 && interactableObject.swordEquipped == true && hit.transform.gameObject == enemy)
+        {
+            currentHealth -= katanaDamage;
+            if (currentHealth <= 0)
+            {
+                Destroy(enemy);
+                playerHealth.currentHealth += 100;
+                if (playerHealth.currentHealth >= playerHealth.maxHealth) playerHealth.currentHealth = playerHealth.maxHealth;
+                shop.neuronCount += 50f;
+                neuronText.text = shop.neuronCount.ToString();
+            }
+        }
     }
 }

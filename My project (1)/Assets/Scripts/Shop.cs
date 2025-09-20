@@ -50,7 +50,6 @@ public class Shop : MonoBehaviour
         {
             enemystate.katanaDamage += 5;
             upgradeKatanaText.text = "Damage: " + enemystate.katanaDamage.ToString() + " -> " + (enemystate.katanaDamage + 5f).ToString();
-            enemystate.attack();
         }
         else
         {

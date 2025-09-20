@@ -7,7 +7,6 @@ public class Rotator : MonoBehaviour
     [SerializeField] float speedX; //Rotate by this amount per frame
     [SerializeField] float speedY; //Rotate by this amount per frame
     [SerializeField] float speedZ; //Rotate by this amount per frame
-    ThrowWeapon weapon;
 
     // Update is called once per frame
     void Update()
