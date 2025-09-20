@@ -28,7 +28,7 @@ public class Enemystate : MonoBehaviour
             if (Physics.Raycast(ray, out hit) && hit.distance < 5 && interactableObject.swordEquipped == true && hit.transform.gameObject == enemy)
             {
                 currentHealth -= katanaDamage;
-                if (currentHealth == 0)
+                if (currentHealth <= 0)
                 {
                     Destroy(enemy);
                     playerHealth.currentHealth += 100;
