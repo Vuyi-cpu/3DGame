@@ -13,6 +13,7 @@ public class Shop : MonoBehaviour
     public TextMeshProUGUI upgradeHealthText;
 
     public float neuronCount;
+    public float katanaDamage;
     public ThrowWeapon throwWeapon;
     public Enemystate enemystate;
     public PlayerState playerState;
@@ -33,7 +34,7 @@ public class Shop : MonoBehaviour
 
     public void scytheUpgrade ()
     {
-        if (neuronCount >= 200)
+        if (neuronCount >= 0)
         {
             throwWeapon.scytheDamage += 5;
             upgradeScytheText.text = "Damage: " + throwWeapon.scytheDamage.ToString() + " -> " + (throwWeapon.scytheDamage + 5f).ToString();
@@ -46,10 +47,10 @@ public class Shop : MonoBehaviour
 
     public void katanaUpgrade()
     {
-        if (neuronCount >= 200)
+        if (neuronCount >= 0)
         {
-            enemystate.katanaDamage += 5;
-            upgradeKatanaText.text = "Damage: " + enemystate.katanaDamage.ToString() + " -> " + (enemystate.katanaDamage + 5f).ToString();
+            katanaDamage += 5;
+            upgradeKatanaText.text = "Damage: " + katanaDamage.ToString() + " -> " + (katanaDamage + 5f).ToString();
         }
         else
         {
@@ -59,7 +60,7 @@ public class Shop : MonoBehaviour
 
     public void healthUpgrade()
     {
-        if (neuronCount >= 200)
+        if (neuronCount >= 0)
         {
             playerState.maxHealth += 100;
             playerState.currentHealth += 100;

@@ -23,13 +23,15 @@ public class Enemystate : MonoBehaviour
         controls = new PlayerControls();
         controls.Player.Attack.performed += ctx =>
         {
-            //if (!rotatorSwing.isSwinging && interactableObject.swordEquipped == true) rotatorSwing.StartSwing();
+            //if (interactableObject.swordEquipped == true && !rotatorSwing.isSwinging) rotatorSwing.StartSwing();
             RaycastHit hit;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
+
             if (Physics.Raycast(ray, out hit) && hit.distance < 5 && interactableObject.swordEquipped == true && hit.transform.gameObject == enemy)
             {
-                currentHealth -= katanaDamage;
+
+                currentHealth -= shop.katanaDamage;
                 if (currentHealth <= 0)
                 {
                     Destroy(enemy);
@@ -45,6 +47,11 @@ public class Enemystate : MonoBehaviour
     void Start()
     {
         currentHealth = maxHealth;
+    }
+
+    private void Update()
+    {
+        
     }
     private void OnEnable()
     {

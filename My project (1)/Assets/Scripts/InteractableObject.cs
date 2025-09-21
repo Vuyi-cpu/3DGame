@@ -19,12 +19,14 @@ public class InteractableObject : MonoBehaviour
     public Transform gunPos2;
     public float range = 10f;
     GameObject currentWeapon;
+    public RotatorSwing rotatorSwing;
 
     public bool swordEquipped;
     public bool scytheEquipped;
 
     private void Awake()
     {
+        rotatorSwing.enabled = false;
         throwWeapon.enabled = false;
         controls = new PlayerControls();
         controls.Player.Interact.performed += ctx =>
@@ -86,6 +88,7 @@ public class InteractableObject : MonoBehaviour
         currentWeapon = Weapon;
         if (currentWeapon.tag == "sword")
         {
+            rotatorSwing.enabled = true;
             swordEquipped = true;
             emptyIM.SetActive(false);
             swordIM.SetActive(true);
@@ -111,7 +114,7 @@ public class InteractableObject : MonoBehaviour
     public void Drop()
     {
         if (currentWeapon == null || throwWeapon.isThrown || throwWeapon.isReturning) return;
-
+        rotatorSwing.enabled = false;
         currentWeapon.GetComponent<Rigidbody>().isKinematic = false;
         currentWeapon.GetComponent<Rigidbody>().useGravity = true;
         throwWeapon.enabled = false;
