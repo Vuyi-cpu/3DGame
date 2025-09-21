@@ -24,6 +24,21 @@ public class Enemystate : MonoBehaviour
         controls.Player.Attack.performed += ctx =>
         {
             //if (!rotatorSwing.isSwinging && interactableObject.swordEquipped == true) rotatorSwing.StartSwing();
+            RaycastHit hit;
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+            if (Physics.Raycast(ray, out hit) && hit.distance < 5 && interactableObject.swordEquipped == true && hit.transform.gameObject == enemy)
+            {
+                currentHealth -= katanaDamage;
+                if (currentHealth <= 0)
+                {
+                    Destroy(enemy);
+                    playerHealth.currentHealth += 100;
+                    if (playerHealth.currentHealth >= playerHealth.maxHealth) playerHealth.currentHealth = playerHealth.maxHealth;
+                    shop.neuronCount += 50f;
+                    neuronText.text = shop.neuronCount.ToString();
+                }
+            }
         };
     }
 
@@ -43,20 +58,6 @@ public class Enemystate : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        RaycastHit hit;
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-        if (Physics.Raycast(ray, out hit) && hit.distance < 5 && interactableObject.swordEquipped == true && hit.transform.gameObject == enemy)
-        {
-            currentHealth -= katanaDamage;
-            if (currentHealth <= 0)
-            {
-                Destroy(enemy);
-                playerHealth.currentHealth += 100;
-                if (playerHealth.currentHealth >= playerHealth.maxHealth) playerHealth.currentHealth = playerHealth.maxHealth;
-                shop.neuronCount += 50f;
-                neuronText.text = shop.neuronCount.ToString();
-            }
-        }
+        
     }
 }
