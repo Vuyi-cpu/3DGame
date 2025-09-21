@@ -9,6 +9,8 @@ public class InteractableObject : MonoBehaviour
     public GameObject swordIM;
     public GameObject scytheIM;
     public string ItemName;
+    GameObject currentSword;
+    GameObject currentScythe;
     public SelectionManager SelectionManager;
     GameObject Weapon;
     PlayerControls controls;
@@ -82,12 +84,13 @@ public class InteractableObject : MonoBehaviour
             }
         }
     }
-    
     private void Pickup()
     {
-        currentWeapon = Weapon;
-        if (currentWeapon.tag == "sword")
+        if (Weapon == null) return;
+
+        if (Weapon.tag == "sword" && !swordEquipped)
         {
+            currentWeapon = Weapon;
             rotatorSwing.enabled = true;
             swordEquipped = true;
             emptyIM.SetActive(false);
@@ -96,10 +99,10 @@ public class InteractableObject : MonoBehaviour
             currentWeapon.transform.parent = gunPos;
             currentWeapon.transform.localEulerAngles = new Vector3(0f, 180f, 0f);
             currentWeapon.GetComponent<Rigidbody>().isKinematic = true;
-
         }
-        else if (currentWeapon.tag == "scythe")
+        else if (Weapon.tag == "scythe" && !scytheEquipped)
         {
+            currentWeapon = Weapon;
             scytheEquipped = true;
             throwWeapon.enabled = true;
             emptyIM.SetActive(false);
@@ -110,6 +113,7 @@ public class InteractableObject : MonoBehaviour
             currentWeapon.GetComponent<Rigidbody>().isKinematic = true;
         }
     }
+
 
     public void Drop()
     {
