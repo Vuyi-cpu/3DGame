@@ -8,6 +8,7 @@ public class DoorRotate : MonoBehaviour
     public float speed = 2f;
     public int mult;
     bool isopen = false;
+    public bool locked;
     private Quaternion rotationshut;
     private Quaternion rotationopen;
     private Coroutine coroutine;
@@ -62,7 +63,13 @@ public class DoorRotate : MonoBehaviour
 
         if (Physics.Raycast(ray, out RaycastHit hit, 5f))
         {
-            if (hit.transform == door1 || hit.transform == door2)
+            if (locked && (hit.transform == door1 || hit.transform == door2))
+            {
+                interaction_text.text = "Locked.";
+                interaction_Info_UI.SetActive(true);
+                return;
+            }
+            else if(hit.transform == door1 || hit.transform == door2)
             {
                 interaction_text.text = "[E] to interact.";
                 interaction_Info_UI.SetActive(true);
@@ -79,15 +86,18 @@ public class DoorRotate : MonoBehaviour
 
     private IEnumerator MoveDoor()
     {
-        Quaternion endRotate = isopen ? rotationshut : rotationopen;
-        isopen = !isopen;
-
-        while (Quaternion.Angle(transform.rotation, endRotate) > 0.01f)
+        if (!locked)
         {
-            transform.rotation = Quaternion.Lerp(transform.rotation, endRotate, Time.deltaTime * speed);
-            yield return null;
-        }
+            Quaternion endRotate = isopen ? rotationshut : rotationopen;
+            isopen = !isopen;
 
-        transform.rotation = endRotate;
+            while (Quaternion.Angle(transform.rotation, endRotate) > 0.01f)
+            {
+                transform.rotation = Quaternion.Lerp(transform.rotation, endRotate, Time.deltaTime * speed);
+                yield return null;
+            }
+
+            transform.rotation = endRotate;
+        }
     }
 }

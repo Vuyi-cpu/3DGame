@@ -10,6 +10,9 @@ public class SelectionManager : MonoBehaviour
     public bool playerCanInteract = false;
     public GameObject interaction_Info_UI;
     TextMeshProUGUI interaction_text;
+    public InteractableObject key;
+    public InteractableObject scythe;
+    public InteractableObject katana;
 
     private void Start()
     {
@@ -31,6 +34,9 @@ public class SelectionManager : MonoBehaviour
             }
             else
             {
+                key.isKey = false;
+                scythe.isKey = false;
+                katana.isKey = false;
                 playerCanInteract = false;
                 interaction_Info_UI.SetActive(false);
             }

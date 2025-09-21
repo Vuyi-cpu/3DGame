@@ -47,7 +47,7 @@ public class PlayerMovement : MonoBehaviour
         controls = new PlayerControls();
         controls.Player.Move.performed += ctx => move = ctx.ReadValue<Vector2>();
         controls.Player.Move.canceled += ctx => move = Vector2.zero;
-        controls.Player.Jump.performed += ctx => jumpPressed = true;
+        //controls.Player.Jump.performed += ctx => jumpPressed = true;
         controls.Player.Dash.performed += ctx => StartCoroutine(Dash());
         controls.Player.Shop.performed += ctx =>
         {
@@ -104,14 +104,14 @@ public class PlayerMovement : MonoBehaviour
 
         Vector3 moveDir = transform.right * move.x + transform.forward * move.y;
         controller.Move(moveDir * speed * Time.deltaTime);
-
+        
         //check if the player is on the ground so he can jump
-        if (jumpPressed && isGrounded)
+        /*if (jumpPressed && isGrounded)
         {
             //the equation for jumping
             velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
             jumpPressed = false;
-        }
+        }*/
         velocity.y += gravity * Time.deltaTime;
         controller.Move(velocity * Time.deltaTime);
     }

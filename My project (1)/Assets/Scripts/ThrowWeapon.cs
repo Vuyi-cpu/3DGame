@@ -119,7 +119,7 @@ public class ThrowWeapon : MonoBehaviour
                     if (enemy.currentHealth <= 0)
                     {
                         Destroy(enemy.enemy);
-                        playerHealth.currentHealth += 100;
+                        playerHealth.currentHealth += 50;
                         if(playerHealth.currentHealth >= playerHealth.maxHealth) playerHealth.currentHealth = playerHealth.maxHealth;
                         shop.neuronCount += 50f;
                         neuronText.text = shop.neuronCount.ToString();

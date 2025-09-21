@@ -13,6 +13,7 @@ TagManager:
   - Environment
   - Bullet
   - Enemy
+  - key
   layers:
   - Default
   - TransparentFX
