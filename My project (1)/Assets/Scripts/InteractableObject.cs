@@ -12,19 +12,23 @@ public class InteractableObject : MonoBehaviour
     GameObject currentSword;
     GameObject currentScythe;
     public SelectionManager SelectionManager;
-    GameObject Weapon;
+    GameObject Weapon, key;
     PlayerControls controls;
     [SerializeField] private ThrowWeapon throwWeapon;
+    public RotatorSwing rotatorSwing;
+    public DoorRotate doorRotate;
+    public DoorRotate doorRotate2;
 
     //vuyi edits
     public Transform gunPos;
     public Transform gunPos2;
     public float range = 10f;
     GameObject currentWeapon;
-    public RotatorSwing rotatorSwing;
+    
 
     public bool swordEquipped;
     public bool scytheEquipped;
+    public bool isKey = false;
 
     private void Awake()
     {
@@ -33,12 +37,10 @@ public class InteractableObject : MonoBehaviour
         controls = new PlayerControls();
         controls.Player.Interact.performed += ctx =>
         {
-
             if ( SelectionManager.playerCanInteract == true)
             {
-                if (currentWeapon == null) Pickup();
+                if (currentWeapon == null || isKey) Pickup();
             }
-            
         };
             controls.Player.Drop.performed += ctx =>
             {
@@ -82,10 +84,23 @@ public class InteractableObject : MonoBehaviour
             {
                 Weapon = hit.transform.gameObject;
             }
+            else if (hit.transform.tag == "key")
+            {
+                isKey = true;
+                key = hit.transform.gameObject;
+                Weapon = null;
+            }
         }
     }
     private void Pickup()
     {
+        if (isKey)
+        {
+            Destroy(key);
+            doorRotate.locked = false;
+            doorRotate2.locked = false;
+        }
+
         if (Weapon == null) return;
 
         if (Weapon.tag == "sword" && !swordEquipped)
@@ -99,6 +114,7 @@ public class InteractableObject : MonoBehaviour
             currentWeapon.transform.parent = gunPos;
             currentWeapon.transform.localEulerAngles = new Vector3(0f, 180f, 0f);
             currentWeapon.GetComponent<Rigidbody>().isKinematic = true;
+            return;
         }
         else if (Weapon.tag == "scythe" && !scytheEquipped)
         {
@@ -111,7 +127,10 @@ public class InteractableObject : MonoBehaviour
             currentWeapon.transform.parent = gunPos2;
             currentWeapon.transform.localEulerAngles = new Vector3(0f, 180f, 0f);
             currentWeapon.GetComponent<Rigidbody>().isKinematic = true;
+            return;
+
         }
+        
     }
 
 
