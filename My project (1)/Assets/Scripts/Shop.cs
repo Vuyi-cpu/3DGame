@@ -36,13 +36,14 @@ public class Shop : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        neuronText.text = neuronCount.ToString();
     }
 
     public void scytheUpgrade ()
     {
-        if (neuronCount >= 5)
+        if (neuronCount >= 100)
         {
+            neuronCount -= 100;
             insufficientFundsText.gameObject.SetActive(false);
             throwWeapon.scytheDamage += 5;
             upgradeScytheText.text = "Damage: " + throwWeapon.scytheDamage.ToString() + " -> " + (throwWeapon.scytheDamage + 5f).ToString();
@@ -56,8 +57,9 @@ public class Shop : MonoBehaviour
 
     public void katanaUpgrade()
     {
-        if (neuronCount >= 5)
+        if (neuronCount >= 100)
         {
+            neuronCount -= 100;
             insufficientFundsText.gameObject.SetActive(false);
             katanaDamage += 5;
             upgradeKatanaText.text = "Damage: " + katanaDamage.ToString() + " -> " + (katanaDamage + 5f).ToString();
@@ -70,8 +72,9 @@ public class Shop : MonoBehaviour
 
     public void healthUpgrade()
     {
-        if (neuronCount >= 0)
+        if (neuronCount >= 100)
         {
+            neuronCount -= 100;
             insufficientFundsText.gameObject.SetActive(false);
             playerState.maxHealth += 100;
             playerState.currentHealth += 100;

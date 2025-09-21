@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 
 public class MouseMovement : MonoBehaviour
 {
-    public float mouseSens = 100f;
+    public float mouseSens;
     public float controllerSens = 300f; 
 
     PlayerControls controls;
