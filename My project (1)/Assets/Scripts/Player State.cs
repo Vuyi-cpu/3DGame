@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem.Processors;
 using UnityEngine.SceneManagement;
 
@@ -81,6 +82,7 @@ public class PlayerState : MonoBehaviour
     public void Quit()
     {
         Application.Quit();
+        EventSystem.current.SetSelectedGameObject(null);
     }
 
     public void RestartLevel()

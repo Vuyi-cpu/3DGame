@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour
@@ -16,7 +17,8 @@ public class PlayerMovement : MonoBehaviour
     public InteractableObject interactableObject;
     public GameObject pause;
     public bool pauseactive;
- 
+    public GameObject pausefirst;
+
 
     public float speed = 12f;
     public float gravity = -9.81f * 2;
@@ -49,7 +51,7 @@ public class PlayerMovement : MonoBehaviour
         controls.Player.Dash.performed += ctx => StartCoroutine(Dash());
         controls.Player.Shop.performed += ctx =>
         {
-            if (!active)
+            if (!active && !pauseactive)
             {
                 MouseMovement.enabled = false;
                 Cursor.lockState = CursorLockMode.None;
@@ -77,6 +79,8 @@ public class PlayerMovement : MonoBehaviour
               pause.SetActive(true);
               pauseactive = true;
               Time.timeScale = 0f;
+                
+              EventSystem.current.SetSelectedGameObject(pausefirst);
                 
             };
         }

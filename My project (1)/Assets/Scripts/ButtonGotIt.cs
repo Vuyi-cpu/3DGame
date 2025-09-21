@@ -1,10 +1,12 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class ButtonGotIt : MonoBehaviour
 {
     public GameObject tutorial;
     public PlayerMovement PlayerMovement; 
-    public MouseMovement MouseMovement;   
+    public MouseMovement MouseMovement;
+    public GameObject buttonfirst;
 
     public void Start()
     {
@@ -12,6 +14,7 @@ public class ButtonGotIt : MonoBehaviour
         MouseMovement.enabled = false;
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
+        EventSystem.current.SetSelectedGameObject(buttonfirst);
     }
 
     public void CloseTutorial()
@@ -23,5 +26,6 @@ public class ButtonGotIt : MonoBehaviour
         PlayerMovement.pauseactive = false;
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+        EventSystem.current.SetSelectedGameObject(null);
     }
 }

@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 using static UnityEngine.Timeline.DirectorControlPlayable;
 
 public class PauseButtons : MonoBehaviour
@@ -22,12 +23,14 @@ public class PauseButtons : MonoBehaviour
         pause.SetActive(false);
         PlayerMovement.pauseactive = false;
         Time.timeScale = 1f;
+        EventSystem.current.SetSelectedGameObject(null);
 
     }
    public void Controls()
     {
         tutorial.SetActive(true);
         pause.SetActive(false);
+        
 
     }
   
