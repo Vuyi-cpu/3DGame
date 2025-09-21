@@ -6,6 +6,7 @@ public class PauseButtons : MonoBehaviour
     public GameObject pause;
     MouseMovement MouseMovement;
     PlayerMovement PlayerMovement;
+    public GameObject tutorial;
 
     void Awake()
     {
@@ -25,7 +26,8 @@ public class PauseButtons : MonoBehaviour
     }
    public void Controls()
     {
-
+        tutorial.SetActive(true);
+        pause.SetActive(false);
 
     }
   

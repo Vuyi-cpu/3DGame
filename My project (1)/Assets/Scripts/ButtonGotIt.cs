@@ -16,10 +16,11 @@ public class ButtonGotIt : MonoBehaviour
 
     public void CloseTutorial()
     {
+        Time.timeScale = 1f;
         tutorial.SetActive(false);
         PlayerMovement.enabled = true;
         MouseMovement.enabled = true;
-
+        PlayerMovement.pauseactive = false;
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
