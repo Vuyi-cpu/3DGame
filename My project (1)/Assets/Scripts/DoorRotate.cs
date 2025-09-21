@@ -8,7 +8,7 @@ public class DoorRotate : MonoBehaviour
     public float speed = 2f;
     public int mult;
     bool isopen = false;
-    public bool locked = true;
+    public bool locked;
     private Quaternion rotationshut;
     private Quaternion rotationopen;
     private Coroutine coroutine;

@@ -9,8 +9,6 @@ public class InteractableObject : MonoBehaviour
     public GameObject swordIM;
     public GameObject scytheIM;
     public string ItemName;
-    GameObject currentSword;
-    GameObject currentScythe;
     public SelectionManager SelectionManager;
     GameObject Weapon, key;
     PlayerControls controls;
@@ -32,6 +30,8 @@ public class InteractableObject : MonoBehaviour
 
     private void Awake()
     {
+        doorRotate.locked = true;
+        doorRotate2.locked = true;
         rotatorSwing.enabled = false;
         throwWeapon.enabled = false;
         controls = new PlayerControls();
