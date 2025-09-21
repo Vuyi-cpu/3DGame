@@ -14,6 +14,9 @@ public class PlayerMovement : MonoBehaviour
     MouseMovement MouseMovement;
     public ThrowWeapon throwWeapon;
     public InteractableObject interactableObject;
+    public GameObject pause;
+    public bool pauseactive;
+ 
 
     public float speed = 12f;
     public float gravity = -9.81f * 2;
@@ -38,6 +41,7 @@ public class PlayerMovement : MonoBehaviour
     {
         MouseMovement = GetComponentInParent<MouseMovement>();
         active = false;
+        pauseactive = false;
         controls = new PlayerControls();
         controls.Player.Move.performed += ctx => move = ctx.ReadValue<Vector2>();
         controls.Player.Move.canceled += ctx => move = Vector2.zero;
@@ -52,6 +56,7 @@ public class PlayerMovement : MonoBehaviour
                 Cursor.visible = true;
                 shop.SetActive(true);
                 active = true;
+             
             }
             else if (active)
             {
@@ -60,13 +65,31 @@ public class PlayerMovement : MonoBehaviour
                 MouseMovement.enabled = true;
                 Cursor.lockState = CursorLockMode.Locked;
                 Cursor.visible = false;
+              
             }
         };
+
+        controls.Player.Pause.performed += ctx =>
+            {
+              MouseMovement.enabled = false;
+              Cursor.lockState = CursorLockMode.None;
+              Cursor.visible = true;
+              pause.SetActive(true);
+              pauseactive = true;
+              Time.timeScale = 0f;
+                
+            };
         }
 
     // Update is called once per frame
     private void Update()
     {
+
+        if (active || pauseactive)
+        {
+            return;
+        }
+     
         //checking if we hit the ground to reset our falling velocity, otherwise we will fall faster the next time
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
 
