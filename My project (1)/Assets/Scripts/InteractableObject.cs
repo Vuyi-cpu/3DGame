@@ -29,9 +29,9 @@ public class InteractableObject : MonoBehaviour
     public Transform gunPos;
     public Transform gunPos2;
     public float range = 10f;
-    GameObject currentWeapon;
-    GameObject currentSword;
-    GameObject currentScythe;
+   public  GameObject currentWeapon;
+    public GameObject currentSword;
+   public GameObject currentScythe;
 
 
     public bool swordEquipped;

@@ -8,6 +8,7 @@ public class PauseButtons : MonoBehaviour
     MouseMovement MouseMovement;
     PlayerMovement PlayerMovement;
     public GameObject tutorial;
+    public GameObject deathScreen;
 
     void Awake()
     {
@@ -27,6 +28,7 @@ public class PauseButtons : MonoBehaviour
     }
    public void Controls()
     {
+        deathScreen.SetActive(false);
         tutorial.SetActive(true);
         pause.SetActive(false);
     }
