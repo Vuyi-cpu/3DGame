@@ -18,7 +18,7 @@ public class ObjectiveManager : MonoBehaviour
     {
         if (objectiveText == null)
         {
-            Debug.LogError("Objective Text not assigned in the Inspector!");
+            Debug.Log("Objective Text not assigned in the Inspector!");
             return;
         }
 

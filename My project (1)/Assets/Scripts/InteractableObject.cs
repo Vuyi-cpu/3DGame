@@ -8,6 +8,9 @@ public class InteractableObject : MonoBehaviour
     public GameObject emptyIM;
     public GameObject swordIM;
     public GameObject scytheIM;
+    public GameObject KatanaTut;
+    public GameObject ScytheTut;
+
     public string ItemName;
     public SelectionManager SelectionManager;
     GameObject Weapon, key;
@@ -16,6 +19,10 @@ public class InteractableObject : MonoBehaviour
     public RotatorSwing rotatorSwing;
     public DoorRotate doorRotate;
     public DoorRotate doorRotate2;
+    public ButtonGotIt katanaButton;
+    public ButtonGotIt scytheButton;
+    public PlayerMovement PlayerMovement;
+    public MouseMovement MouseMovement;
 
     //vuyi edits
     public Transform gunPos;
@@ -105,6 +112,15 @@ public class InteractableObject : MonoBehaviour
 
         if (Weapon.tag == "sword" && !swordEquipped)
         {
+            if (KatanaTut != null)
+            {
+                KatanaTut.SetActive(true);
+                PlayerMovement.enabled = false;
+                MouseMovement.enabled = false;
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
+                katanaButton.katanaActive = true;
+            }
             currentWeapon = Weapon;
             rotatorSwing.enabled = true;
             swordEquipped = true;
@@ -118,6 +134,15 @@ public class InteractableObject : MonoBehaviour
         }
         else if (Weapon.tag == "scythe" && !scytheEquipped)
         {
+            if (ScytheTut != null)
+            {
+                ScytheTut.SetActive(true);
+                PlayerMovement.enabled = false;
+                MouseMovement.enabled = false;
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
+                scytheButton.scytheActive = true;
+            }
             currentWeapon = Weapon;
             scytheEquipped = true;
             throwWeapon.enabled = true;

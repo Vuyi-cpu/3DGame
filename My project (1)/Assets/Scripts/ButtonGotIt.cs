@@ -4,9 +4,13 @@ using UnityEngine.EventSystems;
 public class ButtonGotIt : MonoBehaviour
 {
     public GameObject tutorial;
+    public GameObject katanaTutorial;
+    public GameObject scytheTutorial;
     public PlayerMovement PlayerMovement; 
     public MouseMovement MouseMovement;
     public GameObject buttonfirst;
+    public bool katanaActive;
+    public bool scytheActive;
 
     public void Start()
     {
@@ -19,6 +23,8 @@ public class ButtonGotIt : MonoBehaviour
 
     public void CloseTutorial()
     {
+        if (katanaActive) Destroy(katanaTutorial);
+        if (scytheActive) Destroy(scytheTutorial);
         Time.timeScale = 1f;
         tutorial.SetActive(false);
         PlayerMovement.enabled = true;
