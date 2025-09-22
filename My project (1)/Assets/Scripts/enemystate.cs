@@ -14,6 +14,7 @@ public class Enemystate : MonoBehaviour
     [SerializeField] PlayerState playerHealth;
     public GameObject neuronInfo;
     TextMeshProUGUI neuronText;
+
     public Shop shop;
     public RotatorSwing rotatorSwing;
     public PlayerMovement PlayerMovement;

@@ -13,7 +13,7 @@ public class InteractableObject : MonoBehaviour
 
     public string ItemName;
     public SelectionManager SelectionManager;
-    GameObject Weapon, key;
+    GameObject Weapon, key, health;
     PlayerControls controls;
     [SerializeField] private ThrowWeapon throwWeapon;
     public RotatorSwing rotatorSwing;
@@ -23,6 +23,7 @@ public class InteractableObject : MonoBehaviour
     public ButtonGotIt scytheButton;
     public PlayerMovement PlayerMovement;
     public MouseMovement MouseMovement;
+    public PlayerState PlayerState;
 
     //vuyi edits
     public Transform gunPos;
@@ -36,6 +37,7 @@ public class InteractableObject : MonoBehaviour
     public bool swordEquipped;
     public bool scytheEquipped;
     public bool isKey = false;
+    public bool isHealth;
 
     private void Awake()
     {
@@ -104,6 +106,12 @@ public class InteractableObject : MonoBehaviour
                 key = hit.transform.gameObject;
                 Weapon = null;
             }
+            else if (hit.transform.tag == "healthPack") 
+            {
+                isHealth = true;
+                health = hit.transform.gameObject;
+                Weapon = null;
+            }
         }
     }
     private void Pickup()
@@ -113,6 +121,13 @@ public class InteractableObject : MonoBehaviour
             Destroy(key);
             doorRotate.locked = false;
             doorRotate2.locked = false;
+        }
+
+        if (isHealth)
+        {
+            PlayerState.currentHealth += 20;
+            if (PlayerState.currentHealth > 200) PlayerState.currentHealth = 200;
+            Destroy(health);
         }
 
         if (Weapon == null) return;

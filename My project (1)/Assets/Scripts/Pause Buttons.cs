@@ -24,14 +24,11 @@ public class PauseButtons : MonoBehaviour
         PlayerMovement.pauseactive = false;
         Time.timeScale = 1f;
         EventSystem.current.SetSelectedGameObject(null);
-
     }
    public void Controls()
     {
         tutorial.SetActive(true);
         pause.SetActive(false);
-        
-
     }
   
 }
