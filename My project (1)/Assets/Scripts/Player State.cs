@@ -17,9 +17,11 @@ public class PlayerState : MonoBehaviour
     private InteractableObject interact;
     public GameObject criticalHealth;
     public DamageHit hit;
+    public bool death;
 
     void Start()
     {
+        death = false;
         healthBar.SetActive(true);
         currentHealth = maxHealth;
         playerMovement = player.GetComponent<PlayerMovement>();
@@ -50,10 +52,12 @@ public class PlayerState : MonoBehaviour
             if (currentHealth <= 100&& currentHealth >0)
             {
                 criticalHealth.SetActive(true);
+                death =true;
             }
             else
             {
                 criticalHealth.SetActive(false);
+                death =false;
             }
 
             if (currentHealth == 0)
@@ -66,8 +70,8 @@ public class PlayerState : MonoBehaviour
 
     void dead()
     {
-      
 
+        death = true;
         healthBar.SetActive(false);
         gameOverUI.SetActive(true);
         playerMovement.enabled = false;

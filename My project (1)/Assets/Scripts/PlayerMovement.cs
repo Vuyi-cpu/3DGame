@@ -18,6 +18,8 @@ public class PlayerMovement : MonoBehaviour
     public GameObject pause;
     public bool pauseactive;
     public GameObject pausefirst;
+    PlayerState state;
+   
 
 
     public float speed = 12f;
@@ -45,13 +47,14 @@ public class PlayerMovement : MonoBehaviour
         active = false;
         pauseactive = false;
         controls = new PlayerControls();
+        state = Object.FindFirstObjectByType<PlayerState>();
         controls.Player.Move.performed += ctx => move = ctx.ReadValue<Vector2>();
         controls.Player.Move.canceled += ctx => move = Vector2.zero;
         //controls.Player.Jump.performed += ctx => jumpPressed = true;
         controls.Player.Dash.performed += ctx => StartCoroutine(Dash());
         controls.Player.Shop.performed += ctx =>
         {
-            if (!active && !pauseactive)
+            if (!active && !pauseactive && state.death==false)
             {
                 MouseMovement.enabled = false;
                 Cursor.lockState = CursorLockMode.None;
