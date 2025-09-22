@@ -3,27 +3,29 @@ using TMPro;
 
 public class ObjectiveManager : MonoBehaviour
 {
+   
+    public TMP_Text objectiveText; 
+
+    
     public DoorRotate doorRotate1;
     public DoorRotate doorRotate2;
 
-    private TMP_Text objectiveText;
     private bool objectiveUpdated = false;
     private Quaternion door1StartRot;
     private Quaternion door2StartRot;
 
-    void Awake()
+    void Start()
     {
-        objectiveText = FindObjectOfType<TMP_Text>();
         if (objectiveText == null)
-            Debug.LogError("No TMP_Text found in the scene!");
+        {
+            Debug.LogError("Objective Text not assigned in the Inspector!");
+            return;
+        }
+
+        SetObjective("Find a way out.");
 
         if (doorRotate1 != null) door1StartRot = doorRotate1.transform.rotation;
         if (doorRotate2 != null) door2StartRot = doorRotate2.transform.rotation;
-    }
-
-    void Start()
-    {
-        SetObjective("Find a way out.");
     }
 
     void Update()
@@ -36,7 +38,7 @@ public class ObjectiveManager : MonoBehaviour
             if (door1Opened || door2Opened)
             {
                 SetObjective("Defeat the Automatons.");
-                objectiveUpdated = true;
+                objectiveUpdated = true; 
             }
         }
     }
@@ -44,6 +46,8 @@ public class ObjectiveManager : MonoBehaviour
     public void SetObjective(string newObjective)
     {
         if (objectiveText != null)
+        {
             objectiveText.text = newObjective;
+        }
     }
 }
