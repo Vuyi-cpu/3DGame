@@ -27,6 +27,9 @@ public class ThrowWeapon : MonoBehaviour
     public Shop shop;
     PlayerControls controls;
     public PlayerMovement PlayerMovement;
+    public MouseMovement MouseMovement;
+    public GameObject shopTut;
+    public ButtonGotIt shopButton;
 
     private void Awake()
     {
@@ -118,6 +121,14 @@ public class ThrowWeapon : MonoBehaviour
                     enemy.currentHealth -= scytheDamage;
                     if (enemy.currentHealth <= 0)
                     {
+                        if (shopTut != null) {
+                            shopTut.SetActive(true);
+                            PlayerMovement.enabled = false;
+                            MouseMovement.enabled = false;
+                            UnityEngine.Cursor.lockState = CursorLockMode.None;
+                            UnityEngine.Cursor.visible = true;
+                            shopButton.shopActive = true;
+                        }
                         Destroy(enemy.enemy);
                         playerHealth.currentHealth += 50;
                         if(playerHealth.currentHealth >= playerHealth.maxHealth) playerHealth.currentHealth = playerHealth.maxHealth;
