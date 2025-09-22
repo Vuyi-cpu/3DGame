@@ -1,34 +1,48 @@
+using UnityEditor.ShaderGraph;
 using UnityEngine;
 
 public class weaponswitch : MonoBehaviour
 {
     public int selectedweapon = 0;
     InteractableObject weapon;
+    PlayerControls controls;
 
     void Start()
     {
 
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Awake()
     {
-      //  if (weapon.scytheEquipped == true && weapon.swordEquipped == true)
-       // {
+        weapon = FindFirstObjectByType<InteractableObject>();
+        controls = new PlayerControls();
+        controls.Player.Switch.performed += ctx =>
+        {
+              if (weapon.scytheEquipped == true || weapon.swordEquipped == true)
+             {
             int previousselectedweapon = selectedweapon;
-            if (Input.GetKeyDown(KeyCode.Tab))
-            {
+            
                 if (selectedweapon >= transform.childCount - 1)
                     selectedweapon = 0;
                 else
                     selectedweapon++;
-            }
+            
 
             if (previousselectedweapon != selectedweapon)
             {
                 selectWeapon();
             }
-       // }
+             }
+
+
+        };
+    }
+
+
+    // Update is called once per frame
+    void Update()
+    {
+   
     }
 
     void selectWeapon()
@@ -43,5 +57,15 @@ public class weaponswitch : MonoBehaviour
                 weapon.gameObject.SetActive(false);
             i++;
         }
+    }
+
+    private void OnEnable()
+    {
+        controls.Player.Enable();
+    }
+
+    private void OnDisable()
+    {
+        controls.Player.Disable();
     }
 }
