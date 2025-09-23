@@ -15,6 +15,7 @@ TagManager:
   - Enemy
   - key
   - healthPack
+  - door
   layers:
   - Default
   - TransparentFX
