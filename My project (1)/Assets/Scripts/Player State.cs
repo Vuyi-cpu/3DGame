@@ -35,6 +35,20 @@ public class PlayerState : MonoBehaviour
 
     }
 
+    private void Update()
+    {
+        if (currentHealth <= 100 && currentHealth > 0)
+        {
+            criticalHealth.SetActive(true);
+            death = true;
+        }
+        else
+        {
+            criticalHealth.SetActive(false);
+            death = false;
+        }
+
+    }
     public void OnTriggerEnter(Collider other)
     {
 
@@ -49,17 +63,7 @@ public class PlayerState : MonoBehaviour
          
             currentHealth = Mathf.Max(currentHealth, 0);
 
-            if (currentHealth <= 100&& currentHealth >0)
-            {
-                criticalHealth.SetActive(true);
-                death =true;
-            }
-            else
-            {
-                criticalHealth.SetActive(false);
-                death =false;
-            }
-
+   
             if (currentHealth == 0)
             {
                 dead();
