@@ -160,9 +160,15 @@ public class InteractableObject : MonoBehaviour
                 Cursor.visible = true;
                 katanaButton.katanaActive = true;
             }
+            if (scytheEquipped)
+            {
+                currentSword.SetActive(false);
+            }
+            else
+            {
 
-          
-            currentSword.SetActive(true);
+                currentSword.SetActive(true);
+            }
             return;
         }
         else if (Weapon.tag == "scythe" && !scytheEquipped)
@@ -195,7 +201,14 @@ public class InteractableObject : MonoBehaviour
                 scytheButton.scytheActive = true;
             }
 
-            currentScythe.SetActive(true);
+            if (swordEquipped)
+            {
+                currentScythe.SetActive(false);
+            }
+            else
+            {
+                currentScythe.SetActive(true);
+            }
             return;
         }
     }
@@ -210,11 +223,13 @@ public class InteractableObject : MonoBehaviour
         {
             swordEquipped = false;
             swordIM.SetActive(false);
+            currentSword.SetActive(true);
         }
         else if (currentWeapon == currentScythe)
         {
             scytheEquipped = false;
             scytheIM.SetActive(false);
+            currentScythe.SetActive(true);
             throwWeapon.enabled = false;
         }
 
@@ -237,6 +252,7 @@ public class InteractableObject : MonoBehaviour
     {
         return ItemName;
     }
+
 }
 
    
