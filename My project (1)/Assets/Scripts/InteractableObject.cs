@@ -13,7 +13,7 @@ public class InteractableObject : MonoBehaviour
 
     public string ItemName;
     public SelectionManager SelectionManager;
-    GameObject Weapon, key, health;
+    GameObject Weapon, key, health, stun;
     PlayerControls controls;
     [SerializeField] private ThrowWeapon throwWeapon;
     public RotatorSwing rotatorSwing;
@@ -38,6 +38,7 @@ public class InteractableObject : MonoBehaviour
     public bool scytheEquipped;
     public bool isKey = false;
     public bool isHealth;
+    public bool isStun;
 
     private void Awake()
     {
@@ -112,6 +113,12 @@ public class InteractableObject : MonoBehaviour
                 health = hit.transform.gameObject;
                 Weapon = null;
             }
+            else if (hit.transform.tag == "stun")
+            {
+                isStun = true;
+                stun = hit.transform.gameObject;
+                Weapon = null;
+            }
         }
     }
     private void Pickup()
@@ -128,6 +135,11 @@ public class InteractableObject : MonoBehaviour
             PlayerState.currentHealth += 20;
             if (PlayerState.currentHealth > 200) PlayerState.currentHealth = 200;
             Destroy(health);
+        }
+        
+        if (isStun)
+        {
+
         }
 
         if (Weapon == null) return;

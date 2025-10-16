@@ -16,6 +16,7 @@ TagManager:
   - key
   - healthPack
   - door
+  - stun
   layers:
   - Default
   - TransparentFX
