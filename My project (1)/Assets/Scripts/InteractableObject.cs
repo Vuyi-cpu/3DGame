@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class InteractableObject : MonoBehaviour
@@ -15,7 +14,7 @@ public class InteractableObject : MonoBehaviour
     public SelectionManager SelectionManager;
     GameObject Weapon, key, health, stun;
     PlayerControls controls;
-    [SerializeField] private ThrowWeapon throwWeapon;
+    [SerializeField] public ThrowWeapon throwWeapon;
     public RotatorSwing rotatorSwing;
     public DoorRotate doorRotate;
     public DoorRotate doorRotate2;
@@ -29,10 +28,11 @@ public class InteractableObject : MonoBehaviour
     public Transform gunPos;
     public Transform gunPos2;
     public float range = 10f;
-   public  GameObject currentWeapon;
+    public GameObject currentWeapon;
     public GameObject currentSword;
-   public GameObject currentScythe;
+    public GameObject currentScythe;
 
+    public GameObject activeWeapon; 
 
     public bool swordEquipped;
     public bool scytheEquipped;
@@ -51,7 +51,6 @@ public class InteractableObject : MonoBehaviour
         {
             if (SelectionManager.playerCanInteract)
             {
-                
                 if (Weapon != null || isKey)
                 {
                     Pickup();
@@ -60,10 +59,9 @@ public class InteractableObject : MonoBehaviour
         };
 
         controls.Player.Drop.performed += ctx =>
-            {
-                if (currentWeapon != null) Drop();
-            };
-            
+        {
+            if (activeWeapon != null) Drop();
+        };
     }
 
     void OnEnable()
@@ -97,7 +95,7 @@ public class InteractableObject : MonoBehaviour
             {
                 Weapon = hit.transform.gameObject;
             }
-            else if(hit.transform.tag == "scythe")
+            else if (hit.transform.tag == "scythe")
             {
                 Weapon = hit.transform.gameObject;
             }
@@ -107,7 +105,7 @@ public class InteractableObject : MonoBehaviour
                 key = hit.transform.gameObject;
                 Weapon = null;
             }
-            else if (hit.transform.tag == "healthPack") 
+            else if (hit.transform.tag == "healthPack")
             {
                 isHealth = true;
                 health = hit.transform.gameObject;
@@ -121,6 +119,7 @@ public class InteractableObject : MonoBehaviour
             }
         }
     }
+
     private void Pickup()
     {
         if (isKey)
@@ -146,23 +145,19 @@ public class InteractableObject : MonoBehaviour
 
         if (Weapon.tag == "sword" && !swordEquipped)
         {
-          
             currentSword = Weapon;
-            currentWeapon = currentSword; 
+            currentWeapon = currentSword;
             swordEquipped = true;
 
-           
             currentSword.transform.position = gunPos.position;
             currentSword.transform.SetParent(gunPos);
             currentSword.transform.localEulerAngles = new Vector3(0f, 180f, 0f);
             currentSword.GetComponent<Rigidbody>().isKinematic = true;
 
-            
             rotatorSwing.enabled = true;
             emptyIM.SetActive(false);
             swordIM.SetActive(true);
 
-          
             if (KatanaTut != null)
             {
                 KatanaTut.SetActive(true);
@@ -172,34 +167,28 @@ public class InteractableObject : MonoBehaviour
                 Cursor.visible = true;
                 katanaButton.katanaActive = true;
             }
-            if (scytheEquipped)
-            {
-                currentSword.SetActive(false);
-            }
-            else
-            {
 
-                currentSword.SetActive(true);
-            }
+            
+            if (scytheEquipped)
+                currentScythe.SetActive(false);
+
+            currentSword.SetActive(true);
+            activeWeapon = currentSword;
             return;
         }
         else if (Weapon.tag == "scythe" && !scytheEquipped)
         {
-           
             currentScythe = Weapon;
-            currentWeapon = currentScythe; 
+            currentWeapon = currentScythe;
             scytheEquipped = true;
 
-           
             currentScythe.transform.position = gunPos2.position;
             currentScythe.transform.SetParent(gunPos2);
             currentScythe.transform.localEulerAngles = new Vector3(0f, 180f, 0f);
             currentScythe.GetComponent<Rigidbody>().isKinematic = true;
 
-           
             throwWeapon.enabled = true;
 
-          
             emptyIM.SetActive(false);
             scytheIM.SetActive(true);
 
@@ -213,50 +202,65 @@ public class InteractableObject : MonoBehaviour
                 scytheButton.scytheActive = true;
             }
 
+           
             if (swordEquipped)
-            {
-                currentScythe.SetActive(false);
-            }
-            else
-            {
-                currentScythe.SetActive(true);
-            }
+                currentSword.SetActive(false);
+
+            currentScythe.SetActive(true);
+            activeWeapon = currentScythe;
             return;
         }
     }
 
-
-
     public void Drop()
     {
-        if (currentWeapon == null || throwWeapon.isThrown || throwWeapon.isReturning) return;
+        if (activeWeapon == null || throwWeapon.isThrown || throwWeapon.isReturning) return;
 
-        if (currentWeapon == currentSword)
+      
+        if (activeWeapon == currentSword)
         {
             swordEquipped = false;
             swordIM.SetActive(false);
-            currentSword.SetActive(true);
+            rotatorSwing.enabled = false;
         }
-        else if (currentWeapon == currentScythe)
+        else if (activeWeapon == currentScythe)
         {
             scytheEquipped = false;
             scytheIM.SetActive(false);
-            currentScythe.SetActive(true);
             throwWeapon.enabled = false;
         }
 
-        rotatorSwing.enabled = false;
         emptyIM.SetActive(true);
 
-        currentWeapon.transform.parent = null;
-        Rigidbody rb = currentWeapon.GetComponent<Rigidbody>();
+      
+        activeWeapon.transform.parent = null;
+        Rigidbody rb = activeWeapon.GetComponent<Rigidbody>();
         if (rb != null)
         {
             rb.isKinematic = false;
             rb.useGravity = true;
             rb.AddForce(Camera.main.transform.forward * 2f, ForceMode.Impulse);
         }
-        currentWeapon = null;
+
+        activeWeapon = null; 
+
+        
+        if (swordEquipped)
+        {
+            currentSword.SetActive(true);
+            activeWeapon = currentSword;
+            swordIM.SetActive(true);
+            rotatorSwing.enabled = true;
+            emptyIM.SetActive(false);
+        }
+        else if (scytheEquipped)
+        {
+            currentScythe.SetActive(true);
+            activeWeapon = currentScythe;
+            scytheIM.SetActive(true);
+            throwWeapon.enabled = true;
+            emptyIM.SetActive(false);
+        }
     }
 
 
@@ -264,7 +268,5 @@ public class InteractableObject : MonoBehaviour
     {
         return ItemName;
     }
-
 }
 
-   
