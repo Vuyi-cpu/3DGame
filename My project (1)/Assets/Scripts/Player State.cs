@@ -5,6 +5,8 @@ using UnityEngine.SceneManagement;
 
 public class PlayerState : MonoBehaviour
 {
+    public AudioSource deadsound;
+    public AudioSource injuredsound;
     public GameObject player;
     public float currentHealth;
     public float maxHealth;
@@ -74,7 +76,8 @@ public class PlayerState : MonoBehaviour
 
     void dead()
     {
-
+        deadsound.Play();
+        injuredsound.Stop();
         death = true;
         healthBar.SetActive(false);
         gameOverUI.SetActive(true);

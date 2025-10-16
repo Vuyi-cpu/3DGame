@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class DoorRotate : MonoBehaviour
 {
+    public AudioSource dooropenSound;
+    public AudioSource doorclosSound;
     public float open = 90f;
     public float speed = 2f;
     public int mult;
@@ -88,6 +90,20 @@ public class DoorRotate : MonoBehaviour
     {
         if (!locked)
         {
+          
+            if (isopen)
+            {
+                doorclosSound.Stop();
+                dooropenSound.Stop();
+                doorclosSound.Play();  
+            }
+            else
+            {
+                dooropenSound.Stop();
+                doorclosSound.Stop();
+                dooropenSound.Play();  
+            }
+
             Quaternion endRotate = isopen ? rotationshut : rotationopen;
             isopen = !isopen;
 
@@ -100,4 +116,5 @@ public class DoorRotate : MonoBehaviour
             transform.rotation = endRotate;
         }
     }
+
 }
