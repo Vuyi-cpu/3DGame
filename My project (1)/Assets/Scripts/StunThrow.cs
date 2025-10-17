@@ -10,18 +10,25 @@ public class StunThrow : MonoBehaviour
     [SerializeField] float throwSpeed; //Throw speed of this thing
     [SerializeField] LayerMask layerMask; //Layer mask for raycast check. Looking for environment layer
     [SerializeField] private Transform player; //Player transform
-    public GameObject neuronInfo;
-    TextMeshProUGUI neuronText;
 
     public bool isThrown; //Bool that gets set when thrown
     [SerializeField] Vector3 throwPosition; //This is where the scythe is traveling to.
     [SerializeField] Rotator rotator; //Rotator on scythe object. Gets turned on when thrown. And off when not.
-    PlayerControls controls;
+    public PlayerControls controls;
+    public PlayerMovement PlayerMovement;
+    public EnemyAI enemyAI;
+    public MonoBehaviour[] scriptsToDisable;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    private void Awake()
     {
-        
+        if (!PlayerMovement.active)
+        {
+            controls.Player.Attack.performed += ctx =>
+            {
+                isThrown = true;
+            };
+        }
     }
 
     // Update is called once per frame
@@ -40,9 +47,23 @@ public class StunThrow : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         Destroy(stun);
-        if (collision.gameObject.CompareTag("Enemy"));
+        if (collision.gameObject.CompareTag("Enemy"))
         {
+            foreach (MonoBehaviour script in scriptsToDisable)
+            {
+                if (enemyAI != null)
+                    enemyAI.enabled = false;
+            }
 
+            // Wait for duration
+            yield return new WaitForSeconds(3f);
+
+            // Re-enable scripts
+            foreach (MonoBehaviour script in scriptsToDisable)
+            {
+                if (enemyAI != null)
+                    enemyAI.enabled = true;
+            }
         }
     }
 }

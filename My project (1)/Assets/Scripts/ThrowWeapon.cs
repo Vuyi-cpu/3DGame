@@ -45,6 +45,7 @@ public class ThrowWeapon : MonoBehaviour
                 CheckDistance();
             };
         }
+
     }
 
     void Update()
