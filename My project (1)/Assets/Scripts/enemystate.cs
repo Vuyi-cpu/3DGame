@@ -62,11 +62,6 @@ public class Enemystate : MonoBehaviour
     {
         currentHealth = maxHealth;
     }
-
-    private void Update()
-    {
-        
-    }
     private void OnEnable()
     {
         controls.Player.Enable();
@@ -75,10 +70,5 @@ public class Enemystate : MonoBehaviour
     private void OnDisable()
     {
         controls.Player.Disable();
-    }
-
-    private void OnCollisionEnter(Collision collision)
-    {
-        
     }
 }
