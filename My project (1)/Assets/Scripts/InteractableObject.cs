@@ -23,6 +23,7 @@ public class InteractableObject : MonoBehaviour
     public PlayerMovement PlayerMovement;
     public MouseMovement MouseMovement;
     public PlayerState PlayerState;
+    public StunThrow stunThrow;
 
     //vuyi edits
     public Transform gunPos;
@@ -31,11 +32,13 @@ public class InteractableObject : MonoBehaviour
     public GameObject currentWeapon;
     public GameObject currentSword;
     public GameObject currentScythe;
+    public GameObject currentStun;
 
     public GameObject activeWeapon; 
 
     public bool swordEquipped;
     public bool scytheEquipped;
+    public bool stunEquipped;
     public bool isKey = false;
     public bool isHealth;
     public bool isStun;
@@ -138,7 +141,14 @@ public class InteractableObject : MonoBehaviour
         
         if (isStun)
         {
+                currentStun = Weapon;
+                stunEquipped = true;
 
+                currentStun.transform.position = gunPos.position;
+                currentStun.transform.SetParent(gunPos);
+                currentStun.transform.localEulerAngles = new Vector3(0f, 180f, 0f);
+                currentStun.GetComponent<Rigidbody>().isKinematic = true;
+                stunThrow.enabled = true;
         }
 
         if (Weapon == null) return;

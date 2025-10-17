@@ -14,8 +14,10 @@ public class StunThrow : MonoBehaviour
     public bool isThrown; //Bool that gets set when thrown
     [SerializeField] Vector3 throwPosition; //This is where the scythe is traveling to.
     [SerializeField] Rotator rotator; //Rotator on scythe object. Gets turned on when thrown. And off when not.
-    PlayerControls controls;
-    PlayerMovement PlayerMovement;
+    public PlayerControls controls;
+    public PlayerMovement PlayerMovement;
+    public EnemyAI enemyAI;
+    public MonoBehaviour[] scriptsToDisable;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Awake()
@@ -45,22 +47,22 @@ public class StunThrow : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         Destroy(stun);
-        if (collision.gameObject.CompareTag("Enemy"));
+        if (collision.gameObject.CompareTag("Enemy"))
         {
             foreach (MonoBehaviour script in scriptsToDisable)
             {
-                if (script != null)
-                    script.enabled = false;
+                if (enemyAI != null)
+                    enemyAI.enabled = false;
             }
 
             // Wait for duration
-            yield return new WaitForSeconds(duration);
+            yield return new WaitForSeconds(3f);
 
             // Re-enable scripts
             foreach (MonoBehaviour script in scriptsToDisable)
             {
-                if (script != null)
-                    script.enabled = true;
+                if (enemyAI != null)
+                    enemyAI.enabled = true;
             }
         }
     }
