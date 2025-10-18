@@ -1,13 +1,20 @@
 using UnityEngine;
 using System.Collections;
 
+using UnityEngine;
+using System.Collections;
+using UnityEngine.SceneManagement; // <-- needed to load scenes
+
 public class StartButton : MonoBehaviour
 {
     public CanvasGroup startButtonGroup;
     public float delay = 5f;
-    public float fadeDuration = 0.75f; // how fast it fades in/out
-    public float minAlpha = 0f;        // lowest alpha during blink
-    public float maxAlpha = 1f;        // highest alpha during blink
+    public float fadeDuration = 0.75f;
+    public float minAlpha = 0f;
+    public float maxAlpha = 1f;
+
+    // Set your game scene name here
+    public string gameSceneName = "LVL 1";
 
     void Start()
     {
@@ -18,10 +25,9 @@ public class StartButton : MonoBehaviour
 
     IEnumerator BlinkButton()
     {
-        // Initial delay before blinking starts
         yield return new WaitForSeconds(delay);
 
-        while (true) // infinite blinking
+        while (true)
         {
             // Fade in
             float elapsed = 0f;
@@ -42,4 +48,11 @@ public class StartButton : MonoBehaviour
             }
         }
     }
+
+    // This function will be called when the button is clicked
+    public void OnStartButtonClicked()
+    {
+        SceneManager.LoadScene(gameSceneName);
+    }
 }
+
