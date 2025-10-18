@@ -5,27 +5,41 @@ public class StartButton : MonoBehaviour
 {
     public CanvasGroup startButtonGroup;
     public float delay = 5f;
-    public float fadeDuration = 1.5f;
+    public float fadeDuration = 0.75f; // how fast it fades in/out
+    public float minAlpha = 0f;        // lowest alpha during blink
+    public float maxAlpha = 1f;        // highest alpha during blink
 
     void Start()
     {
         startButtonGroup.alpha = 0f;
         startButtonGroup.gameObject.SetActive(true);
-        StartCoroutine(FadeInButton());
+        StartCoroutine(BlinkButton());
     }
 
-    IEnumerator FadeInButton()
+    IEnumerator BlinkButton()
     {
+        // Initial delay before blinking starts
         yield return new WaitForSeconds(delay);
 
-        float elapsed = 0f;
-        while (elapsed < fadeDuration)
+        while (true) // infinite blinking
         {
-            elapsed += Time.deltaTime;
-            startButtonGroup.alpha = Mathf.Clamp01(elapsed / fadeDuration);
-            yield return null;
-        }
+            // Fade in
+            float elapsed = 0f;
+            while (elapsed < fadeDuration)
+            {
+                elapsed += Time.deltaTime;
+                startButtonGroup.alpha = Mathf.Lerp(minAlpha, maxAlpha, elapsed / fadeDuration);
+                yield return null;
+            }
 
-        startButtonGroup.alpha = 1f;
+            // Fade out
+            elapsed = 0f;
+            while (elapsed < fadeDuration)
+            {
+                elapsed += Time.deltaTime;
+                startButtonGroup.alpha = Mathf.Lerp(maxAlpha, minAlpha, elapsed / fadeDuration);
+                yield return null;
+            }
+        }
     }
 }
