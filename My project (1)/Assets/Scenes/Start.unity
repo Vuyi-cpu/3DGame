@@ -725,7 +725,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1486064722}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1486064725}
+        m_TargetAssemblyTypeName: StartButton, Assembly-CSharp
+        m_MethodName: OnStartButtonClicked
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1486064722
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -791,6 +803,9 @@ MonoBehaviour:
   startButtonGroup: {fileID: 1486064724}
   delay: 5
   fadeDuration: 1.5
+  minAlpha: 0
+  maxAlpha: 1
+  gameSceneName: LVL 1
 --- !u!1 &1854040845
 GameObject:
   m_ObjectHideFlags: 0
