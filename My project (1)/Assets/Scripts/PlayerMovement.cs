@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using UnityEngine.tvOS;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -19,7 +20,7 @@ public class PlayerMovement : MonoBehaviour
     public bool pauseactive;
     public GameObject pausefirst;
     PlayerState state;
-   
+
 
 
     public float speed = 12f;
@@ -40,6 +41,7 @@ public class PlayerMovement : MonoBehaviour
     public float DashSpd;
     public float DashTime;
     public float decay;
+    public AudioSource wakemusic;
 
     private void Awake()
     {
@@ -54,14 +56,15 @@ public class PlayerMovement : MonoBehaviour
         controls.Player.Dash.performed += ctx => StartCoroutine(Dash());
         controls.Player.Shop.performed += ctx =>
         {
-            if (!active && !pauseactive && state.death==false)
+            if (!active && !pauseactive && state.death == false)
             {
                 MouseMovement.enabled = false;
                 Cursor.lockState = CursorLockMode.None;
                 Cursor.visible = true;
                 shop.SetActive(true);
                 active = true;
-             
+
+
             }
             else if (active)
             {
@@ -70,34 +73,36 @@ public class PlayerMovement : MonoBehaviour
                 MouseMovement.enabled = true;
                 Cursor.lockState = CursorLockMode.Locked;
                 Cursor.visible = false;
-              
+
             }
         };
 
         controls.Player.Pause.performed += ctx =>
-            {
-              MouseMovement.enabled = false;
-              Cursor.lockState = CursorLockMode.None;
-              Cursor.visible = true;
-              pause.SetActive(true);
-              pauseactive = true;
-              Time.timeScale = 0f;
-                
-              EventSystem.current.SetSelectedGameObject(pausefirst);
-                
-            };
-        }
+        {
+            MouseMovement.enabled = false;
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+            pause.SetActive(true);
+            pauseactive = true;
+            Time.timeScale = 0f;
 
-    // Update is called once per frame
+            EventSystem.current.SetSelectedGameObject(pausefirst);
+
+        };
+    }
+
     private void Update()
     {
-
         if (active || pauseactive)
         {
+            if (wakemusic.isPlaying)
+                wakemusic.Stop();
             return;
         }
-     
-        //checking if we hit the ground to reset our falling velocity, otherwise we will fall faster the next time
+
+        if (!wakemusic.isPlaying)
+            wakemusic.Play();
+
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
 
         if (isGrounded && velocity.y < 0)
@@ -107,14 +112,7 @@ public class PlayerMovement : MonoBehaviour
 
         Vector3 moveDir = transform.right * move.x + transform.forward * move.y;
         controller.Move(moveDir * speed * Time.deltaTime);
-        
-        //check if the player is on the ground so he can jump
-        /*if (jumpPressed && isGrounded)
-        {
-            //the equation for jumping
-            velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
-            jumpPressed = false;
-        }*/
+
         velocity.y += gravity * Time.deltaTime;
         controller.Move(velocity * Time.deltaTime);
     }
@@ -134,11 +132,10 @@ public class PlayerMovement : MonoBehaviour
             yield return null;
         }
         cam.DoFov(60f, 0.2f);
-        //after dash ends, keep momentum and smoothly reduce it
         float momentum = dashSpeed;
         while (momentum > 0.1f)
         {
-            momentum = Mathf.Lerp(momentum, 0f, Time.deltaTime * decay); 
+            momentum = Mathf.Lerp(momentum, 0f, Time.deltaTime * decay);
             controller.Move(dashDir * momentum * Time.deltaTime);
             yield return null;
         }

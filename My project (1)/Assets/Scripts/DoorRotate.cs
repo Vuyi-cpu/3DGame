@@ -23,6 +23,14 @@ public class DoorRotate : MonoBehaviour
 
     PlayerControls controls;
 
+    public AudioSource fightSong;
+    public AudioSource wakeSong;
+    private bool fightPlayed = false;
+
+    public GameObject pause;
+
+    private AudioSource lastPlayedSong;
+
     private void Awake()
     {
         controls = new PlayerControls();
@@ -57,10 +65,41 @@ public class DoorRotate : MonoBehaviour
         rotationshut = transform.rotation;
         rotationopen = Quaternion.Euler(transform.eulerAngles + new Vector3(0, -open + mult * 35f, 0));
         interaction_text = interaction_Info_UI.GetComponent<TextMeshProUGUI>();
+        if (wakeSong != null)
+        {
+            lastPlayedSong = wakeSong;
+            wakeSong.Play();
+        }
     }
 
     void Update()
     {
+        if (pause != null && pause.activeSelf)
+        {
+            if (fightSong != null && fightSong.isPlaying)
+            {
+                fightSong.Pause();
+                lastPlayedSong = fightSong;
+            }
+            if (wakeSong != null && wakeSong.isPlaying)
+            {
+                wakeSong.Pause();
+                lastPlayedSong = wakeSong;
+            }
+            if (dooropenSound.isPlaying)
+                dooropenSound.Stop();
+            if (doorclosSound.isPlaying)
+                doorclosSound.Stop();
+            return;
+        }
+        else
+        {
+            if (lastPlayedSong != null && !lastPlayedSong.isPlaying)
+            {
+                lastPlayedSong.UnPause();
+            }
+        }
+
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
         if (Physics.Raycast(ray, out RaycastHit hit, 5f))
@@ -71,7 +110,7 @@ public class DoorRotate : MonoBehaviour
                 interaction_Info_UI.SetActive(true);
                 return;
             }
-            else if(hit.transform == door1 || hit.transform == door2)
+            else if (hit.transform == door1 || hit.transform == door2)
             {
                 interaction_text.text = "[E] to interact.";
                 interaction_Info_UI.SetActive(true);
@@ -80,28 +119,34 @@ public class DoorRotate : MonoBehaviour
         }
         else
         {
-             interaction_Info_UI.SetActive(false);
+            interaction_Info_UI.SetActive(false);
         }
-
-
     }
 
     private IEnumerator MoveDoor()
     {
         if (!locked)
         {
-          
             if (isopen)
             {
                 doorclosSound.Stop();
                 dooropenSound.Stop();
-                doorclosSound.Play();  
+                doorclosSound.Play();
             }
             else
             {
                 dooropenSound.Stop();
                 doorclosSound.Stop();
-                dooropenSound.Play();  
+                dooropenSound.Play();
+
+                if (!fightPlayed && fightSong != null)
+                {
+                    if (wakeSong != null && wakeSong.isPlaying)
+                        wakeSong.Stop();
+                    fightSong.Play();
+                    lastPlayedSong = fightSong;
+                    fightPlayed = true;
+                }
             }
 
             Quaternion endRotate = isopen ? rotationshut : rotationopen;
@@ -116,5 +161,5 @@ public class DoorRotate : MonoBehaviour
             transform.rotation = endRotate;
         }
     }
-
 }
+
