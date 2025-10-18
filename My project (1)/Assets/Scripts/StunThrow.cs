@@ -43,27 +43,4 @@ public class StunThrow : MonoBehaviour
             stun.transform.position = newPos;
         }
     }
-
-    private void OnCollisionEnter(Collision collision)
-    {
-        Destroy(stun);
-        if (collision.gameObject.CompareTag("Enemy"))
-        {
-            foreach (MonoBehaviour script in scriptsToDisable)
-            {
-                if (enemyAI != null)
-                    enemyAI.enabled = false;
-            }
-
-            // Wait for duration
-            yield return new WaitForSeconds(3f);
-
-            // Re-enable scripts
-            foreach (MonoBehaviour script in scriptsToDisable)
-            {
-                if (enemyAI != null)
-                    enemyAI.enabled = true;
-            }
-        }
-    }
 }
