@@ -31,6 +31,8 @@ public class ThrowWeapon : MonoBehaviour
     public GameObject shopTut;
     public ButtonGotIt shopButton;
 
+    public ParticleSystem scrapeParticles;
+
     private void Awake()
     {
         neuronText = neuronInfo.GetComponent<TextMeshProUGUI>();
@@ -108,13 +110,20 @@ public class ThrowWeapon : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
+
         //Damage enemy if hit when returning or throwing
         if (isReturning || isThrown)
         {
             isThrown = false;
             isReturning = true;
+
+
             if (collision.gameObject.CompareTag("Enemy"))
             {
+                ContactPoint contact = collision.contacts[0];
+                scrapeParticles.transform.position = contact.point;
+                scrapeParticles.transform.rotation = Quaternion.LookRotation(contact.normal);
+                scrapeParticles.Play();
                 Enemystate enemy = collision.gameObject.GetComponentInParent<Enemystate>();
                 if (enemy != null)
                 {
