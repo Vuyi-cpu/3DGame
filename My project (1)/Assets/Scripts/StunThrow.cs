@@ -22,13 +22,13 @@ public class StunThrow : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Awake()
     {
-        if (!PlayerMovement.active)
+        /*if (!PlayerMovement.active)
         {
             controls.Player.Attack.performed += ctx =>
             {
                 isThrown = true;
             };
-        }
+        }*/
     }
 
     // Update is called once per frame
