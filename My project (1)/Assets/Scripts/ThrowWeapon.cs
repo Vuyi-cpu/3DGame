@@ -32,9 +32,11 @@ public class ThrowWeapon : MonoBehaviour
     public ButtonGotIt shopButton;
 
     public ParticleSystem scrapeParticles;
+    public ParticleSystem distortParticles;
 
     private void Awake()
     {
+        distortParticles.Stop();
         neuronText = neuronInfo.GetComponent<TextMeshProUGUI>();
         rotator.enabled = false;
         controls = new PlayerControls();
@@ -56,6 +58,7 @@ public class ThrowWeapon : MonoBehaviour
             //If isThrown is true
             if (isThrown)
             {
+                distortParticles.Play();
                 scytheRb.isKinematic = false;
                 scytheRb.useGravity = false;
                 //Set new position to move towards and apply to scythe transform.
@@ -74,6 +77,7 @@ public class ThrowWeapon : MonoBehaviour
             //Is isReturning
             if (isReturning)
             {
+                distortParticles.Play();
                 currentReturnSpeed = throwSpeed+2;
                 //currentReturnSpeed += (float)(throwSpeed + 0.5 * Time.deltaTime);
                 //Set the new position back to the scythe's original position
@@ -84,6 +88,7 @@ public class ThrowWeapon : MonoBehaviour
                 if (scythe.transform.position == scytheLocation.position)
                 {
                     //Set isReturning to false, turn off rotator, set parent and rotation
+                    distortParticles.Stop();
                     scytheRb.isKinematic = true;
                     isReturning = false;
                     rotator.enabled = false;
@@ -116,7 +121,6 @@ public class ThrowWeapon : MonoBehaviour
         {
             isThrown = false;
             isReturning = true;
-
 
             if (collision.gameObject.CompareTag("Enemy"))
             {
