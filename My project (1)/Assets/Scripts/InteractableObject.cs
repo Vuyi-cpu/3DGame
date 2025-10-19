@@ -49,6 +49,7 @@ public class InteractableObject : MonoBehaviour
         doorRotate2.locked = true;
         rotatorSwing.enabled = false;
         throwWeapon.enabled = false;
+        stunThrow.enabled = false;
         controls = new PlayerControls();
         controls.Player.Interact.performed += ctx =>
         {
