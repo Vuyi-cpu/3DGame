@@ -22,7 +22,7 @@ public class ObjectiveManager : MonoBehaviour
             return;
         }
 
-        SetObjective("Find a way out.");
+        SetObjective("Find a way out the lab.");
 
         if (doorRotate1 != null) door1StartRot = doorRotate1.transform.rotation;
         if (doorRotate2 != null) door2StartRot = doorRotate2.transform.rotation;
