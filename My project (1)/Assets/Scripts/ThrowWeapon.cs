@@ -34,6 +34,9 @@ public class ThrowWeapon : MonoBehaviour
     public ParticleSystem scrapeParticles;
     public ParticleSystem distortParticles;
 
+    public AudioSource dmg;
+    public AudioSource killed;
+
     private void Awake()
     {
         distortParticles.Stop();
@@ -142,11 +145,16 @@ public class ThrowWeapon : MonoBehaviour
                             UnityEngine.Cursor.visible = true;
                             shopButton.shopActive = true;
                         }
+                        killed.Play();
                         Destroy(enemy.enemy);
                         playerHealth.currentHealth += 50;
                         if(playerHealth.currentHealth >= playerHealth.maxHealth) playerHealth.currentHealth = playerHealth.maxHealth;
                         shop.neuronCount += 50f;
                         neuronText.text = shop.neuronCount.ToString();
+                    }
+                    else
+                    {
+                        dmg.Play();
                     }
                 }
             }

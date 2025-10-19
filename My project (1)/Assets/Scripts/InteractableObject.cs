@@ -43,6 +43,9 @@ public class InteractableObject : MonoBehaviour
     public bool isHealth;
     public bool isStun;
 
+    public AudioSource drop;
+    public AudioSource pickup;
+
     private void Awake()
     {
         doorRotate.locked = true;
@@ -111,6 +114,7 @@ public class InteractableObject : MonoBehaviour
             }
             else if (hit.transform.tag == "healthPack")
             {
+                pickup.Play();
                 isHealth = true;
                 health = hit.transform.gameObject;
                 Weapon = null;
@@ -128,6 +132,7 @@ public class InteractableObject : MonoBehaviour
     {
         if (isKey)
         {
+            pickup.Play();
             Destroy(key);
             doorRotate.locked = false;
             doorRotate2.locked = false;
@@ -171,6 +176,7 @@ public class InteractableObject : MonoBehaviour
 
             if (KatanaTut != null)
             {
+                pickup.Play();
                 KatanaTut.SetActive(true);
                 PlayerMovement.enabled = false;
                 MouseMovement.enabled = false;
@@ -205,6 +211,7 @@ public class InteractableObject : MonoBehaviour
 
             if (ScytheTut != null)
             {
+                pickup.Play();
                 ScytheTut.SetActive(true);
                 PlayerMovement.enabled = false;
                 MouseMovement.enabled = false;
@@ -227,7 +234,7 @@ public class InteractableObject : MonoBehaviour
     {
         if (activeWeapon == null || throwWeapon.isThrown || throwWeapon.isReturning) return;
 
-      
+        drop.Play();
         if (activeWeapon == currentSword)
         {
             swordEquipped = false;

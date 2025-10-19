@@ -30,6 +30,9 @@ public class Enemystate : MonoBehaviour
     private PlayerControls controls;
     private bool isDead = false;
 
+    public AudioSource dmg;
+    public AudioSource killed;
+
     void Awake()
     {
         neuronText = neuronInfo.GetComponent<TextMeshProUGUI>();
@@ -80,7 +83,7 @@ public class Enemystate : MonoBehaviour
         if (currentHealth <= 0 && !isDead)
         {
             isDead = true;
-
+            killed.Play();
             // Stop agent and trigger death animation
             if (agent != null) agent.isStopped = true;
             if (animator != null)
@@ -109,6 +112,10 @@ public class Enemystate : MonoBehaviour
 
             // Destroy after delay
             Destroy(enemy, 3f);
+        }
+        else
+        {
+            dmg.Play();
         }
     }
 
