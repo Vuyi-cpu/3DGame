@@ -104,7 +104,7 @@ public class Enemystate : MonoBehaviour
             }
 
             playerHealth.currentHealth = Mathf.Min(playerHealth.currentHealth + 50, playerHealth.maxHealth);
-            shop.neuronCount += 50f;
+            shop.neuronCount += 80f;
             neuronText.text = shop.neuronCount.ToString();
 
             // Destroy after delay

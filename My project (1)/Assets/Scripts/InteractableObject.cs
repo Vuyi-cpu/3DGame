@@ -135,7 +135,7 @@ public class InteractableObject : MonoBehaviour
 
         if (isHealth)
         {
-            PlayerState.currentHealth += 20;
+            PlayerState.currentHealth += 70;
             if (PlayerState.currentHealth > 200) PlayerState.currentHealth = 200;
             Destroy(health);
         }
