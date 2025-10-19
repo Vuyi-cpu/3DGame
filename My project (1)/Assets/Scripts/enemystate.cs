@@ -1,59 +1,53 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class Enemystate : MonoBehaviour
 {
+    [Header("Enemy Settings")]
     public GameObject enemy;
     public float currentHealth;
     public float maxHealth;
     public float katanaDamage;
     [SerializeField] private Transform player;
-    public InteractableObject interactableObject;
-    PlayerControls controls;
-    public GameObject healthBar;
-    [SerializeField] PlayerState playerHealth;
-    public GameObject neuronInfo;
-    TextMeshProUGUI neuronText;
 
-    public Shop shop;
-    public RotatorSwing rotatorSwing;
+    [Header("References")]
+    public InteractableObject interactableObject;
+    [SerializeField] private PlayerState playerHealth;
     public PlayerMovement PlayerMovement;
     public MouseMovement MouseMovement;
+    public Shop shop;
+    public GameObject healthBar;
+    public GameObject neuronInfo;
     public GameObject shopTut;
     public ButtonGotIt shopButton;
+
+    [Header("Animation")]
+    [SerializeField] private Animator animator;
+    [SerializeField] private NavMeshAgent agent;
+
+    private TextMeshProUGUI neuronText;
+    private PlayerControls controls;
+    private bool isDead = false;
 
     void Awake()
     {
         neuronText = neuronInfo.GetComponent<TextMeshProUGUI>();
         controls = new PlayerControls();
+
         controls.Player.Attack.performed += ctx =>
         {
-            //if (interactableObject.swordEquipped == true && !rotatorSwing.isSwinging) rotatorSwing.StartSwing();
-            RaycastHit hit;
+            if (isDead) return;
+
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
 
-
-            if (Physics.Raycast(ray, out hit) && hit.distance < 5 && interactableObject.swordEquipped == true && hit.transform.gameObject == enemy)
+            if (Physics.Raycast(ray, out hit) &&
+                hit.distance < 5 &&
+                interactableObject.swordEquipped == true &&
+                hit.transform.gameObject == enemy)
             {
-
-                currentHealth -= shop.katanaDamage;
-                if (currentHealth <= 0)
-                {
-                    if (shopTut != null)
-                    {
-                        shopTut.SetActive(true);
-                        PlayerMovement.enabled = false;
-                        MouseMovement.enabled = false;
-                        Cursor.lockState = CursorLockMode.None;
-                        Cursor.visible = true;
-                        shopButton.shopActive = true;
-                    }
-                    Destroy(enemy);
-                    playerHealth.currentHealth += 50;
-                    if (playerHealth.currentHealth >= playerHealth.maxHealth) playerHealth.currentHealth = playerHealth.maxHealth;
-                    shop.neuronCount += 50f;
-                    neuronText.text = shop.neuronCount.ToString();
-                }
+                TakeDamage(shop.katanaDamage);
             }
         };
     }
@@ -61,14 +55,63 @@ public class Enemystate : MonoBehaviour
     void Start()
     {
         currentHealth = maxHealth;
-    }
-    private void OnEnable()
-    {
-        controls.Player.Enable();
+
+        if (agent == null)
+            agent = enemy.GetComponent<NavMeshAgent>();
+
+        if (animator == null)
+            animator = enemy.GetComponent<Animator>();
     }
 
-    private void OnDisable()
+    void Update()
     {
-        controls.Player.Disable();
+        if (isDead) return;
+
+        if (agent != null && animator != null)
+        {
+            float speed = agent.velocity.magnitude;
+            animator.SetFloat("Speed", speed);
+        }
     }
+
+    private void TakeDamage(float damage)
+    {
+        currentHealth -= damage;
+        if (currentHealth <= 0 && !isDead)
+        {
+            isDead = true;
+
+            // Stop agent and trigger death animation
+            if (agent != null) agent.isStopped = true;
+            if (animator != null)
+            {
+                animator.SetBool("IsDead", true);
+            }
+
+            // Disable collider
+            Collider col = enemy.GetComponent<Collider>();
+            if (col) col.enabled = false;
+
+            // Rewards / UI
+            if (shopTut != null)
+            {
+                shopTut.SetActive(true);
+                PlayerMovement.enabled = false;
+                MouseMovement.enabled = false;
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
+                shopButton.shopActive = true;
+            }
+
+            playerHealth.currentHealth = Mathf.Min(playerHealth.currentHealth + 50, playerHealth.maxHealth);
+            shop.neuronCount += 50f;
+            neuronText.text = shop.neuronCount.ToString();
+
+            // Destroy after delay
+            Destroy(enemy, 3f);
+        }
+    }
+
+    private void OnEnable() => controls.Player.Enable();
+    private void OnDisable() => controls.Player.Disable();
 }
