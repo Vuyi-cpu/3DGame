@@ -15,6 +15,7 @@ public class ButtonGotIt : MonoBehaviour
     public bool shopActive;
     PlayerState playerlife;
     public GameObject deathScreen;
+    public AudioSource uisound;
     public void Start()
     {
         PlayerMovement.enabled = false;
@@ -27,6 +28,7 @@ public class ButtonGotIt : MonoBehaviour
 
     public void CloseTutorial()
     {
+        uisound.Play();
         if (katanaActive) Destroy(katanaTutorial);
         if (scytheActive) Destroy(scytheTutorial);
         if (shopActive) Destroy(shopTutorial);

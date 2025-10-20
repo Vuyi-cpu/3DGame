@@ -9,15 +9,19 @@ public class PauseButtons : MonoBehaviour
     PlayerMovement PlayerMovement;
     public GameObject tutorial;
     public GameObject deathScreen;
+    public AudioSource uitutsound;
+    public AudioSource uiclosesound;
 
     void Awake()
     {
+        
         MouseMovement = FindFirstObjectByType<MouseMovement>();
         PlayerMovement= FindFirstObjectByType<PlayerMovement>();
     }
 
     public void Resume()
     {
+        uiclosesound.Play();
         MouseMovement.enabled = true;
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = false;
@@ -28,6 +32,7 @@ public class PauseButtons : MonoBehaviour
     }
    public void Controls()
     {
+        uitutsound.Play();
         deathScreen.SetActive(false);
         tutorial.SetActive(true);
         pause.SetActive(false);

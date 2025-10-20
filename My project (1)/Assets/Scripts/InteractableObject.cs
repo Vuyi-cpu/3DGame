@@ -69,6 +69,24 @@ public class InteractableObject : MonoBehaviour
         {
             if (activeWeapon != null) Drop();
         };
+        controls.Player.scythe.performed += ctx =>
+        {
+            if (swordEquipped && scytheEquipped)
+            {
+                currentScythe.SetActive(true);
+                currentSword.SetActive(false);
+            }
+
+        };
+
+        controls.Player.Katana.performed += ctx =>
+        {
+            if (swordEquipped && scytheEquipped)
+            {
+                currentScythe.SetActive(false);
+                currentSword.SetActive(true);
+            }
+        };
     }
 
     void OnEnable()

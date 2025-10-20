@@ -87,9 +87,18 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Switch",
+                    "name": "scythe",
                     "type": "Button",
                     "id": "fea73ea8-b23d-4472-b2df-384ca53ec15b",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Katana",
+                    "type": "Button",
+                    "id": "957e935f-d3cb-47ad-89d9-15c2c275fe1c",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -297,12 +306,23 @@
                 },
                 {
                     "name": "",
-                    "id": "c1154232-6e87-4def-be5c-19974c2fd733",
-                    "path": "<Keyboard>/tab",
+                    "id": "8b05e767-d904-4985-a58b-419c65109380",
+                    "path": "<Keyboard>/1",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Switch",
+                    "action": "scythe",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "24dc960c-8df5-4db7-8f52-de548f72bbea",
+                    "path": "<Keyboard>/2",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Katana",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

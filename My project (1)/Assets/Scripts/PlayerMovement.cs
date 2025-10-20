@@ -34,6 +34,7 @@ public class PlayerMovement : MonoBehaviour
 
     Vector3 velocity;
     bool isGrounded;
+    public AudioSource uisound;
 
     //Dashing
     public float dashFov;
@@ -42,6 +43,7 @@ public class PlayerMovement : MonoBehaviour
     public float DashTime;
     public float decay;
     public AudioSource wakemusic;
+    public AudioSource uipausesound;
 
     private void Awake()
     {
@@ -62,11 +64,12 @@ public class PlayerMovement : MonoBehaviour
                 Cursor.visible = true;
                 shop.SetActive(true);
                 active = true;
-
+                uipausesound.Play();
 
             }
             else if (active)
             {
+                uisound.Play();
                 shop.SetActive(false);
                 active = false;
                 MouseMovement.enabled = true;
@@ -84,7 +87,7 @@ public class PlayerMovement : MonoBehaviour
             pause.SetActive(true);
             pauseactive = true;
             Time.timeScale = 0f;
-
+            uipausesound.Play();
             EventSystem.current.SetSelectedGameObject(pausefirst);
 
         };

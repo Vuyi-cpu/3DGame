@@ -173,9 +173,18 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Switch"",
+                    ""name"": ""scythe"",
                     ""type"": ""Button"",
                     ""id"": ""fea73ea8-b23d-4472-b2df-384ca53ec15b"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Katana"",
+                    ""type"": ""Button"",
+                    ""id"": ""957e935f-d3cb-47ad-89d9-15c2c275fe1c"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
@@ -383,12 +392,23 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""c1154232-6e87-4def-be5c-19974c2fd733"",
-                    ""path"": ""<Keyboard>/tab"",
+                    ""id"": ""8b05e767-d904-4985-a58b-419c65109380"",
+                    ""path"": ""<Keyboard>/1"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Switch"",
+                    ""action"": ""scythe"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""24dc960c-8df5-4db7-8f52-de548f72bbea"",
+                    ""path"": ""<Keyboard>/2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Katana"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -408,7 +428,8 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Player_Dash = m_Player.FindAction("Dash", throwIfNotFound: true);
         m_Player_Pause = m_Player.FindAction("Pause", throwIfNotFound: true);
         m_Player_Shop = m_Player.FindAction("Shop", throwIfNotFound: true);
-        m_Player_Switch = m_Player.FindAction("Switch", throwIfNotFound: true);
+        m_Player_scythe = m_Player.FindAction("scythe", throwIfNotFound: true);
+        m_Player_Katana = m_Player.FindAction("Katana", throwIfNotFound: true);
     }
 
     ~@PlayerControls()
@@ -498,7 +519,8 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Dash;
     private readonly InputAction m_Player_Pause;
     private readonly InputAction m_Player_Shop;
-    private readonly InputAction m_Player_Switch;
+    private readonly InputAction m_Player_scythe;
+    private readonly InputAction m_Player_Katana;
     /// <summary>
     /// Provides access to input actions defined in input action map "Player".
     /// </summary>
@@ -547,9 +569,13 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         /// </summary>
         public InputAction @Shop => m_Wrapper.m_Player_Shop;
         /// <summary>
-        /// Provides access to the underlying input action "Player/Switch".
+        /// Provides access to the underlying input action "Player/scythe".
         /// </summary>
-        public InputAction @Switch => m_Wrapper.m_Player_Switch;
+        public InputAction @scythe => m_Wrapper.m_Player_scythe;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/Katana".
+        /// </summary>
+        public InputAction @Katana => m_Wrapper.m_Player_Katana;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -603,9 +629,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Shop.started += instance.OnShop;
             @Shop.performed += instance.OnShop;
             @Shop.canceled += instance.OnShop;
-            @Switch.started += instance.OnSwitch;
-            @Switch.performed += instance.OnSwitch;
-            @Switch.canceled += instance.OnSwitch;
+            @scythe.started += instance.OnScythe;
+            @scythe.performed += instance.OnScythe;
+            @scythe.canceled += instance.OnScythe;
+            @Katana.started += instance.OnKatana;
+            @Katana.performed += instance.OnKatana;
+            @Katana.canceled += instance.OnKatana;
         }
 
         /// <summary>
@@ -644,9 +673,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Shop.started -= instance.OnShop;
             @Shop.performed -= instance.OnShop;
             @Shop.canceled -= instance.OnShop;
-            @Switch.started -= instance.OnSwitch;
-            @Switch.performed -= instance.OnSwitch;
-            @Switch.canceled -= instance.OnSwitch;
+            @scythe.started -= instance.OnScythe;
+            @scythe.performed -= instance.OnScythe;
+            @scythe.canceled -= instance.OnScythe;
+            @Katana.started -= instance.OnKatana;
+            @Katana.performed -= instance.OnKatana;
+            @Katana.canceled -= instance.OnKatana;
         }
 
         /// <summary>
@@ -751,11 +783,18 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnShop(InputAction.CallbackContext context);
         /// <summary>
-        /// Method invoked when associated input action "Switch" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// Method invoked when associated input action "scythe" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnSwitch(InputAction.CallbackContext context);
+        void OnScythe(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Katana" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnKatana(InputAction.CallbackContext context);
     }
 }
