@@ -28,6 +28,7 @@ public class EnemyAI : MonoBehaviour
     public float chaseSpeed = 6f;
     private float defaultSpeed;
 
+    public AudioSource gunshot;
 
     private void Awake()
     {
@@ -141,6 +142,7 @@ public class EnemyAI : MonoBehaviour
             Rigidbody rb = Instantiate(projectile, enemyGun, Quaternion.identity).GetComponent<Rigidbody>();
             projectile.SetActive(true);
             rb.AddForce(transform.forward * 20f, ForceMode.Impulse);
+            gunshot.Play();
 
             if (burst < 3f)
                 Invoke(nameof(ResetAttack), timeDelayAttacks);

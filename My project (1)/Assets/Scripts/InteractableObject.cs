@@ -114,7 +114,7 @@ public class InteractableObject : MonoBehaviour
             }
             else if (hit.transform.tag == "healthPack")
             {
-                pickup.Play();
+                
                 isHealth = true;
                 health = hit.transform.gameObject;
                 Weapon = null;
@@ -140,6 +140,7 @@ public class InteractableObject : MonoBehaviour
 
         if (isHealth)
         {
+            pickup.Play();
             PlayerState.currentHealth += 70;
             if (PlayerState.currentHealth > 200) PlayerState.currentHealth = 200;
             Destroy(health);
