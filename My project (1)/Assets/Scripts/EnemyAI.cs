@@ -28,6 +28,7 @@ public class EnemyAI : MonoBehaviour
     public float chaseSpeed = 6f;
     private float defaultSpeed;
 
+    public AudioSource gunshot;
 
     private void Awake()
     {
@@ -139,6 +140,7 @@ public class EnemyAI : MonoBehaviour
             burst++;
             Vector3 enemyGun = new Vector3(transform.position.x, transform.position.y - 1f, transform.position.z);
             Rigidbody rb = Instantiate(projectile, enemyGun, Quaternion.identity).GetComponent<Rigidbody>();
+            gunshot.Play();
             projectile.SetActive(true);
             rb.AddForce(transform.forward * 20f, ForceMode.Impulse);
 
