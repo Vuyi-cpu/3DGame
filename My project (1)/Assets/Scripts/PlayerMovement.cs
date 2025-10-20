@@ -21,6 +21,7 @@ public class PlayerMovement : MonoBehaviour
     public GameObject pausefirst;
     PlayerState state;
     public AudioSource fightsong;
+    public AudioSource dashsound;
 
 
 
@@ -133,6 +134,7 @@ public class PlayerMovement : MonoBehaviour
 
         IEnumerator Dash()
     {
+        dashsound.Play();
         Vector3 dashDir = (transform.right * move.x + transform.forward * move.y).normalized;
         cam.DoFov(dashFov, 0.1f);
 

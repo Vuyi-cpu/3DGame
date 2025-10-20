@@ -65,29 +65,35 @@ public class InteractableObject : MonoBehaviour
             }
         };
 
-        controls.Player.Drop.performed += ctx =>
-        {
-            if (activeWeapon != null) Drop();
-        };
         controls.Player.scythe.performed += ctx =>
         {
-            if (swordEquipped && scytheEquipped)
+            if (scytheEquipped) 
             {
+                
+                if (swordEquipped)
+                {
+                    currentSword.SetActive(false);
+                }
                 currentScythe.SetActive(true);
-                currentSword.SetActive(false);
+                activeWeapon = currentScythe; 
             }
-
         };
 
         controls.Player.Katana.performed += ctx =>
         {
-            if (swordEquipped && scytheEquipped)
+            if (swordEquipped) 
             {
-                currentScythe.SetActive(false);
+                
+                if (scytheEquipped)
+                {
+                    currentScythe.SetActive(false);
+                }
                 currentSword.SetActive(true);
+                activeWeapon = currentSword; 
             }
         };
-    }
+   
+}
 
     void OnEnable()
     {
