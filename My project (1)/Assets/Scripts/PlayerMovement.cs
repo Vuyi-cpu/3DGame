@@ -20,6 +20,7 @@ public class PlayerMovement : MonoBehaviour
     public bool pauseactive;
     public GameObject pausefirst;
     PlayerState state;
+    public AudioSource fightsong;
 
 
 
@@ -42,6 +43,7 @@ public class PlayerMovement : MonoBehaviour
     public float DashSpd;
     public float DashTime;
     public float decay;
+    private AudioSource lastSong;
     public AudioSource wakemusic;
     public AudioSource uipausesound;
 
@@ -95,15 +97,23 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
+        if (wakemusic.isPlaying) {
+            lastSong = wakemusic;
+        }
+        if (fightsong.isPlaying)
+        {
+            lastSong = fightsong;
+        }
         if (active || pauseactive)
         {
-            if (wakemusic.isPlaying)
-                wakemusic.Stop();
+           lastSong.Stop();
             return;
         }
 
-        if (!wakemusic.isPlaying)
-            wakemusic.Play();
+        if (!lastSong.isPlaying && !fightsong.isPlaying)
+        {
+            lastSong.Play();
+        }
 
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
 
@@ -119,7 +129,9 @@ public class PlayerMovement : MonoBehaviour
         controller.Move(velocity * Time.deltaTime);
     }
 
-    IEnumerator Dash()
+   
+
+        IEnumerator Dash()
     {
         Vector3 dashDir = (transform.right * move.x + transform.forward * move.y).normalized;
         cam.DoFov(dashFov, 0.1f);

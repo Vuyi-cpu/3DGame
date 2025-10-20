@@ -88,8 +88,6 @@ public class DoorRotate : MonoBehaviour
             }
             if (dooropenSound.isPlaying)
                 dooropenSound.Stop();
-            if (doorclosSound.isPlaying)
-                doorclosSound.Stop();
             return;
         }
         else

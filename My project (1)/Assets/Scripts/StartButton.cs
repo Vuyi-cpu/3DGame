@@ -1,8 +1,5 @@
 using UnityEngine;
 using System.Collections;
-
-using UnityEngine;
-using System.Collections;
 using UnityEngine.SceneManagement; // <-- needed to load scenes
 
 public class StartButton : MonoBehaviour
