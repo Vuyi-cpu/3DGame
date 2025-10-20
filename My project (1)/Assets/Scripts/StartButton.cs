@@ -11,7 +11,7 @@ public class StartButton : MonoBehaviour
     public float maxAlpha = 1f;
 
     // Set your game scene name here
-    public string gameSceneName = "LVL 1";
+    public string gameSceneName = "Prologue";
 
     void Start()
     {

@@ -805,7 +805,7 @@ MonoBehaviour:
   fadeDuration: 1.5
   minAlpha: 0
   maxAlpha: 1
-  gameSceneName: LVL 1
+  gameSceneName: Prologue
 --- !u!1 &1854040845
 GameObject:
   m_ObjectHideFlags: 0
