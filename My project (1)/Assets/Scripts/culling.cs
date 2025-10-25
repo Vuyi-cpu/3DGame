@@ -33,11 +33,5 @@ public class DistanceCulling : MonoBehaviour
         }
     }
 
-    void OnDrawGizmosSelected()
-    {
-        // Optional: Draw range for visual debugging
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, renderDistance);
-    }
 }
 
