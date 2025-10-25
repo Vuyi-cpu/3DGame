@@ -47,6 +47,8 @@ public class PlayerMovement : MonoBehaviour
     private AudioSource lastSong;
     public AudioSource wakemusic;
     public AudioSource uipausesound;
+    public Rigidbody rb;
+   
 
     private void Awake()
     {
@@ -58,29 +60,31 @@ public class PlayerMovement : MonoBehaviour
         controls.Player.Move.performed += ctx => move = ctx.ReadValue<Vector2>();
         controls.Player.Move.canceled += ctx => move = Vector2.zero;
         controls.Player.Dash.performed += ctx => StartCoroutine(Dash());
+        controls.Player.Jump.performed += ctx => jumpPressed = true;
+        groundMask = LayerMask.GetMask("Ground", "Environment");
         controls.Player.Shop.performed += ctx =>
+    {
+        if (!active && !pauseactive && state.death == false)
         {
-            if (!active && !pauseactive && state.death == false)
-            {
-                MouseMovement.enabled = false;
-                Cursor.lockState = CursorLockMode.None;
-                Cursor.visible = true;
-                shop.SetActive(true);
-                active = true;
-                uipausesound.Play();
+            MouseMovement.enabled = false;
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+            shop.SetActive(true);
+            active = true;
+            uipausesound.Play();
 
-            }
-            else if (active)
-            {
-                uisound.Play();
-                shop.SetActive(false);
-                active = false;
-                MouseMovement.enabled = true;
-                Cursor.lockState = CursorLockMode.Locked;
-                Cursor.visible = false;
+        }
+        else if (active)
+        {
+            uisound.Play();
+            shop.SetActive(false);
+            active = false;
+            MouseMovement.enabled = true;
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
 
-            }
-        };
+        }
+    };
 
         controls.Player.Pause.performed += ctx =>
         {
@@ -94,6 +98,11 @@ public class PlayerMovement : MonoBehaviour
             EventSystem.current.SetSelectedGameObject(pausefirst);
 
         };
+    }
+
+    private void Start()
+    {
+        rb = GetComponent<Rigidbody>();
     }
 
     private void Update()
@@ -126,6 +135,17 @@ public class PlayerMovement : MonoBehaviour
         Vector3 moveDir = transform.right * move.x + transform.forward * move.y;
         controller.Move(moveDir * speed * Time.deltaTime);
 
+        //check if the player is on the ground so he can jump
+     
+            if (jumpPressed)
+            {
+                if (isGrounded)
+                {
+                //the equation for jumping
+                velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
+                }
+                jumpPressed = false; // Consume the input regardless
+            }
         velocity.y += gravity * Time.deltaTime;
         controller.Move(velocity * Time.deltaTime);
     }
@@ -156,6 +176,7 @@ public class PlayerMovement : MonoBehaviour
             yield return null;
         }
     }
+
 
     private void OnEnable()
     {
