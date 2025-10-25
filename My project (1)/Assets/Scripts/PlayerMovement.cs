@@ -47,7 +47,7 @@ public class PlayerMovement : MonoBehaviour
     private AudioSource lastSong;
     public AudioSource wakemusic;
     public AudioSource uipausesound;
-    public Rigidbody rb;
+ 
    
 
     private void Awake()
@@ -99,11 +99,7 @@ public class PlayerMovement : MonoBehaviour
 
         };
     }
-
-    private void Start()
-    {
-        rb = GetComponent<Rigidbody>();
-    }
+  
 
     private void Update()
     {
