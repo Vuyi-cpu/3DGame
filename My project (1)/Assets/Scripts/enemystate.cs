@@ -1,6 +1,8 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.AI;
+using System.Collections;
+using System.Collections.Generic;
 
 public class Enemystate : MonoBehaviour
 {
@@ -29,6 +31,7 @@ public class Enemystate : MonoBehaviour
     private TextMeshProUGUI neuronText;
     private PlayerControls controls;
     private bool isDead = false;
+    GameObject katana;
 
     public AudioSource dmg;
     public AudioSource killed;
@@ -44,13 +47,13 @@ public class Enemystate : MonoBehaviour
 
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
-
-            if (Physics.Raycast(ray, out hit) &&
-                hit.distance < 5 &&
-                interactableObject.swordEquipped == true &&
-                hit.transform.gameObject == enemy)
+            if (interactableObject.swordEquipped == true)
             {
-                TakeDamage(shop.katanaDamage);
+                StartCoroutine(SwordSwing());
+                if (Physics.Raycast(ray, out hit) && hit.distance < 5 && hit.transform.gameObject == enemy)
+                {
+                    TakeDamage(shop.katanaDamage);
+                }
             }
         };
     }
@@ -75,6 +78,17 @@ public class Enemystate : MonoBehaviour
             float speed = agent.velocity.magnitude;
             animator.SetFloat("Speed", speed);
         }
+    }
+
+    IEnumerator SwordSwing()
+    {
+        
+        katana = interactableObject.currentSword;
+        katana.GetComponent<Animator>().Play("swordSwing");
+        yield return new WaitForSeconds(0.73f);
+        katana.GetComponent<Animator>().Play("New State");
+        katana.transform.localEulerAngles = new Vector3(0f, 180f, 0f);
+        katana.transform.position = new Vector3(0f, 0f, 0f);
     }
 
     private void TakeDamage(float damage)

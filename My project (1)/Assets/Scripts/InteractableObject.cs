@@ -191,7 +191,7 @@ public class InteractableObject : MonoBehaviour
             currentWeapon = currentSword;
             swordEquipped = true;
 
-            currentSword.transform.position = gunPos.position;
+            currentSword.transform.position = new Vector3(0f, 0f, 0f);
             currentSword.transform.SetParent(gunPos);
             currentSword.transform.localEulerAngles = new Vector3(0f, 180f, 0f);
             currentSword.GetComponent<Rigidbody>().isKinematic = true;
