@@ -86,9 +86,9 @@ public class Enemystate : MonoBehaviour
         katana = interactableObject.currentSword;
         katana.GetComponent<Animator>().Play("swordSwing");
         yield return new WaitForSeconds(0.73f);
-        katana.GetComponent<Animator>().Play("New State");
+        katana.GetComponent<Animator>().StopPlayback();
         katana.transform.localEulerAngles = new Vector3(0f, 180f, 0f);
-        katana.transform.position = new Vector3(0f, 0f, 0f);
+        katana.transform.position = interactableObject.gunPos.position;
     }
 
     private void TakeDamage(float damage)
