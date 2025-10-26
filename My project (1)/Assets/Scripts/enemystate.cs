@@ -31,10 +31,13 @@ public class Enemystate : MonoBehaviour
     private TextMeshProUGUI neuronText;
     private PlayerControls controls;
     private bool isDead = false;
+    private bool swinging;
     GameObject katana;
 
     public AudioSource dmg;
     public AudioSource killed;
+
+    public ParticleSystem scrapeParticles;
 
     void Awake()
     {
@@ -45,15 +48,13 @@ public class Enemystate : MonoBehaviour
         {
             if (isDead) return;
 
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
             if (interactableObject.swordEquipped == true)
             {
                 StartCoroutine(SwordSwing());
-                if (Physics.Raycast(ray, out hit) && hit.distance < 5 && hit.transform.gameObject == enemy)
+                /*if (Physics.Raycast(ray, out hit) && hit.distance < 5)
                 {
                     TakeDamage(shop.katanaDamage);
-                }
+                }*/
             }
         };
     }
@@ -82,12 +83,13 @@ public class Enemystate : MonoBehaviour
 
     IEnumerator SwordSwing()
     {
-        
+        swinging = true;
         katana = interactableObject.currentSword;
         katana.GetComponent<Animator>().Play("swordSwing", 0, 0f);
         yield return new WaitForSeconds(0.73f);
         katana.transform.localEulerAngles = new Vector3(0f, 180f, 0f);
         katana.transform.position = interactableObject.gunPos.position;
+        swinging = false;
     }
 
     private void TakeDamage(float damage)
@@ -124,7 +126,7 @@ public class Enemystate : MonoBehaviour
             neuronText.text = shop.neuronCount.ToString();
 
             // Destroy after delay
-            Destroy(enemy, 3f);
+            Destroy(enemy, 1f);
         }
         else
         {
@@ -132,6 +134,20 @@ public class Enemystate : MonoBehaviour
         }
     }
 
+    private void OnCollisionEnter(Collision collision)
+    {
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
+        //collision.gameObject.CompareTag("sword") &&
+        if (Physics.Raycast(ray, out hit) && swinging && hit.transform.gameObject == enemy)
+        {
+            ContactPoint contact = collision.contacts[0];
+            scrapeParticles.transform.position = contact.point;
+            scrapeParticles.transform.rotation = Quaternion.LookRotation(contact.normal);
+            scrapeParticles.Play();
+            TakeDamage(shop.katanaDamage);
+        }
+    }
     private void OnEnable() => controls.Player.Enable();
     private void OnDisable() => controls.Player.Disable();
 }

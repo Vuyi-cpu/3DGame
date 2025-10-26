@@ -15,7 +15,6 @@ public class InteractableObject : MonoBehaviour
     GameObject Weapon, key, health, stun;
     PlayerControls controls;
     [SerializeField] public ThrowWeapon throwWeapon;
-    public RotatorSwing rotatorSwing;
     public DoorRotate doorRotate;
     public DoorRotate doorRotate2;
     public ButtonGotIt katanaButton;
@@ -50,7 +49,6 @@ public class InteractableObject : MonoBehaviour
     {
         doorRotate.locked = true;
         doorRotate2.locked = true;
-        rotatorSwing.enabled = false;
         throwWeapon.enabled = false;
         stunThrow.enabled = false;
         controls = new PlayerControls();
@@ -209,7 +207,7 @@ public class InteractableObject : MonoBehaviour
                 Cursor.visible = true;
                 katanaButton.katanaActive = true;
             }
-
+            ItemName = "";
             
             if (scytheEquipped)
                 currentScythe.SetActive(false);
