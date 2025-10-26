@@ -189,6 +189,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Stun"",
+                    ""type"": ""Button"",
+                    ""id"": ""fab81788-2fdd-4898-83c7-6f44ecde9543"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -411,6 +420,17 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""action"": ""Katana"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""adb98778-6b84-48d5-8175-8e685f08096d"",
+                    ""path"": ""<Keyboard>/3"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Stun"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -430,6 +450,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Player_Shop = m_Player.FindAction("Shop", throwIfNotFound: true);
         m_Player_scythe = m_Player.FindAction("scythe", throwIfNotFound: true);
         m_Player_Katana = m_Player.FindAction("Katana", throwIfNotFound: true);
+        m_Player_Stun = m_Player.FindAction("Stun", throwIfNotFound: true);
     }
 
     ~@PlayerControls()
@@ -521,6 +542,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Shop;
     private readonly InputAction m_Player_scythe;
     private readonly InputAction m_Player_Katana;
+    private readonly InputAction m_Player_Stun;
     /// <summary>
     /// Provides access to input actions defined in input action map "Player".
     /// </summary>
@@ -576,6 +598,10 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Player/Katana".
         /// </summary>
         public InputAction @Katana => m_Wrapper.m_Player_Katana;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/Stun".
+        /// </summary>
+        public InputAction @Stun => m_Wrapper.m_Player_Stun;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -635,6 +661,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Katana.started += instance.OnKatana;
             @Katana.performed += instance.OnKatana;
             @Katana.canceled += instance.OnKatana;
+            @Stun.started += instance.OnStun;
+            @Stun.performed += instance.OnStun;
+            @Stun.canceled += instance.OnStun;
         }
 
         /// <summary>
@@ -679,6 +708,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Katana.started -= instance.OnKatana;
             @Katana.performed -= instance.OnKatana;
             @Katana.canceled -= instance.OnKatana;
+            @Stun.started -= instance.OnStun;
+            @Stun.performed -= instance.OnStun;
+            @Stun.canceled -= instance.OnStun;
         }
 
         /// <summary>
@@ -796,5 +828,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnKatana(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Stun" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnStun(InputAction.CallbackContext context);
     }
 }

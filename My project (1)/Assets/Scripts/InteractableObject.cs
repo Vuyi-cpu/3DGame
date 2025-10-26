@@ -67,10 +67,13 @@ public class InteractableObject : MonoBehaviour
         {
             if (scytheEquipped) 
             {
-                
                 if (swordEquipped)
                 {
                     currentSword.SetActive(false);
+                }
+                else if (stunEquipped)
+                {
+                    currentStun.SetActive(false);
                 }
                 currentScythe.SetActive(true);
                 activeWeapon = currentScythe; 
@@ -86,11 +89,30 @@ public class InteractableObject : MonoBehaviour
                 {
                     currentScythe.SetActive(false);
                 }
+                else if (stunEquipped)
+                {
+                    currentStun.SetActive(false);
+                }
                 currentSword.SetActive(true);
                 activeWeapon = currentSword; 
             }
         };
-   
+
+        controls.Player.Stun.performed += ctx =>
+        {
+            if (stunEquipped && !(throwWeapon.isThrown || throwWeapon.isReturning))
+            {
+                if (scytheEquipped)
+                {
+                    currentScythe.SetActive(false);
+                }
+                else if(swordEquipped)
+                {
+                    currentSword.SetActive(false);
+                }
+                currentStun.SetActive(true);
+            }
+        };
 }
 
     void OnEnable()
@@ -128,6 +150,10 @@ public class InteractableObject : MonoBehaviour
             {
                 Weapon = hit.transform.gameObject;
             }
+            else if (hit.transform.tag == "stun")
+            {
+                Weapon = hit.transform.gameObject;
+            }
             else if (hit.transform.tag == "key")
             {
                 isKey = true;
@@ -139,12 +165,6 @@ public class InteractableObject : MonoBehaviour
                 
                 isHealth = true;
                 health = hit.transform.gameObject;
-                Weapon = null;
-            }
-            else if (hit.transform.tag == "stun")
-            {
-                isStun = true;
-                stun = hit.transform.gameObject;
                 Weapon = null;
             }
         }
@@ -168,20 +188,21 @@ public class InteractableObject : MonoBehaviour
             if (PlayerState.currentHealth > 200) PlayerState.currentHealth = 200;
             Destroy(health);
         }
-        
-        if (isStun)
-        {
-                currentStun = Weapon;
-                stunEquipped = true;
-
-                currentStun.transform.position = gunPos.position;
-                currentStun.transform.SetParent(gunPos);
-                currentStun.transform.localEulerAngles = new Vector3(0f, 180f, 0f);
-                currentStun.GetComponent<Rigidbody>().isKinematic = true;
-                stunThrow.enabled = true;
-        }
 
         if (Weapon == null) return;
+
+        if (Weapon.tag == "stun" && !stunEquipped)
+        {
+            currentStun = Weapon;
+            currentWeapon = currentStun;
+            stunEquipped = true;
+
+            currentStun.transform.position = gunPos.position;
+            currentStun.transform.SetParent(gunPos);
+            currentStun.transform.localEulerAngles = new Vector3(0f, 180f, 0f);
+            currentStun.GetComponent<Rigidbody>().isKinematic = true;
+            stunThrow.enabled = true;
+        }
 
         if (Weapon.tag == "sword" && !swordEquipped)
         {

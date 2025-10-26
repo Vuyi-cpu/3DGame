@@ -38,14 +38,15 @@ public class StunThrow : MonoBehaviour
         {
             throwPosition = player.transform.position + stunLocation.forward * 1000;
             stunRb.isKinematic = false;
+            stunRb.useGravity = true;
             //Set new position to move towards and apply to scythe transform.
             Vector3 newPos = Vector3.MoveTowards(stun.transform.position, throwPosition, throwSpeed * Time.deltaTime);
             stun.transform.position = newPos;
         }
     }
 
-    //private void OnCollisionEnter(Collision collision)
-    //{
+    private void OnCollisionEnter(Collision collision)
+    {
     //    Destroy(stun);
     //    if (collision.gameObject.CompareTag("Enemy"))
     //    {
@@ -65,5 +66,5 @@ public class StunThrow : MonoBehaviour
     //                enemyAI.enabled = true;
     //        }
     //    }
-    //}
+    }
 }

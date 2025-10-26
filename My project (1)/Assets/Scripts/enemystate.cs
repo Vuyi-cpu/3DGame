@@ -54,7 +54,11 @@ public class Enemystate : MonoBehaviour
             if (interactableObject.swordEquipped == true)
             {
                 StartCoroutine(SwordSwing());
+<<<<<<< Updated upstream
                 if (Physics.Raycast(ray, out hit) && swinging && hit.transform.gameObject == enemy && hit.distance <= 3)
+=======
+                /*if (Physics.Raycast(ray, out hit) && hit.distance < 5 &&)
+>>>>>>> Stashed changes
                 {
                     scrapeParticles.transform.position = hit.point;
                     scrapeParticles.transform.rotation = Quaternion.LookRotation(hit.normal);
