@@ -13,6 +13,7 @@ public class SelectionManager : MonoBehaviour
     public InteractableObject key;
     public InteractableObject scythe;
     public InteractableObject katana;
+    public InteractableObject telephone;
 
     private void Start()
     {
@@ -37,6 +38,7 @@ public class SelectionManager : MonoBehaviour
                 key.isKey = false;
                 scythe.isKey = false;
                 katana.isKey = false;
+                telephone.isKey = false;
                 playerCanInteract = false;
                 interaction_Info_UI.SetActive(false);
             }

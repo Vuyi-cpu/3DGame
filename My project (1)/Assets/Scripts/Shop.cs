@@ -76,9 +76,9 @@ public class Shop : MonoBehaviour
         {
             neuronCount -= 100;
             insufficientFundsText.gameObject.SetActive(false);
-            playerState.maxHealth += 100;
-            playerState.currentHealth += 100;
-            upgradeHealthText.text = "Health: " + playerState.maxHealth.ToString() + " -> " + (playerState.currentHealth + 100f).ToString();
+            playerState.maxHealth += 50;
+            playerState.currentHealth += 50;
+            upgradeHealthText.text = "Health: " + playerState.maxHealth.ToString() + " -> " + (playerState.currentHealth + 50f).ToString();
         }
         else
         {

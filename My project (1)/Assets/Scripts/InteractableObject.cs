@@ -12,7 +12,7 @@ public class InteractableObject : MonoBehaviour
 
     public string ItemName;
     public SelectionManager SelectionManager;
-    GameObject Weapon, key, health, stun;
+    GameObject Weapon, key, health;
     PlayerControls controls;
     [SerializeField] public ThrowWeapon throwWeapon;
     public DoorRotate doorRotate;
