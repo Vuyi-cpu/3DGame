@@ -34,6 +34,7 @@ public class Enemystate : MonoBehaviour
     private bool swinging;
     GameObject katana;
 
+
     public AudioSource dmg;
     public AudioSource killed;
 
@@ -46,15 +47,20 @@ public class Enemystate : MonoBehaviour
 
         controls.Player.Attack.performed += ctx =>
         {
-            if (isDead) return;
 
+            if (isDead) return;
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
             if (interactableObject.swordEquipped == true)
             {
                 StartCoroutine(SwordSwing());
-                /*if (Physics.Raycast(ray, out hit) && hit.distance < 5)
+                if (Physics.Raycast(ray, out hit) && swinging && hit.transform.gameObject == enemy && hit.distance <= 3)
                 {
+                    scrapeParticles.transform.position = hit.point;
+                    scrapeParticles.transform.rotation = Quaternion.LookRotation(hit.normal);
+                    scrapeParticles.Play();
                     TakeDamage(shop.katanaDamage);
-                }*/
+                }
             }
         };
     }
@@ -134,20 +140,6 @@ public class Enemystate : MonoBehaviour
         }
     }
 
-    private void OnCollisionEnter(Collision collision)
-    {
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hit;
-        //collision.gameObject.CompareTag("sword") &&
-        if (Physics.Raycast(ray, out hit) && swinging && hit.transform.gameObject == enemy)
-        {
-            ContactPoint contact = collision.contacts[0];
-            scrapeParticles.transform.position = contact.point;
-            scrapeParticles.transform.rotation = Quaternion.LookRotation(contact.normal);
-            scrapeParticles.Play();
-            TakeDamage(shop.katanaDamage);
-        }
-    }
     private void OnEnable() => controls.Player.Enable();
     private void OnDisable() => controls.Player.Disable();
 }
