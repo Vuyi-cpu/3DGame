@@ -33,12 +33,14 @@ public class ThrowWeapon : MonoBehaviour
 
     public ParticleSystem scrapeParticles;
     public ParticleSystem distortParticles;
+    public TrailRenderer trail;
 
     public AudioSource dmg;
     public AudioSource killed;
 
     private void Awake()
     {
+        trail.emitting = false;
         distortParticles.Stop();
         neuronText = neuronInfo.GetComponent<TextMeshProUGUI>();
         rotator.enabled = false;
@@ -61,6 +63,7 @@ public class ThrowWeapon : MonoBehaviour
             //If isThrown is true
             if (isThrown)
             {
+                trail.emitting = true;
                 distortParticles.Play();
                 scytheRb.isKinematic = false;
                 scytheRb.useGravity = false;
@@ -80,6 +83,7 @@ public class ThrowWeapon : MonoBehaviour
             //Is isReturning
             if (isReturning)
             {
+                trail.emitting = true;
                 distortParticles.Play();
                 currentReturnSpeed = throwSpeed+2;
                 //currentReturnSpeed += (float)(throwSpeed + 0.5 * Time.deltaTime);
@@ -92,6 +96,7 @@ public class ThrowWeapon : MonoBehaviour
                 {
                     //Set isReturning to false, turn off rotator, set parent and rotation
                     distortParticles.Stop();
+                    trail.emitting = false;
                     scytheRb.isKinematic = true;
                     isReturning = false;
                     rotator.enabled = false;
