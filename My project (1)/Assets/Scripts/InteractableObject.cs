@@ -54,6 +54,7 @@ public class InteractableObject : MonoBehaviour
         doorRotate2.locked = true;
         throwWeapon.enabled = false;
         stunThrow.enabled = false;
+        Debug.Log("stunThrow disabled");
         stunRotate.enabled = false;
         controls = new PlayerControls();
         controls.Player.Interact.performed += ctx =>
@@ -185,9 +186,10 @@ public class InteractableObject : MonoBehaviour
 
             currentStun.transform.position = gunPos.position;
             currentStun.transform.SetParent(gunPos);
-            currentStun.transform.localEulerAngles = new Vector3(0f, 180f, 0f);
+            currentStun.transform.localEulerAngles = new Vector3(0f, -10f, 0f);
             currentStun.GetComponent<Rigidbody>().isKinematic = true;
             stunThrow.enabled = true;
+            Debug.Log("stunThrow enabled");
 
             if (scytheEquipped) currentScythe.SetActive(false);
             if (swordEquipped) currentSword.SetActive(false);

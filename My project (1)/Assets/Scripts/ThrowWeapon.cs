@@ -22,7 +22,6 @@ public class ThrowWeapon : MonoBehaviour
     [SerializeField] PlayerState playerHealth;
 
     public float scytheDamage; //How much scytheDamage does this object do?
-    Enemystate enemy; //Any enemy object hit if any
     private float currentReturnSpeed;
     public Shop shop;
     PlayerControls controls;
@@ -65,8 +64,7 @@ public class ThrowWeapon : MonoBehaviour
             {
                 trail.emitting = true;
                 distortParticles.Play();
-                scytheRb.isKinematic = false;
-                scytheRb.useGravity = false;
+                
                 //Set new position to move towards and apply to scythe transform.
                 Vector3 newPos = Vector3.MoveTowards(scythe.transform.position, throwPosition, throwSpeed * Time.deltaTime);
                 scythe.transform.position = newPos;
@@ -109,7 +107,6 @@ public class ThrowWeapon : MonoBehaviour
     //Called from update, Checks distance then throws scythe
     void CheckDistance()
     {
-        
         {
             scytheLocation.localEulerAngles = new Vector3(0f, 0f, 0f);
             throwPosition = player.transform.position + scytheLocation.forward * scytheDistance;
@@ -117,6 +114,8 @@ public class ThrowWeapon : MonoBehaviour
             scythe.transform.parent = null;
             rotator.enabled = true;
             isThrown = true;
+            scytheRb.isKinematic = false;
+            scytheRb.useGravity = false;
             scytheLocation.localEulerAngles = new Vector3(63f, -195.3f, -267.07f);
         }
     }
