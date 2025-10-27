@@ -32,6 +32,11 @@ public class SelectionManager : MonoBehaviour
                 playerCanInteract = true;
                 interaction_text.text = selectionTransform.GetComponent<InteractableObject>().GetItemName();
                 interaction_Info_UI.SetActive(true);
+
+                if(katana.currentSword != null)
+                {
+                    katana.ItemName = "";
+                }
             }
             else
             {
