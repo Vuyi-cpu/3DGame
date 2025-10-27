@@ -22,13 +22,15 @@ public class StunThrow : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Awake()
     {
-        /*if (!PlayerMovement.active)
-        {
+        /*
             controls.Player.Attack.performed += ctx =>
             {
+        if (!PlayerMovement.active)
+        {
                 isThrown = true;
+        }
             };
-        }*/
+        */
     }
 
     // Update is called once per frame
@@ -36,6 +38,7 @@ public class StunThrow : MonoBehaviour
     {
         if (isThrown)
         {
+            rotator.enabled = true;
             throwPosition = player.transform.position + stunLocation.forward * 1000;
             stunRb.isKinematic = false;
             stunRb.useGravity = true;
