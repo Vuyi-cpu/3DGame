@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class InteractableObject : MonoBehaviour
 {
@@ -12,7 +13,8 @@ public class InteractableObject : MonoBehaviour
 
     public string ItemName;
     public SelectionManager SelectionManager;
-    GameObject Weapon, key, health;
+    GameObject Weapon, health, stun;
+    public GameObject key;
     PlayerControls controls;
     [SerializeField] public ThrowWeapon throwWeapon;
     public DoorRotate doorRotate;
@@ -67,13 +69,10 @@ public class InteractableObject : MonoBehaviour
         {
             if (scytheEquipped) 
             {
+                
                 if (swordEquipped)
                 {
                     currentSword.SetActive(false);
-                }
-                else if (stunEquipped)
-                {
-                    currentStun.SetActive(false);
                 }
                 currentScythe.SetActive(true);
                 activeWeapon = currentScythe; 
@@ -89,30 +88,11 @@ public class InteractableObject : MonoBehaviour
                 {
                     currentScythe.SetActive(false);
                 }
-                else if (stunEquipped)
-                {
-                    currentStun.SetActive(false);
-                }
                 currentSword.SetActive(true);
                 activeWeapon = currentSword; 
             }
         };
-
-        controls.Player.Stun.performed += ctx =>
-        {
-            if (stunEquipped && !(throwWeapon.isThrown || throwWeapon.isReturning))
-            {
-                if (scytheEquipped)
-                {
-                    currentScythe.SetActive(false);
-                }
-                else if(swordEquipped)
-                {
-                    currentSword.SetActive(false);
-                }
-                currentStun.SetActive(true);
-            }
-        };
+   
 }
 
     void OnEnable()
@@ -129,11 +109,14 @@ public class InteractableObject : MonoBehaviour
     {
         swordIM.SetActive(false);
         scytheIM.SetActive(false);
+      
     }
 
     private void Update()
     {
         CheckWeapons();
+        
+    
     }
 
     public void CheckWeapons()
@@ -150,10 +133,6 @@ public class InteractableObject : MonoBehaviour
             {
                 Weapon = hit.transform.gameObject;
             }
-            else if (hit.transform.tag == "stun")
-            {
-                Weapon = hit.transform.gameObject;
-            }
             else if (hit.transform.tag == "key")
             {
                 isKey = true;
@@ -167,16 +146,21 @@ public class InteractableObject : MonoBehaviour
                 health = hit.transform.gameObject;
                 Weapon = null;
             }
+            else if (hit.transform.tag == "stun")
+            {
+                isStun = true;
+                stun = hit.transform.gameObject;
+                Weapon = null;
+            }
         }
     }
 
     private void Pickup()
     {
-   
         if (isKey)
         {
             pickup.Play();
-            Destroy(key);
+            key.SetActive(false);
             doorRotate.locked = false;
             doorRotate2.locked = false;
         }
@@ -188,21 +172,20 @@ public class InteractableObject : MonoBehaviour
             if (PlayerState.currentHealth > 200) PlayerState.currentHealth = 200;
             Destroy(health);
         }
+        
+        if (isStun)
+        {
+                currentStun = Weapon;
+                stunEquipped = true;
+
+                currentStun.transform.position = gunPos.position;
+                currentStun.transform.SetParent(gunPos);
+                currentStun.transform.localEulerAngles = new Vector3(0f, 180f, 0f);
+                currentStun.GetComponent<Rigidbody>().isKinematic = true;
+                stunThrow.enabled = true;
+        }
 
         if (Weapon == null) return;
-
-        if (Weapon.tag == "stun" && !stunEquipped)
-        {
-            currentStun = Weapon;
-            currentWeapon = currentStun;
-            stunEquipped = true;
-
-            currentStun.transform.position = gunPos.position;
-            currentStun.transform.SetParent(gunPos);
-            currentStun.transform.localEulerAngles = new Vector3(0f, 180f, 0f);
-            currentStun.GetComponent<Rigidbody>().isKinematic = true;
-            stunThrow.enabled = true;
-        }
 
         if (Weapon.tag == "sword" && !swordEquipped)
         {
@@ -239,6 +222,7 @@ public class InteractableObject : MonoBehaviour
         }
         else if (Weapon.tag == "scythe" && !scytheEquipped)
         {
+         
             currentScythe = Weapon;
             currentWeapon = currentScythe;
             scytheEquipped = true;
@@ -249,9 +233,10 @@ public class InteractableObject : MonoBehaviour
             currentScythe.GetComponent<Rigidbody>().isKinematic = true;
 
             throwWeapon.enabled = true;
-
+            
             emptyIM.SetActive(false);
             scytheIM.SetActive(true);
+            
 
             if (ScytheTut != null)
             {
@@ -270,6 +255,7 @@ public class InteractableObject : MonoBehaviour
 
             currentScythe.SetActive(true);
             activeWeapon = currentScythe;
+            key.SetActive(true);
             return;
         }
     }
