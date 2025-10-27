@@ -211,7 +211,6 @@ public class InteractableObject : MonoBehaviour
                 Cursor.visible = true;
                 katanaButton.katanaActive = true;
             }
-            ItemName = "";
             
             if (scytheEquipped)
                 currentScythe.SetActive(false);
