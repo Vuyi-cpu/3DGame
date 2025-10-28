@@ -20,9 +20,12 @@ public class StunThrow : MonoBehaviour
     PlayerControls controls;
     InteractableObject stunInteract;
 
+    public ParticleSystem explosion;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Awake()
     {
+        explosion.Stop();
         stunInteract = GetComponent<InteractableObject>();
         controls = new PlayerControls();
         Debug.Log("awake set");
@@ -71,8 +74,11 @@ public class StunThrow : MonoBehaviour
     {
         if (stunInteract.stunEquipped)
         {
+            ContactPoint contact = collision.contacts[0];
             stun.SetActive(false);
-            InteractableObject.
+            explosion.transform.position = contact.point;
+            explosion.transform.rotation = Quaternion.LookRotation(contact.normal);
+            explosion.Play();
         }
         
     //    if (collision.gameObject.CompareTag("Enemy"))
