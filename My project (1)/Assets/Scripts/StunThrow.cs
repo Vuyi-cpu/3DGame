@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
@@ -16,8 +17,6 @@ public class StunThrow : MonoBehaviour
     [SerializeField] Vector3 throwPosition; //This is where the scythe is traveling to.
     [SerializeField] Rotator rotator; //Rotator on scythe object. Gets turned on when thrown. And off when not.
     public PlayerMovement PlayerMovement;
-    EnemyAI enemyAI;
-    GameObject enemy;
     public MonoBehaviour[] scriptsToDisable;
     PlayerControls controls;
     InteractableObject stunInteract;
@@ -36,6 +35,7 @@ public class StunThrow : MonoBehaviour
             throwStun();
         };
     }
+    
 
     private void OnEnable()
     {
@@ -57,7 +57,8 @@ public class StunThrow : MonoBehaviour
             //Set new position to move towards and apply to scythe transform.
             Vector3 newPos = Vector3.MoveTowards(stun.transform.position, throwPosition, throwSpeed * Time.deltaTime);
             stun.transform.position = newPos;
-            if (stun.transform.position == throwPosition) Destroy(stun);
+            
+            if (stun.transform.position == throwPosition) stun.SetActive(false);
         }
     }
 
@@ -79,6 +80,12 @@ public class StunThrow : MonoBehaviour
             explosion.transform.rotation = Quaternion.LookRotation(contact.normal);
             explosion.Play();
             stun.SetActive(false);
+            foreach (InteractableObject obj in InteractableObject.AllInteractables.ToArray())
+            {
+                obj.stunEquipped = false;
+                obj.currentScythe.SetActive(true);
+                obj.activeWeapon = obj.currentScythe;
+            }
         }
     }
 

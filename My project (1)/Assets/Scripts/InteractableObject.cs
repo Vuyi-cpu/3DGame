@@ -26,7 +26,7 @@ public class InteractableObject : MonoBehaviour
     public PlayerState PlayerState;
     StunThrow stunThrow;
     public StunThrow stunThrow1;
-    public StunThrow stunThrow2;
+    //public StunThrow stunThrow2;
 
     //vuyi edits
     public Transform gunPos;
@@ -46,6 +46,8 @@ public class InteractableObject : MonoBehaviour
     public bool isKey = false;
     public bool isHealth;
     public bool isStun;
+    public static List<InteractableObject> AllInteractables = new List<InteractableObject>();
+    public bool isStunned;
 
     public AudioSource drop;
     public AudioSource pickup;
@@ -56,7 +58,7 @@ public class InteractableObject : MonoBehaviour
         doorRotate2.locked = true;
         throwWeapon.enabled = false;
         stunThrow1.enabled = false;
-        stunThrow2.enabled = false;
+        //stunThrow2.enabled = false;
         stunRotate.enabled = false;
         controls = new PlayerControls();
         controls.Player.Interact.performed += ctx =>
@@ -105,14 +107,17 @@ public class InteractableObject : MonoBehaviour
 
     }
 
+
     void OnEnable()
     {
+        AllInteractables.Add(this);
         controls.Player.Enable();
     }
 
     void OnDisable()
     {
         controls.Player.Disable();
+        AllInteractables.Remove(this);
     }
 
     public void Start()
