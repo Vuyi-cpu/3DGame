@@ -1,5 +1,6 @@
 using UnityEngine;
-using System.Collections; 
+using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class Level2 : MonoBehaviour
 {
@@ -16,7 +17,8 @@ public class Level2 : MonoBehaviour
         {
             if (shop.neuronCount >= 50)
             {
-                level.SetActive(true);
+                int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
+                SceneManager.LoadScene(currentSceneIndex + 1);
                 Time.timeScale = 0f;
                 Cursor.lockState = CursorLockMode.None;
                 Cursor.visible = true;
