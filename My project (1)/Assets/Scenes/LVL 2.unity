@@ -87157,12 +87157,12 @@ MonoBehaviour:
   speed: 6
   mult: -1
   locked: 0
-  interaction_Info_UI: {fileID: 0}
+  interaction_Info_UI: {fileID: 1202237894}
   door1: {fileID: 14404230}
   door2: {fileID: 1739813758}
-  fightSong: {fileID: 0}
-  wakeSong: {fileID: 0}
-  pause: {fileID: 0}
+  fightSong: {fileID: 2103458252}
+  wakeSong: {fileID: 2118469095}
+  pause: {fileID: 1972633773}
 --- !u!1 &1739813757
 GameObject:
   m_ObjectHideFlags: 0
@@ -104535,17 +104535,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0c5ebd002c79c74ba8ab0a4bff6afc2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  deadsound: {fileID: 0}
-  injuredsound: {fileID: 0}
+  deadsound: {fileID: 1590779350}
+  injuredsound: {fileID: 175063432}
   player: {fileID: 2053550983}
   currentHealth: 0
   maxHealth: 200
-  healthBar: {fileID: 0}
-  gameOverUI: {fileID: 0}
-  bullet: {fileID: 0}
+  healthBar: {fileID: 19825925}
+  gameOverUI: {fileID: 127799675}
+  bullet: {fileID: 1991861378}
   restartDelay: 2
-  criticalHealth: {fileID: 0}
-  hit: {fileID: 0}
+  criticalHealth: {fileID: 342742830}
+  hit: {fileID: 593951436}
   death: 0
 --- !u!136 &2053550986
 CapsuleCollider:
@@ -104612,14 +104612,14 @@ MonoBehaviour:
   controller: {fileID: 2053550990}
   jumpPressed: 0
   active: 0
-  shop: {fileID: 0}
+  shop: {fileID: 355588659}
   throwWeapon: {fileID: 0}
   interactableObject: {fileID: 0}
-  pause: {fileID: 0}
+  pause: {fileID: 1972633773}
   pauseactive: 0
-  pausefirst: {fileID: 0}
-  fightsong: {fileID: 0}
-  dashsound: {fileID: 0}
+  pausefirst: {fileID: 1675091582}
+  fightsong: {fileID: 2103458252}
+  dashsound: {fileID: 1918342325}
   speed: 12
   gravity: -19.62
   jumpHeight: 3
@@ -104628,14 +104628,14 @@ MonoBehaviour:
   groundMask:
     serializedVersion: 2
     m_Bits: 8
-  uisound: {fileID: 0}
+  uisound: {fileID: 1639747152}
   dashFov: 65
   cam: {fileID: 74314888}
   DashSpd: 30
   DashTime: 0.2
   decay: 8
-  wakemusic: {fileID: 0}
-  uipausesound: {fileID: 0}
+  wakemusic: {fileID: 2118469095}
+  uipausesound: {fileID: 981383089}
 --- !u!114 &2053550989
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -107325,18 +107325,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e92acd8ebbf770499256252b8c6f4a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dooropenSound: {fileID: 0}
-  doorclosSound: {fileID: 0}
+  dooropenSound: {fileID: 570658361}
+  doorclosSound: {fileID: 669506065}
   open: 90
   speed: 6
   mult: 1
   locked: 0
-  interaction_Info_UI: {fileID: 0}
+  interaction_Info_UI: {fileID: 1202237894}
   door1: {fileID: 14404230}
   door2: {fileID: 1739813758}
-  fightSong: {fileID: 0}
-  wakeSong: {fileID: 0}
-  pause: {fileID: 0}
+  fightSong: {fileID: 2103458252}
+  wakeSong: {fileID: 2118469095}
+  pause: {fileID: 1972633773}
 --- !u!1 &2092669293
 GameObject:
   m_ObjectHideFlags: 0
