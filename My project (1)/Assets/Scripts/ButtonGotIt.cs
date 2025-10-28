@@ -16,6 +16,7 @@ public class ButtonGotIt : MonoBehaviour
     PlayerState playerlife;
     public GameObject deathScreen;
     public AudioSource uisound;
+    bool controlTut = false;
     public void Start()
     {
         PlayerMovement.enabled = false;
@@ -28,6 +29,7 @@ public class ButtonGotIt : MonoBehaviour
 
     public void CloseTutorial()
     {
+        controlTut = true;
         uisound.Play();
         if (katanaActive) Destroy(katanaTutorial);
         if (scytheActive) Destroy(scytheTutorial);
