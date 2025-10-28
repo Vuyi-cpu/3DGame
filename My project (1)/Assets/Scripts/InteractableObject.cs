@@ -24,7 +24,9 @@ public class InteractableObject : MonoBehaviour
     public PlayerMovement PlayerMovement;
     public MouseMovement MouseMovement;
     public PlayerState PlayerState;
-    public StunThrow stunThrow;
+    StunThrow stunThrow;
+    public StunThrow stunThrow1;
+    public StunThrow stunThrow2;
 
     //vuyi edits
     public Transform gunPos;
@@ -53,8 +55,8 @@ public class InteractableObject : MonoBehaviour
         doorRotate.locked = true;
         doorRotate2.locked = true;
         throwWeapon.enabled = false;
-        stunThrow.enabled = false;
-        Debug.Log("stunThrow disabled");
+        stunThrow1.enabled = false;
+        stunThrow2.enabled = false;
         stunRotate.enabled = false;
         controls = new PlayerControls();
         controls.Player.Interact.performed += ctx =>
@@ -181,6 +183,7 @@ public class InteractableObject : MonoBehaviour
 
         if (Weapon.tag == "stun" && !stunEquipped)
         {
+            stunThrow = Weapon.GetComponent<StunThrow>();
             currentStun = Weapon;
             stunEquipped = true;
 
@@ -189,7 +192,6 @@ public class InteractableObject : MonoBehaviour
             currentStun.transform.localEulerAngles = new Vector3(0f, -10f, 0f);
             currentStun.GetComponent<Rigidbody>().isKinematic = true;
             stunThrow.enabled = true;
-            Debug.Log("stunThrow enabled");
 
             if (scytheEquipped) currentScythe.SetActive(false);
             if (swordEquipped) currentSword.SetActive(false);

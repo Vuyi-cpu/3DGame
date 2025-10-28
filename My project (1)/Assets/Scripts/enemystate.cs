@@ -33,15 +33,18 @@ public class Enemystate : MonoBehaviour
     private bool isDead = false;
     private bool swinging;
     GameObject katana;
+    EnemyAI enemyAI;
 
 
     public AudioSource dmg;
     public AudioSource killed;
 
     public ParticleSystem scrapeParticles;
+    public ParticleSystem stunParticles;
 
     void Awake()
     {
+        stunParticles.Stop();
         neuronText = neuronInfo.GetComponent<TextMeshProUGUI>();
         controls = new PlayerControls();
 
@@ -138,6 +141,27 @@ public class Enemystate : MonoBehaviour
         {
             dmg.Play();
         }
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("stun"))
+        {
+            enemyAI = GetComponentInParent<EnemyAI>();
+            enemyAI.enabled = false;
+            Debug.Log("AI disabled on: " + enemy.name);
+            StartCoroutine(stunEnemy());
+        }
+    }
+
+    public IEnumerator stunEnemy()
+    {
+        stunParticles.transform.position = enemy.transform.position;
+        stunParticles.Play();
+        yield return new WaitForSeconds(3f);
+        if (enemy != null) enemyAI.enabled = true;
+        Debug.Log("AI renabled");
+        stunParticles.Stop();
     }
 
     private void OnEnable() => controls.Player.Enable();

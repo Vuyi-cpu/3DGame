@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using TMPro;
 using UnityEngine;
 
@@ -15,7 +16,8 @@ public class StunThrow : MonoBehaviour
     [SerializeField] Vector3 throwPosition; //This is where the scythe is traveling to.
     [SerializeField] Rotator rotator; //Rotator on scythe object. Gets turned on when thrown. And off when not.
     public PlayerMovement PlayerMovement;
-    public EnemyAI enemyAI;
+    EnemyAI enemyAI;
+    GameObject enemy;
     public MonoBehaviour[] scriptsToDisable;
     PlayerControls controls;
     InteractableObject stunInteract;
@@ -28,12 +30,10 @@ public class StunThrow : MonoBehaviour
         explosion.Stop();
         stunInteract = GetComponent<InteractableObject>();
         controls = new PlayerControls();
-        Debug.Log("awake set");
         controls.Player.Attack.performed += ctx =>
         {
             if (isThrown) return;
             throwStun();
-            Debug.Log("throwing");
         };
     }
 
@@ -75,29 +75,12 @@ public class StunThrow : MonoBehaviour
         if (stunInteract.stunEquipped)
         {
             ContactPoint contact = collision.contacts[0];
-            stun.SetActive(false);
             explosion.transform.position = contact.point;
             explosion.transform.rotation = Quaternion.LookRotation(contact.normal);
             explosion.Play();
+            stun.SetActive(false);
         }
-        
-    //    if (collision.gameObject.CompareTag("Enemy"))
-    //    {
-    //        foreach (MonoBehaviour script in scriptsToDisable)
-    //        {
-    //            if (enemyAI != null)
-    //                enemyAI.enabled = false;
-    //        }
-
-    //        // Wait for duration
-    //        yield return new WaitForSeconds(3f);
-
-    //        // Re-enable scripts
-    //        foreach (MonoBehaviour script in scriptsToDisable)
-    //        {
-    //            if (enemyAI != null)
-    //                enemyAI.enabled = true;
-    //        }
-    //    }
     }
+
+    
 }
