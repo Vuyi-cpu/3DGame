@@ -99,8 +99,11 @@ public class PlayerMovement : MonoBehaviour
 
         };
     }
-  
 
+    private void Start()
+    {
+        Time.timeScale = 1f;
+    }
     private void Update()
     {
         if (wakemusic.isPlaying) {
@@ -176,7 +179,11 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnEnable()
     {
+        if (controls == null)
+            controls = new PlayerControls();
+
         controls.Player.Enable();
+        jumpPressed = false;
     }
 
     private void OnDisable()

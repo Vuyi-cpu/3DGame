@@ -16,11 +16,22 @@ public class ButtonGotIt : MonoBehaviour
     PlayerState playerlife;
     public GameObject deathScreen;
     public AudioSource uisound;
-    bool controlTut = false;
+    static bool  controlTut = false;
     public void Start()
     {
-        PlayerMovement.enabled = false;
-        MouseMovement.enabled = false;
+        Time.timeScale = 1f;
+        if (controlTut)
+        {
+            controlTut = true;
+            PlayerMovement.enabled = true;
+            MouseMovement.enabled = true;
+
+        }
+        else
+        {
+            PlayerMovement.enabled = false;
+            MouseMovement.enabled = false;
+        }
         playerlife = FindFirstObjectByType<PlayerState>();
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
