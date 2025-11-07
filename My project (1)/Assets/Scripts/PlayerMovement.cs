@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
-using UnityEngine.tvOS;
+
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -181,11 +181,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnEnable()
     {
-        if (controls == null)
-            controls = new PlayerControls();
-
-        controls.Player.Enable();
-        jumpPressed = false;
+        controls.Player.Enable();  
     }
 
     private void OnDisable()

@@ -19,10 +19,8 @@ public class ButtonGotIt : MonoBehaviour
     static bool  controlTut = false;
     public void Start()
     {
-        Time.timeScale = 1f;
         if (controlTut)
         {
-            controlTut = true;
             PlayerMovement.enabled = true;
             MouseMovement.enabled = true;
 
