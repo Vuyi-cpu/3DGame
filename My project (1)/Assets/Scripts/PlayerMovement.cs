@@ -11,7 +11,7 @@ public class PlayerMovement : MonoBehaviour
 
     PlayerControls controls;
     Vector2 move;
-    public bool jumpPressed, active;
+    public bool jumpPressed, active, dashed;
     public GameObject shop;
     MouseMovement MouseMovement;
     public ThrowWeapon throwWeapon;
@@ -59,7 +59,7 @@ public class PlayerMovement : MonoBehaviour
         state = Object.FindFirstObjectByType<PlayerState>();
         controls.Player.Move.performed += ctx => move = ctx.ReadValue<Vector2>();
         controls.Player.Move.canceled += ctx => move = Vector2.zero;
-        controls.Player.Dash.performed += ctx => StartCoroutine(Dash());
+        controls.Player.Dash.performed += ctx => { if (!dashed) StartCoroutine(Dash()); };
         controls.Player.Jump.performed += ctx => jumpPressed = true;
         groundMask = LayerMask.GetMask("Ground", "Environment");
         controls.Player.Shop.performed += ctx =>
@@ -153,12 +153,12 @@ public class PlayerMovement : MonoBehaviour
 
         IEnumerator Dash()
     {
+        dashed = true;
         dashsound.Play();
         Vector3 dashDir = (transform.right * move.x + transform.forward * move.y).normalized;
         cam.DoFov(dashFov, 0.1f);
 
         float dashSpeed = DashSpd;
-
         float elapsed = 0f;
         while (elapsed < DashTime)
         {
@@ -174,6 +174,8 @@ public class PlayerMovement : MonoBehaviour
             controller.Move(dashDir * momentum * Time.deltaTime);
             yield return null;
         }
+        yield return new WaitForSeconds(0.5f);
+        dashed = false;
     }
 
 
