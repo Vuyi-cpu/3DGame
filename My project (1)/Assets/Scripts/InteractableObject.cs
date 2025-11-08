@@ -270,57 +270,6 @@ public class InteractableObject : MonoBehaviour
         }
     }
 
-    //public void Drop()
-    //{
-    //    if (activeWeapon == null || throwWeapon.isThrown || throwWeapon.isReturning) return;
-
-    //    drop.Play();
-    //    if (activeWeapon == currentSword)
-    //    {
-    //        swordEquipped = false;
-    //        swordIM.SetActive(false);
-    //        rotatorSwing.enabled = false;
-    //    }
-    //    else if (activeWeapon == currentScythe)
-    //    {
-    //        scytheEquipped = false;
-    //        scytheIM.SetActive(false);
-    //        throwWeapon.enabled = false;
-    //    }
-
-    //    emptyIM.SetActive(true);
-
-      
-    //    activeWeapon.transform.parent = null;
-    //    Rigidbody rb = activeWeapon.GetComponent<Rigidbody>();
-    //    if (rb != null)
-    //    {
-    //        rb.isKinematic = false;
-    //        rb.useGravity = true;
-    //        rb.AddForce(Camera.main.transform.forward * 2f, ForceMode.Impulse);
-    //    }
-
-    //    activeWeapon = null; 
-
-        
-    //    if (swordEquipped)
-    //    {
-    //        currentSword.SetActive(true);
-    //        activeWeapon = currentSword;
-    //        swordIM.SetActive(true);
-    //        rotatorSwing.enabled = true;
-    //        emptyIM.SetActive(false);
-    //    }
-    //    else if (scytheEquipped)
-    //    {
-    //        currentScythe.SetActive(true);
-    //        activeWeapon = currentScythe;
-    //        scytheIM.SetActive(true);
-    //        throwWeapon.enabled = true;
-    //        emptyIM.SetActive(false);
-    //    }
-    //}
-
 
     public string GetItemName()
     {
