@@ -54,31 +54,39 @@ public class EnemyAI : MonoBehaviour
         playerSeenDistance = Physics.CheckSphere(transform.position, sightDistance, PlayerCheck);
         playerAttackDistance = Physics.CheckSphere(transform.position, attackDistance, PlayerCheck);
         playerRejectDistance = Physics.CheckSphere(transform.position, rejectDistance, PlayerCheck);
+        Vector3 directionToPlayer = (player.position - transform.position).normalized;
+        RaycastHit hit;
 
-        if (!playerSeenDistance && !playerAttackDistance)
+        if (Physics.Raycast(transform.position + Vector3.up * 1.0f, directionToPlayer, out hit, sightDistance+40))
         {
-            agent.speed = defaultSpeed;
-            Patrolling();
-        }
-        if (playerSeenDistance && !playerAttackDistance)
-        {
-            agent.speed = chaseSpeed;
-            ChasePlayer();
-        }
-        if (playerSeenDistance && playerAttackDistance)
-        {
-            agent.SetDestination(transform.position);
-            if(playerRejectDistance)
+            if (hit.transform.CompareTag("Player"))
             {
-                Vector3 dirToPlayer = (transform.position - player.position).normalized;
-                // target position = player's position + offset
-                Vector3 targetPos = player.position + dirToPlayer * rejectDistance;
-                agent.SetDestination(targetPos);
-            }
-            AttackPlayer();
-        }
+                if (!playerSeenDistance && !playerAttackDistance)
+                {
+                    agent.speed = defaultSpeed;
+                    Patrolling();
+                }
+                if (playerSeenDistance && !playerAttackDistance)
+                {
+                    agent.speed = chaseSpeed;
+                    ChasePlayer();
+                }
+                if (playerSeenDistance && playerAttackDistance)
+                {
+                    agent.SetDestination(transform.position);
+                    if (playerRejectDistance)
+                    {
+                        Vector3 dirToPlayer = (transform.position - player.position).normalized;
+                        // target position = player's position + offset
+                        Vector3 targetPos = player.position + dirToPlayer * rejectDistance;
+                        agent.SetDestination(targetPos);
+                    }
+                    AttackPlayer();
+                }
 
-        CheckIfStuck();
+                CheckIfStuck();
+            }
+        }
     }
 
     private void Patrolling()
