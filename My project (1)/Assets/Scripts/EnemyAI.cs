@@ -3,10 +3,11 @@ using UnityEngine.AI;
 
 public class EnemyAI : MonoBehaviour
 {
-    public NavMeshAgent agent;
+    private NavMeshAgent agent;
     public Transform player;
     public LayerMask GroundCheck, PlayerCheck;
     public GameObject projectile;
+    public PlayerState state;
 
     // Patrolling
     public Vector3 walkPoint;
@@ -32,6 +33,7 @@ public class EnemyAI : MonoBehaviour
 
     private void Awake()
     {
+        agent = GetComponent<NavMeshAgent>();
         walkPointSet = false;
         defaultSpeed = patrolSpeed;
         agent.speed = defaultSpeed;
@@ -155,8 +157,14 @@ public class EnemyAI : MonoBehaviour
         }
         else if (!Attacked && gameObject.CompareTag("Melee"))
         {
-
+            ParticleSystem[] glint = GetComponentsInChildren<ParticleSystem>();
+            glint[0].Play();
+            glint[1].Play();
             Invoke(nameof(ResetAttack), timeDelayAttacks);
+            if(playerSeenDistance && playerAttackDistance)
+            {
+                state.takeDamage();
+            }
             Attacked = true;
         }
 

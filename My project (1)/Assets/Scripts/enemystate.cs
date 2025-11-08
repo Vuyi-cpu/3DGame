@@ -25,8 +25,8 @@ public class Enemystate : MonoBehaviour
     public ButtonGotIt shopButton;
 
     [Header("Animation")]
-    [SerializeField] private Animator animator;
-    [SerializeField] private NavMeshAgent agent;
+    private Animator animator;
+    private NavMeshAgent agent;
 
     private TextMeshProUGUI neuronText;
     private PlayerControls controls;
@@ -44,6 +44,8 @@ public class Enemystate : MonoBehaviour
 
     void Awake()
     {
+        animator = GetComponent<Animator>();
+        agent = GetComponent<NavMeshAgent>();
         stunParticles.Stop();
         neuronText = neuronInfo.GetComponent<TextMeshProUGUI>();
         controls = new PlayerControls();

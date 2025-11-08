@@ -53,26 +53,28 @@ public class PlayerState : MonoBehaviour
     }
     public void OnTriggerEnter(Collider other)
     {
-
         if (other.CompareTag("Bullet"))
         {
+            takeDamage();
+        }
+    }
+    
+    public void takeDamage()
+    {
             if (hit != null)
             {
                 hit.TriggerDamageEffect();
             }
 
             currentHealth -= 10;
-         
+
             currentHealth = Mathf.Max(currentHealth, 0);
 
-   
             if (currentHealth == 0)
             {
                 dead();
             }
-        }
     }
-
 
     void dead()
     {
