@@ -158,6 +158,7 @@ public class EnemyAI : MonoBehaviour
         else if (!Attacked && gameObject.CompareTag("Melee"))
         {
             ParticleSystem[] glint = GetComponentsInChildren<ParticleSystem>();
+            Invoke(nameof(ResetAttack), timeDelayAttacks);
             glint[0].Play();
             glint[1].Play();
             Invoke(nameof(ResetAttack), timeDelayAttacks);

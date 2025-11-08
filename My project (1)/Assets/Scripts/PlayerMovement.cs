@@ -156,6 +156,8 @@ public class PlayerMovement : MonoBehaviour
         dashed = true;
         dashsound.Play();
         Vector3 dashDir = (transform.right * move.x + transform.forward * move.y).normalized;
+        dashDir.y = 0f;
+        dashDir.Normalize();
         cam.DoFov(dashFov, 0.1f);
 
         float dashSpeed = DashSpd;
