@@ -5,7 +5,7 @@ public class EnemyAI : MonoBehaviour
 {
     private NavMeshAgent agent;
     public Transform player;
-    public LayerMask GroundCheck, PlayerCheck;
+    public LayerMask GroundCheck, PlayerCheck, obstructionMask;
     public GameObject projectile;
     public PlayerState state;
 
@@ -59,6 +59,11 @@ public class EnemyAI : MonoBehaviour
 
         if (Physics.Raycast(transform.position + Vector3.up * 1.0f, directionToPlayer, out hit, sightDistance+40))
         {
+            if (((1 << hit.transform.gameObject.layer) & obstructionMask) != 0)
+            {
+                // Hit a wall first — do NOT attack
+                return;
+            }
             if (hit.transform.CompareTag("Player"))
             {
                 if (!playerSeenDistance && !playerAttackDistance)
