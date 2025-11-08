@@ -161,7 +161,7 @@ public class EnemyAI : MonoBehaviour
             glint[0].Play();
             glint[1].Play();
             Invoke(nameof(ResetAttack), timeDelayAttacks);
-            if(playerSeenDistance && playerAttackDistance)
+            if (playerSeenDistance && playerAttackDistance)
             {
                 state.takeDamage();
             }
