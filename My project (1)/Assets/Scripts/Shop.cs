@@ -14,6 +14,7 @@ public class Shop : MonoBehaviour
     public TextMeshProUGUI upgradeHealthText;
 
     public float neuronCount;
+    public float EnemiesKilled;
     public float katanaDamage;
     public ThrowWeapon throwWeapon;
     public Enemystate enemystate;

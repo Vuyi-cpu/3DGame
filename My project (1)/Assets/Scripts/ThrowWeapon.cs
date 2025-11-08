@@ -154,6 +154,7 @@ public class ThrowWeapon : MonoBehaviour
                         playerHealth.currentHealth += 50;
                         if(playerHealth.currentHealth >= playerHealth.maxHealth) playerHealth.currentHealth = playerHealth.maxHealth;
                         shop.neuronCount += 50f;
+                        shop.EnemiesKilled += 50f;
                         neuronText.text = shop.neuronCount.ToString();
                     }
                     else

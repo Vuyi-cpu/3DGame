@@ -34,6 +34,7 @@ public class Enemystate : MonoBehaviour
     private bool swinging;
     GameObject katana;
     EnemyAI enemyAI;
+   
 
 
     public AudioSource dmg;
@@ -134,6 +135,7 @@ public class Enemystate : MonoBehaviour
 
             playerHealth.currentHealth = Mathf.Min(playerHealth.currentHealth + 50, playerHealth.maxHealth);
             shop.neuronCount += 80f;
+            shop.EnemiesKilled += 80f;
             neuronText.text = shop.neuronCount.ToString();
 
             // Destroy after delay

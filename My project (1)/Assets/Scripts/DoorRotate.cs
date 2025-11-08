@@ -14,6 +14,8 @@ public class DoorRotate : MonoBehaviour
     private Quaternion rotationshut;
     private Quaternion rotationopen;
     private Coroutine coroutine;
+    public int requiredKills;
+    public Shop shop;
 
     public GameObject interaction_Info_UI;
     private TextMeshProUGUI interaction_text;
@@ -22,6 +24,7 @@ public class DoorRotate : MonoBehaviour
     public Transform door2;
 
     PlayerControls controls;
+    Enemystate enemystate;
 
     public AudioSource fightSong;
     public AudioSource wakeSong;
@@ -102,8 +105,9 @@ public class DoorRotate : MonoBehaviour
 
         if (Physics.Raycast(ray, out RaycastHit hit, 5f))
         {
-            if (locked && (hit.transform == door1 || hit.transform == door2))
+            if ((locked && (hit.transform == door1 || hit.transform == door2)))
             {
+                
                 interaction_text.text = "Locked.";
                 interaction_Info_UI.SetActive(true);
                 return;
@@ -125,6 +129,10 @@ public class DoorRotate : MonoBehaviour
     {
         if (!locked)
         {
+            if((shop.EnemiesKilled / 50) < requiredKills)
+            {
+                yield break;
+            }
             if (isopen)
             {
                 doorclosSound.Stop();
@@ -160,4 +168,5 @@ public class DoorRotate : MonoBehaviour
         }
     }
 }
+
 
