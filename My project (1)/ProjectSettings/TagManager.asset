@@ -17,6 +17,8 @@ TagManager:
   - healthPack
   - door
   - stun
+  - Shooter
+  - Melee
   layers:
   - Default
   - TransparentFX

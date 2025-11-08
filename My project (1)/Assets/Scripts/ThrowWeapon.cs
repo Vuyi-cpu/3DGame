@@ -129,7 +129,7 @@ public class ThrowWeapon : MonoBehaviour
             isThrown = false;
             isReturning = true;
 
-            if (collision.gameObject.CompareTag("Enemy"))
+            if (collision.gameObject.CompareTag("Shooter") || collision.gameObject.CompareTag("Melee"))
             {
                 ContactPoint contact = collision.contacts[0];
                 scrapeParticles.transform.position = contact.point;

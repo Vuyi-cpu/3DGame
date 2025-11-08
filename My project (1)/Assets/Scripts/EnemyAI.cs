@@ -135,7 +135,7 @@ public class EnemyAI : MonoBehaviour
         /*Vector3 direction = (player.position - transform.position).normalized;
         Vector3 targetPosition = player.position - direction;
         agent.SetDestination(targetPosition);*/
-        if (!Attacked)
+        if (!Attacked && gameObject.CompareTag("Shooter"))
         {
             burst++;
             Vector3 enemyGun = new Vector3(transform.position.x, transform.position.y - 1f, transform.position.z);
@@ -151,9 +151,15 @@ public class EnemyAI : MonoBehaviour
                 Invoke(nameof(ResetAttack), timeDelayBurst);
                 burst = 0;
             }
-
             Attacked = true;
         }
+        else if (!Attacked && gameObject.CompareTag("Melee"))
+        {
+
+            Invoke(nameof(ResetAttack), timeDelayAttacks);
+            Attacked = true;
+        }
+
     }
 
     private void ResetAttack()
