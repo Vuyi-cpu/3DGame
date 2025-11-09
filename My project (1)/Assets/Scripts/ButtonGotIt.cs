@@ -7,12 +7,14 @@ public class ButtonGotIt : MonoBehaviour
     public GameObject katanaTutorial;
     public GameObject scytheTutorial;
     public GameObject shopTutorial;
+    public GameObject stunTutorial; //ASSIGN IN INSPECTOR
     public PlayerMovement PlayerMovement; 
     public MouseMovement MouseMovement;
     public GameObject buttonfirst;
     public bool katanaActive;
     public bool scytheActive;
     public bool shopActive;
+    public bool stunActive;
     PlayerState playerlife;
     public GameObject deathScreen;
     public AudioSource uisound;
@@ -43,6 +45,7 @@ public class ButtonGotIt : MonoBehaviour
         if (katanaActive) Destroy(katanaTutorial);
         if (scytheActive) Destroy(scytheTutorial);
         if (shopActive) Destroy(shopTutorial);
+        if (stunActive) Destroy(stunTutorial);
         if (playerlife.currentHealth<=0) deathScreen.SetActive(true);
         Time.timeScale = 1f;
         tutorial.SetActive(false);

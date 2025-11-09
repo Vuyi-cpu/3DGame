@@ -10,6 +10,7 @@ public class InteractableObject : MonoBehaviour
     public GameObject scytheIM;
     public GameObject KatanaTut;
     public GameObject ScytheTut;
+    public GameObject StunTut; //INSERT TELEPHONE TUT IN INSPECTOR
 
     public string ItemName;
     public SelectionManager SelectionManager;
@@ -21,6 +22,7 @@ public class InteractableObject : MonoBehaviour
     public DoorRotate doorRotate2;
     public ButtonGotIt katanaButton;
     public ButtonGotIt scytheButton;
+    public ButtonGotIt stunButton; //INSERT BUTTON IN INSPECTOR
     public PlayerMovement PlayerMovement;
     public MouseMovement MouseMovement;
     public PlayerState PlayerState;
@@ -191,6 +193,17 @@ public class InteractableObject : MonoBehaviour
             currentStun.transform.localEulerAngles = new Vector3(0f, -10f, 0f);
             currentStun.GetComponent<Rigidbody>().isKinematic = true;
             stunThrow.enabled = true;
+
+            if (StunTut != null)
+            {
+                pickup.Play();
+                StunTut.SetActive(true);
+                PlayerMovement.enabled = false;
+                MouseMovement.enabled = false;
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
+                stunButton.stunActive = true;
+            }
 
             if (scytheEquipped) currentScythe.SetActive(false);
             if (swordEquipped) currentSword.SetActive(false);

@@ -66,11 +66,18 @@ public class EnemyAI : MonoBehaviour
         }
 
        
-        if (!hasLineOfSight || distanceToPlayer > sightDistance)
+        if (hasLineOfSight && distanceToPlayer > sightDistance)
         {
-        
-            agent.speed = patrolSpeed;
-            Patrolling();
+            if (gameObject.CompareTag("Daisuke"))
+            {
+                agent.speed = chaseSpeed;
+                ChasePlayer();
+            }
+            else
+            {
+                agent.speed = patrolSpeed;
+                Patrolling();
+            }
         }
         else if (hasLineOfSight && distanceToPlayer > attackDistance)
         {
@@ -184,7 +191,10 @@ public class EnemyAI : MonoBehaviour
             }
             Attacked = true;
         }
+        else if (!Attacked && gameObject.CompareTag("Daisuke"))
+        {
 
+        }
     }
 
     private void ResetAttack()
