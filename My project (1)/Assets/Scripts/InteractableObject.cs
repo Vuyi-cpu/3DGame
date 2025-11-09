@@ -26,7 +26,7 @@ public class InteractableObject : MonoBehaviour
     public PlayerMovement PlayerMovement;
     public MouseMovement MouseMovement;
     public PlayerState PlayerState;
-    StunThrow stunThrow;
+    public StunThrow stunThrow;
     public StunThrow stunThrow1;
     //public StunThrow stunThrow2;
 
@@ -196,12 +196,15 @@ public class InteractableObject : MonoBehaviour
 
             if (StunTut != null)
             {
+                Debug.Log("stun equipped");
                 pickup.Play();
                 StunTut.SetActive(true);
                 PlayerMovement.enabled = false;
                 MouseMovement.enabled = false;
                 Cursor.lockState = CursorLockMode.None;
                 Cursor.visible = true;
+                MouseMovement.enabled = false;
+                stunThrow.enabled = false;
                 stunButton.stunActive = true;
             }
 

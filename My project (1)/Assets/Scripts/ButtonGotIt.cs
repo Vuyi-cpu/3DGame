@@ -10,7 +10,7 @@ public class ButtonGotIt : MonoBehaviour
     public GameObject stunTutorial; //ASSIGN IN INSPECTOR
     public PlayerMovement PlayerMovement; 
     public MouseMovement MouseMovement;
-    public GameObject buttonfirst;
+    InteractableObject interactableObject;
     public bool katanaActive;
     public bool scytheActive;
     public bool shopActive;
@@ -33,9 +33,9 @@ public class ButtonGotIt : MonoBehaviour
             MouseMovement.enabled = false;
         }
         playerlife = FindFirstObjectByType<PlayerState>();
+        interactableObject = FindFirstObjectByType<InteractableObject>();
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
-        EventSystem.current.SetSelectedGameObject(buttonfirst);
     }
 
     public void CloseTutorial()
@@ -54,6 +54,11 @@ public class ButtonGotIt : MonoBehaviour
         PlayerMovement.pauseactive = false;
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+        Time.timeScale = 1f;
+        if (interactableObject != null && interactableObject.stunThrow != null)
+        {
+            interactableObject.stunThrow.enabled = true;
+        }
         EventSystem.current.SetSelectedGameObject(null);
     }
 }

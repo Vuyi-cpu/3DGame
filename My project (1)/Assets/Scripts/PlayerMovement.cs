@@ -15,7 +15,6 @@ public class PlayerMovement : MonoBehaviour
     public GameObject shop;
     MouseMovement MouseMovement;
     public ThrowWeapon throwWeapon;
-    public InteractableObject interactableObject;
     public GameObject pause;
     public bool pauseactive;
     public GameObject pausefirst;
