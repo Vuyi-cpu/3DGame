@@ -16,6 +16,9 @@ public class DoorRotate : MonoBehaviour
     private Coroutine coroutine;
     public int requiredKills;
     public Shop shop;
+    public GameObject requiredKey;
+    public InteractableObject interactable;
+
 
     public GameObject interaction_Info_UI;
     private TextMeshProUGUI interaction_text;
@@ -107,7 +110,7 @@ public class DoorRotate : MonoBehaviour
         {
             if ((locked && (hit.transform == door1 || hit.transform == door2)))
             {
-                
+
                 interaction_text.text = "Locked.";
                 interaction_Info_UI.SetActive(true);
                 return;
@@ -127,46 +130,60 @@ public class DoorRotate : MonoBehaviour
 
     private IEnumerator MoveDoor()
     {
-        if (!locked)
+        if (locked)
         {
-            if((shop.EnemiesKilled / 50) < requiredKills)
+            if (interactable == null || interactable.key == null || requiredKey == null || interactable.key.name != requiredKey.name)
             {
+                interaction_text.text = "Locked.";
                 yield break;
-            }
-            if (isopen)
-            {
-                doorclosSound.Stop();
-                dooropenSound.Stop();
-                doorclosSound.Play();
             }
             else
             {
-                dooropenSound.Stop();
-                doorclosSound.Stop();
-                dooropenSound.Play();
-
-                if (!fightPlayed && fightSong != null)
-                {
-                    if (wakeSong != null && wakeSong.isPlaying)
-                        wakeSong.Stop();
-                    fightSong.Play();
-                    lastPlayedSong = fightSong;
-                    fightPlayed = true;
-                }
+                locked = false;
+              
             }
-
-            Quaternion endRotate = isopen ? rotationshut : rotationopen;
-            isopen = !isopen;
-
-            while (Quaternion.Angle(transform.rotation, endRotate) > 0.01f)
-            {
-                transform.rotation = Quaternion.Lerp(transform.rotation, endRotate, Time.deltaTime * speed);
-                yield return null;
-            }
-
-            transform.rotation = endRotate;
         }
+
+        if ((shop.EnemiesKilled / 50) < requiredKills)
+        {
+            interaction_text.text = "Locked.";
+            yield break;
+        }
+
+        if (isopen)
+        {
+            doorclosSound.Stop();
+            dooropenSound.Stop();
+            doorclosSound.Play();
+        }
+        else
+        {
+            dooropenSound.Stop();
+            doorclosSound.Stop();
+            dooropenSound.Play();
+
+            if (!fightPlayed && fightSong != null)
+            {
+                if (wakeSong != null && wakeSong.isPlaying)
+                    wakeSong.Stop();
+                fightSong.Play();
+                lastPlayedSong = fightSong;
+                fightPlayed = true;
+            }
+        }
+
+        Quaternion endRotate = isopen ? rotationshut : rotationopen;
+        isopen = !isopen;
+
+        while (Quaternion.Angle(transform.rotation, endRotate) > 0.01f)
+        {
+            transform.rotation = Quaternion.Lerp(transform.rotation, endRotate, Time.deltaTime * speed);
+            yield return null;
+        }
+
+        transform.rotation = endRotate;
     }
 }
+
 
 

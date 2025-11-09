@@ -51,48 +51,51 @@ public class EnemyAI : MonoBehaviour
 
     private void Update()
     {
-        playerSeenDistance = Physics.CheckSphere(transform.position, sightDistance, PlayerCheck);
-        playerAttackDistance = Physics.CheckSphere(transform.position, attackDistance, PlayerCheck);
-        playerRejectDistance = Physics.CheckSphere(transform.position, rejectDistance, PlayerCheck);
-        Vector3 directionToPlayer = (player.position - transform.position).normalized;
-        RaycastHit hit;
+      
+        float distanceToPlayer = Vector3.Distance(transform.position, player.position);
 
-        if (Physics.Raycast(transform.position + Vector3.up * 1.0f, directionToPlayer, out hit, sightDistance+40))
+      
+        bool hasLineOfSight = false;
+        Vector3 directionToPlayer = (player.position - transform.position).normalized;
+        if (Physics.Raycast(transform.position + Vector3.up * 1f, directionToPlayer, out RaycastHit hit, sightDistance + 40f))
         {
-            if (((1 << hit.transform.gameObject.layer) & obstructionMask) != 0)
-            {
-                // Hit a wall first — do NOT attack
-                return;
-            }
             if (hit.transform.CompareTag("Player"))
             {
-                if (!playerSeenDistance && !playerAttackDistance)
-                {
-                    agent.speed = defaultSpeed;
-                    Patrolling();
-                }
-                if (playerSeenDistance && !playerAttackDistance)
-                {
-                    agent.speed = chaseSpeed;
-                    ChasePlayer();
-                }
-                if (playerSeenDistance && playerAttackDistance)
-                {
-                    agent.SetDestination(transform.position);
-                    if (playerRejectDistance)
-                    {
-                        Vector3 dirToPlayer = (transform.position - player.position).normalized;
-                        // target position = player's position + offset
-                        Vector3 targetPos = player.position + dirToPlayer * rejectDistance;
-                        agent.SetDestination(targetPos);
-                    }
-                    AttackPlayer();
-                }
-
-                CheckIfStuck();
+                hasLineOfSight = true;
             }
         }
+
+       
+        if (!hasLineOfSight || distanceToPlayer > sightDistance)
+        {
+        
+            agent.speed = patrolSpeed;
+            Patrolling();
+        }
+        else if (hasLineOfSight && distanceToPlayer > attackDistance)
+        {
+           
+            agent.speed = chaseSpeed;
+            ChasePlayer();
+        }
+        else if (hasLineOfSight && distanceToPlayer <= attackDistance)
+        {
+           
+            agent.SetDestination(transform.position); 
+            if (distanceToPlayer < rejectDistance)
+            {
+             
+                Vector3 dirToPlayer = (transform.position - player.position).normalized;
+                Vector3 targetPos = player.position + dirToPlayer * rejectDistance;
+                agent.SetDestination(targetPos);
+            }
+            AttackPlayer();
+        }
+
+      
+        CheckIfStuck();
     }
+
 
     private void Patrolling()
     {
@@ -139,7 +142,7 @@ public class EnemyAI : MonoBehaviour
     private void ChasePlayer()
     {
         Vector3 direction = (player.position - transform.position).normalized;
-        Vector3 targetPosition = player.position - direction ;
+        Vector3 targetPosition = player.position - direction;
         agent.SetDestination(targetPosition);
     }
 
@@ -207,4 +210,18 @@ public class EnemyAI : MonoBehaviour
             stuckCheckTimer = 0f;
         }
     }
+    bool HasLineOfSight()
+    {
+        Vector3 dir = (player.position - transform.position).normalized;
+        if (Physics.Raycast(transform.position + Vector3.up * 1f, dir, out RaycastHit hit, sightDistance))
+        {
+            if (hit.transform.CompareTag("Player"))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }
+
