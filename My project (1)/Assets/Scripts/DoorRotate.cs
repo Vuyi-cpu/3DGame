@@ -112,7 +112,7 @@ public class DoorRotate : MonoBehaviour
 
         if (Physics.Raycast(ray, out RaycastHit hit, 5f))
         {
-            if ((locked && (hit.transform == door1 || hit.transform == door2)))
+            if ((((shop.EnemiesKilled / 50) < requiredKills||locked) && (hit.transform == door1 || hit.transform == door2)))
             {
                 interaction_text.text = "Locked.";
                 interaction_Info_UI.SetActive(true);
@@ -135,7 +135,7 @@ public class DoorRotate : MonoBehaviour
     {
         if (locked)
         {
-            if (interactable == null || interactable.key == null || requiredKey == null || interactable.key.name != requiredKey.name)
+            if (interactable.key == null || interactable.key.name != requiredKey.name)
             {
                 
                 showingLockedMessage = true;
@@ -147,6 +147,7 @@ public class DoorRotate : MonoBehaviour
             }
             else
             {
+                
                 locked = false;
             }
         }
