@@ -71,7 +71,6 @@ public class StunThrow : MonoBehaviour
     {
         stunLocation.localEulerAngles = new Vector3(0f, 0f, 0f);
         throwPosition = player.transform.position + stunLocation.forward * stunDistance;
-        stunInteract.stunCount--;
         stun.transform.parent = null;
         rotator.enabled = true;
         isThrown = true;
@@ -88,12 +87,9 @@ public class StunThrow : MonoBehaviour
             stun.SetActive(false);
             foreach (InteractableObject obj in InteractableObject.AllInteractables.ToArray())
             {
-                if (obj.stunCount == 0)
-                {
                     obj.stunEquipped = false;
                     obj.currentScythe.SetActive(true);
                     obj.activeWeapon = obj.currentScythe;
-                }
             }
         }
     }
