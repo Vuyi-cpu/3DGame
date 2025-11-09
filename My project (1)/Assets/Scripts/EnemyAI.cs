@@ -14,7 +14,7 @@ public class EnemyAI : MonoBehaviour
     bool walkPointSet;
     public float walkPointRange;
     private float stuckCheckTimer;
-    public float stuckCheckInterval = 2f;
+    public float stuckCheckInterval = 2f, turnSpeed;
     private Vector3 lastPosition;
 
     // Attacking
@@ -24,15 +24,18 @@ public class EnemyAI : MonoBehaviour
     // States
     public float sightDistance, attackDistance, rejectDistance;
     public bool playerSeenDistance, playerAttackDistance, playerRejectDistance;
-
+    private ParticleSystem fire;
     public float patrolSpeed = 3.5f;
     public float chaseSpeed = 6f;
     private float defaultSpeed;
 
     public AudioSource gunshot;
+    
 
     private void Awake()
     {
+        fire = transform.parent.GetComponentInChildren<ParticleSystem>();
+        if (fire != null ) fire.Stop();
         agent = GetComponent<NavMeshAgent>();
         walkPointSet = false;
         defaultSpeed = patrolSpeed;
@@ -156,10 +159,9 @@ public class EnemyAI : MonoBehaviour
     private void AttackPlayer()
     {
         Vector3 targetPos = new Vector3(player.position.x, transform.position.y, player.position.z);
-        transform.LookAt(targetPos);
-        /*Vector3 direction = (player.position - transform.position).normalized;
-        Vector3 targetPosition = player.position - direction;
-        agent.SetDestination(targetPosition);*/
+
+        //if (gameObject.CompareTag("Shooter") || gameObject.CompareTag("Melee") || Attacked) 
+            transform.LookAt(targetPos);
         if (!Attacked && gameObject.CompareTag("Shooter"))
         {
             burst++;
@@ -193,7 +195,21 @@ public class EnemyAI : MonoBehaviour
         }
         else if (!Attacked && gameObject.CompareTag("Daisuke"))
         {
+            fire.Play();
+            /*if (targetPos.magnitude > 0.1f)
+            {
+                // Target rotation
+                Quaternion targetRotation = Quaternion.LookRotation(targetPos);
 
+                transform.rotation = Quaternion.RotateTowards(
+                    transform.rotation,
+                    targetRotation,
+                    turnSpeed * Time.deltaTime
+                );
+            }*/
+            Invoke(nameof(ResetAttack), timeDelayAttacks);
+            fire.Stop();
+            Attacked = true;
         }
     }
 
