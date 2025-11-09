@@ -19,7 +19,6 @@ public class DoorRotate : MonoBehaviour
     public GameObject requiredKey;
     public InteractableObject interactable;
 
-
     public GameObject interaction_Info_UI;
     private TextMeshProUGUI interaction_text;
 
@@ -34,8 +33,10 @@ public class DoorRotate : MonoBehaviour
     private bool fightPlayed = false;
 
     public GameObject pause;
-
     private AudioSource lastPlayedSong;
+
+   
+    private bool showingLockedMessage = false;
 
     private void Awake()
     {
@@ -80,6 +81,9 @@ public class DoorRotate : MonoBehaviour
 
     void Update()
     {
+       
+        if (showingLockedMessage) return;
+
         if (pause != null && pause.activeSelf)
         {
             if (fightSong != null && fightSong.isPlaying)
@@ -110,7 +114,6 @@ public class DoorRotate : MonoBehaviour
         {
             if ((locked && (hit.transform == door1 || hit.transform == door2)))
             {
-
                 interaction_text.text = "Locked.";
                 interaction_Info_UI.SetActive(true);
                 return;
@@ -134,22 +137,31 @@ public class DoorRotate : MonoBehaviour
         {
             if (interactable == null || interactable.key == null || requiredKey == null || interactable.key.name != requiredKey.name)
             {
+                
+                showingLockedMessage = true;
                 interaction_text.text = "Locked.";
+                interaction_Info_UI.SetActive(true);
+                yield return new WaitForSeconds(1.5f);
+                showingLockedMessage = false;
                 yield break;
             }
             else
             {
                 locked = false;
-              
             }
         }
 
         if ((shop.EnemiesKilled / 50) < requiredKills)
         {
+            showingLockedMessage = true;
             interaction_text.text = "Locked.";
+            interaction_Info_UI.SetActive(true);
+            yield return new WaitForSeconds(1.5f);
+            showingLockedMessage = false;
             yield break;
         }
 
+       
         if (isopen)
         {
             doorclosSound.Stop();
@@ -184,6 +196,7 @@ public class DoorRotate : MonoBehaviour
         transform.rotation = endRotate;
     }
 }
+
 
 
 
