@@ -120,12 +120,6 @@ public class InteractableObject : MonoBehaviour
         AllInteractables.Remove(this);
     }
 
-    public void Start()
-    {
-        swordIM.SetActive(false);
-        scytheIM.SetActive(false);
-      
-    }
 
     private void Update()
     {
