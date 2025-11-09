@@ -19,6 +19,7 @@ TagManager:
   - stun
   - Shooter
   - Melee
+  - Daisuke
   layers:
   - Default
   - TransparentFX

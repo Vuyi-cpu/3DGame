@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using static UnityEngine.EventSystems.EventTrigger;
 
 public class StunThrow : MonoBehaviour
 {
@@ -17,15 +18,17 @@ public class StunThrow : MonoBehaviour
     [SerializeField] Vector3 throwPosition; //This is where the scythe is traveling to.
     [SerializeField] Rotator rotator; //Rotator on scythe object. Gets turned on when thrown. And off when not.
     public PlayerMovement PlayerMovement;
-    public MonoBehaviour[] scriptsToDisable;
     PlayerControls controls;
     InteractableObject stunInteract;
 
     public ParticleSystem explosion;
+    private ParticleSystem lightning;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Awake()
     {
+        lightning = GetComponentInChildren<ParticleSystem>();
+        lightning.Play();
         explosion.Stop();
         stunInteract = GetComponent<InteractableObject>();
         controls = new PlayerControls();
@@ -39,11 +42,13 @@ public class StunThrow : MonoBehaviour
 
     private void OnEnable()
     {
+        //lightning.Stop();
         controls.Enable();
     }
 
     private void OnDisable()
     {
+        //lightning.Play();
         controls.Disable();
     }
 
@@ -82,9 +87,9 @@ public class StunThrow : MonoBehaviour
             stun.SetActive(false);
             foreach (InteractableObject obj in InteractableObject.AllInteractables.ToArray())
             {
-                obj.stunEquipped = false;
-                obj.currentScythe.SetActive(true);
-                obj.activeWeapon = obj.currentScythe;
+                    obj.stunEquipped = false;
+                    obj.currentScythe.SetActive(true);
+                    obj.activeWeapon = obj.currentScythe;
             }
         }
     }
