@@ -21,6 +21,7 @@ public class PlayerMovement : MonoBehaviour
     PlayerState state;
     public AudioSource fightsong;
     public AudioSource dashsound;
+    InteractableObject interactableObject;
 
 
 
@@ -90,7 +91,12 @@ public class PlayerMovement : MonoBehaviour
             MouseMovement.enabled = false;
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
-            pause.SetActive(true);
+            pause.SetActive(true); 
+            interactableObject = FindFirstObjectByType<InteractableObject>();
+            if (interactableObject != null && interactableObject.stunThrow != null)
+            {
+                interactableObject.stunThrow.enabled = false;
+            }
             pauseactive = true;
             Time.timeScale = 0f;
             uipausesound.Play();

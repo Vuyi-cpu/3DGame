@@ -11,13 +11,17 @@ public class PauseButtons : MonoBehaviour
     public GameObject deathScreen;
     public AudioSource uitutsound;
     public AudioSource uiclosesound;
+    InteractableObject interactableObject;
+ 
 
     void Awake()
     {
         
         MouseMovement = FindFirstObjectByType<MouseMovement>();
         PlayerMovement= FindFirstObjectByType<PlayerMovement>();
+        interactableObject = FindFirstObjectByType<InteractableObject>();
     }
+
 
     public void Resume()
     {
@@ -28,6 +32,8 @@ public class PauseButtons : MonoBehaviour
         pause.SetActive(false);
         PlayerMovement.pauseactive = false;
         Time.timeScale = 1f;
+        if (interactableObject != null && interactableObject.stunThrow != null)
+            interactableObject.stunThrow.enabled = true;
         EventSystem.current.SetSelectedGameObject(null);
     }
    public void Controls()
