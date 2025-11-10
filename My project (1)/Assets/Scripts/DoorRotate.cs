@@ -77,6 +77,11 @@ public class DoorRotate : MonoBehaviour
             lastPlayedSong = wakeSong;
             wakeSong.Play();
         }
+
+        if (interactable == null)
+        {
+            interactable = FindFirstObjectByType<InteractableObject>();
+        }
     }
 
     void Update()
