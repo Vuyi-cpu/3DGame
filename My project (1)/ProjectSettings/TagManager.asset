@@ -21,6 +21,7 @@ TagManager:
   - Melee
   - Daisuke
   - fire
+  - Boss
   layers:
   - Default
   - TransparentFX
