@@ -67,10 +67,7 @@ public class InteractableObject : MonoBehaviour
         {
             if (SelectionManager.playerCanInteract)
             {
-                if (Weapon != null || isKey)
-                {
-                    Pickup();
-                }
+                Pickup();
             }
         };
 
