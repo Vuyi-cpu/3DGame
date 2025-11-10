@@ -37,6 +37,7 @@ public class EnemyAI : MonoBehaviour
 
     public AudioSource attack;
     public AudioSource flameflow;
+    private Animator dkAnimator;
 
 
     private void Awake()
@@ -45,6 +46,7 @@ public class EnemyAI : MonoBehaviour
         flameShooting = false;
         if (fire != null) fire.Stop();
         agent = GetComponent<NavMeshAgent>();
+        if (gameObject.CompareTag("Daisuke")) dkAnimator = GetComponentInChildren<Animator>();
         walkPointSet = false;
         defaultSpeed = patrolSpeed;
         agent.speed = defaultSpeed;
@@ -222,6 +224,7 @@ public class EnemyAI : MonoBehaviour
 
     IEnumerator flameShoot()
     {
+        dkAnimator.SetBool("isAttacking", true);
         attack.Play();
         flameflow.Play();
         flameShooting = true;
@@ -240,6 +243,7 @@ public class EnemyAI : MonoBehaviour
         flameflow.Stop();
         fire.transform.SetParent(null);
         flameShooting = false;
+        dkAnimator.SetBool("isAttacking", false);
         flameCollider.enabled = false; // disables the collider
     }
 
