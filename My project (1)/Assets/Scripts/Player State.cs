@@ -72,22 +72,26 @@ public class PlayerState : MonoBehaviour
             takeDamage(2.5f);
         }
     }
-    
+
     public void takeDamage(float damageDealt)
     {
-            if (hit != null)
-            {
-                hit.TriggerDamageEffect();
-            }
+        if (hit != null)
+        {
+            hit.TriggerDamageEffect();
+        }
 
-            currentHealth -= damageDealt;
+        currentHealth -= damageDealt;
 
-            currentHealth = Mathf.Max(currentHealth, 0);
+        currentHealth = Mathf.Max(currentHealth, 0);
 
-            if (currentHealth <= 0)
-            {
-                dead();
-            }
+        if (currentHealth <= 0)
+        {
+            dead();
+        }
+        else
+        {
+            injuredsound.Play();
+        }
     }
 
     void dead()
