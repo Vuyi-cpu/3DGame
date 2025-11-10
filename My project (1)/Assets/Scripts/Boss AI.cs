@@ -119,6 +119,15 @@ public class BossAI: MonoBehaviour
     }
 
 
+   
+
+    //private void ChasePlayer()
+    //{
+    //    Vector3 direction = (player.position - transform.position).normalized;
+    //    Vector3 targetPosition = player.position - direction;
+    //    agent.SetDestination(targetPosition);
+    //}
+
     private void AttackPlayer()
     {
         Vector3 targetPos = new Vector3(player.position.x, transform.position.y, player.position.z);
