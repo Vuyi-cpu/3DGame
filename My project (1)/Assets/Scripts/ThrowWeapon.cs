@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.ProBuilder.MeshOperations;
 using UnityEngine.UIElements;
 
 public class ThrowWeapon : MonoBehaviour
@@ -25,6 +26,7 @@ public class ThrowWeapon : MonoBehaviour
     private float currentReturnSpeed;
     public Shop shop;
     PlayerControls controls;
+    public GameObject BossKey;
     public PlayerMovement PlayerMovement;
     public MouseMovement MouseMovement;
     public GameObject shopTut;
@@ -34,6 +36,7 @@ public class ThrowWeapon : MonoBehaviour
     public ParticleSystem scrapeParticles2;
     public ParticleSystem distortParticles;
     public TrailRenderer trail;
+    Level2 level2;
 
     public AudioSource dmg;
     public AudioSource dmg2;
@@ -56,7 +59,7 @@ public class ThrowWeapon : MonoBehaviour
                 CheckDistance();
             };
         }
-
+        level2 = FindFirstObjectByType<Level2>();
     }
 
     void Update()
@@ -132,7 +135,7 @@ public class ThrowWeapon : MonoBehaviour
             isThrown = false;
             isReturning = true;
 
-            if (collision.gameObject.CompareTag("Shooter") || collision.gameObject.CompareTag("Melee") || collision.gameObject.CompareTag("Daisuke"))
+            if (collision.gameObject.CompareTag("Shooter") || collision.gameObject.CompareTag("Melee") || collision.gameObject.CompareTag("Daisuke")|| collision.gameObject.CompareTag("Boss"))
             {
                 ContactPoint contact = collision.contacts[0];
                 if (collision.gameObject.CompareTag("Shooter") || collision.gameObject.CompareTag("Melee") )
@@ -154,7 +157,15 @@ public class ThrowWeapon : MonoBehaviour
                     enemy.currentHealth -= scytheDamage;
                     if (enemy.currentHealth <= 0)
                     {
-                        
+                        if (enemy.CompareTag("Daisuke"))
+                        {
+
+                            BossKey.SetActive(true);
+                        }
+                        if (enemy.CompareTag("Boss"))
+                        {
+                            level2.BossDead = true;
+                        }
                         Destroy(enemy.enemy);
                         if (collision.gameObject.CompareTag("Shooter") || collision.gameObject.CompareTag("Melee"))
                         {

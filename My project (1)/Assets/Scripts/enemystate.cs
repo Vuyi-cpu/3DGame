@@ -34,6 +34,7 @@ public class Enemystate : MonoBehaviour
     private bool isDead = false;
     private bool swinging;
     GameObject katana;
+    Level2 level2;
     EnemyAI enemyAI;
    
 
@@ -48,6 +49,7 @@ public class Enemystate : MonoBehaviour
     {
         animator = GetComponent<Animator>();
         agent = GetComponent<NavMeshAgent>();
+        level2 = FindFirstObjectByType<Level2>();
         stunParticles.Stop();
         neuronText = neuronInfo.GetComponent<TextMeshProUGUI>();
         controls = new PlayerControls();
@@ -117,6 +119,10 @@ public class Enemystate : MonoBehaviour
                     if (enemy.CompareTag("Daisuke")){
                         BossKey.SetActive(true);
 
+                    }
+                    if (enemy.CompareTag("Boss"))
+                    {
+                        level2.BossDead = true;
                     }
                         killed.Play();
                         Destroy(enemy);

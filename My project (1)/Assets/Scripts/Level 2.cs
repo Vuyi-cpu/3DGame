@@ -1,13 +1,16 @@
 using UnityEngine;
 using System.Collections;
 using UnityEngine.SceneManagement;
+using System.ComponentModel;
 
 public class Level2 : MonoBehaviour
 {
     [Header("UI")]
     public GameObject level;
     public GameObject requirement;
-    public Shop shop; 
+    public Shop shop;
+    public GameObject done;
+    public bool BossDead;
 
     private bool hasPaused = false;
 
@@ -15,28 +18,21 @@ public class Level2 : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            if (shop.neuronCount >= 50)
+            if (shop.EnemiesKilled/50 >= 6 && BossDead)
             {
-                int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
-                SceneManager.LoadScene(currentSceneIndex + 1);
+            done.SetActive(true);
                 Time.timeScale = 0f;
                 Cursor.lockState = CursorLockMode.None;
                 Cursor.visible = true;
             }
             else
             {
-                
-                StartCoroutine(ShowRequirementCoroutine());
+
+                 return;
             }
         }
     }
 
-    private IEnumerator ShowRequirementCoroutine()
-    {
-        requirement.SetActive(true);
-        yield return new WaitForSeconds(2f); 
-        requirement.SetActive(false);
-    }
 }
 
 
