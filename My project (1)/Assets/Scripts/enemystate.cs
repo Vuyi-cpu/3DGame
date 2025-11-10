@@ -116,16 +116,13 @@ public class Enemystate : MonoBehaviour
                     currentHealth -= damage;
                     if (currentHealth <= 0)
                     {
-                    if (enemy.CompareTag("Daisuke")){
-                        BossKey.SetActive(true);
-
-                    }
-                    if (enemy.CompareTag("Boss"))
-                    {
-                        level2.BossDead = true;
-                    }
-                        killed.Play();
+                    
+                        if (!enemy.CompareTag("Boss")) killed.Play();
                         Destroy(enemy);
+                        if (enemy.CompareTag("Boss"))
+                        {
+                            level2.BossDead = true;
+                        }
                         if (enemy.CompareTag("Shooter") || enemy.CompareTag("Melee"))
                         {
                             playerHealth.currentHealth += 50;
@@ -134,8 +131,9 @@ public class Enemystate : MonoBehaviour
                             shop.EnemiesKilled += 50f;
                             
                         }
-                        else if (enemy.CompareTag("Daisuke") || enemy.CompareTag("Boss"))
+                        else if (enemy.CompareTag("Daisuke"))
                         {
+                            BossKey.SetActive(true);
                             playerHealth.currentHealth += 100f;
                             if (playerHealth.currentHealth >= playerHealth.maxHealth) playerHealth.currentHealth = playerHealth.maxHealth;
                             shop.neuronCount += 200f;
@@ -144,7 +142,7 @@ public class Enemystate : MonoBehaviour
                     }
                     else
                     {
-                       dmg.Play();
+                    if (!enemy.CompareTag("Boss")) dmg.Play();
                     }
                 }
             }  

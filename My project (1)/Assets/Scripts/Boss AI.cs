@@ -8,7 +8,6 @@ public class BossAI: MonoBehaviour
     private NavMeshAgent agent;
     public Transform player;
     public LayerMask GroundCheck, PlayerCheck, obstructionMask;
-    public GameObject projectile;
     public PlayerState state;
 
     // Patrolling
@@ -21,11 +20,8 @@ public class BossAI: MonoBehaviour
     public float timeDelayAttacks, timeDelayBurst, burst;
     private bool Attacked;
     public bool flameShooting;
-    public Transform firePos;
 
     // States
-    public float sightDistance, attackDistance, rejectDistance;
-    public ParticleSystem fire;
     public Collider flameCollider;
 
 
@@ -33,15 +29,11 @@ public class BossAI: MonoBehaviour
     private float defaultSpeed;
     public float distanceToPlayer;
 
-    public AudioSource attack;
-    public AudioSource flameflow;
-
 
     private void Awake()
     {
         flameCollider.enabled = false;
         flameShooting = false;
-        if (fire != null) fire.Stop();
         agent = GetComponent<NavMeshAgent>();
         walkPointSet = false;
      
@@ -66,7 +58,7 @@ public class BossAI: MonoBehaviour
 
         hasLineOfSight = false;
         Vector3 directionToPlayer = (player.position - transform.position).normalized;
-        if (Physics.Raycast(transform.position + Vector3.up * 1f, directionToPlayer, out RaycastHit hit, sightDistance + 40f))
+        if (Physics.Raycast(transform.position + Vector3.up * 1f, directionToPlayer, out RaycastHit hit))
         {
             if (hit.transform.CompareTag("Player"))
             {
@@ -74,55 +66,22 @@ public class BossAI: MonoBehaviour
             }
         }
 
-        if ((!flameShooting || !gameObject.CompareTag("Daisuke")) && hasLineOfSight)
+        if (hasLineOfSight)
         {
-            if (distanceToPlayer > sightDistance)
-            {
-              
-               // Patrolling();
-            }
-            else if (distanceToPlayer > attackDistance)
-            {
-                agent.speed = chaseSpeed;
-               
-            }
-            else if (distanceToPlayer <= attackDistance)
-            {
-                agent.SetDestination(transform.position);
-                if (distanceToPlayer < rejectDistance)
-                {
-                    Vector3 dirToPlayer = (transform.position - player.position).normalized;
-                    Vector3 targetPos = player.position + dirToPlayer * rejectDistance;
-                    agent.SetDestination(targetPos);
-                }
-                AttackPlayer();
-            }
-        }
-        else if (hasLineOfSight)
-        {
-            Vector3 targetDir = player.position - transform.position;
-            targetDir.y = 0f;
-            if (targetDir.magnitude > 0.1f)
-            {
-                // Target rotation
-                Quaternion targetRotation = Quaternion.LookRotation(targetDir);
-
-                transform.rotation = Quaternion.RotateTowards(
-                    transform.rotation,
-                    targetRotation,
-                    turnSpeed * Time.deltaTime
-                );
-            }
+            Vector3 targetPos = new Vector3(player.position.x, transform.position.y, player.position.z);
+            transform.LookAt(targetPos);
+            StartCoroutine(AttackPlayer());
         }
 
 
     }
 
 
-    private void AttackPlayer()
+    private IEnumerator AttackPlayer()
     {
-        Vector3 targetPos = new Vector3(player.position.x, transform.position.y, player.position.z);
-        transform.LookAt(targetPos);
-    
+        yield return new WaitForSeconds(0.8f);
+        flameCollider.enabled = true;
+        yield return new WaitForSeconds(2.3f);
+        flameCollider.enabled = true;
     }
 }
