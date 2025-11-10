@@ -14,7 +14,7 @@ public class InteractableObject : MonoBehaviour
 
     public string ItemName;
     public bool hasKey = false;
-    public bool hasBossKey = false; // New boss key flag
+    public bool hasBossKey = false; 
     public SelectionManager SelectionManager;
     GameObject Weapon, health;
     public GameObject key;
@@ -47,7 +47,7 @@ public class InteractableObject : MonoBehaviour
     public bool scytheEquipped;
     public bool stunEquipped;
     public bool isKey = false;
-    public bool isBossKey = false; // New boolean for boss key
+    public bool isBossKey = false; 
     public bool isHealth;
     public bool isStun;
     public static List<InteractableObject> AllInteractables = new List<InteractableObject>();
@@ -145,7 +145,7 @@ public class InteractableObject : MonoBehaviour
                 key = hit.transform.gameObject;
                 Weapon = null;
             }
-            else if (hit.transform.tag == "Boss Key") // Boss key detection
+            else if (hit.transform.tag == "Boss Key") 
             {
                 isBossKey = true;
                 key = hit.transform.gameObject;
@@ -168,7 +168,7 @@ public class InteractableObject : MonoBehaviour
 
     private void Pickup()
     {
-        // Regular key pickup
+       
         if (isKey)
         {
             pickup.Play();
@@ -178,7 +178,7 @@ public class InteractableObject : MonoBehaviour
             return;
         }
 
-        // Boss key pickup
+        
         if (isBossKey)
         {
             pickup.Play();
@@ -198,7 +198,7 @@ public class InteractableObject : MonoBehaviour
 
         if (Weapon == null) return;
 
-        // Stun weapon pickup
+        
         if (Weapon.tag == "stun" && !stunEquipped)
         {
             stunThrow = Weapon.GetComponent<StunThrow>();
@@ -229,7 +229,7 @@ public class InteractableObject : MonoBehaviour
             return;
         }
 
-        // Sword pickup
+        
         else if (Weapon.tag == "sword" && !swordEquipped)
         {
             currentSword = Weapon;
@@ -263,7 +263,7 @@ public class InteractableObject : MonoBehaviour
             return;
         }
 
-        // Scythe pickup
+        
         else if (Weapon.tag == "scythe" && !scytheEquipped)
         {
             currentScythe = Weapon;

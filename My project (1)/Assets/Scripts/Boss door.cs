@@ -10,7 +10,7 @@ public class BossDoor : MonoBehaviour
     public float speed = 2f;
     public int mult;
     bool isopen = false;
-    public bool locked2;  // renamed here
+    public bool locked2;  
     private Quaternion rotationshut;
     private Quaternion rotationopen;
     private Coroutine coroutine;
@@ -86,6 +86,7 @@ public class BossDoor : MonoBehaviour
     {
         if (showingLockedMessage) return;
 
+      
         if (pause != null && pause.activeSelf)
         {
             if (fightSong != null && fightSong.isPlaying)
@@ -110,11 +111,12 @@ public class BossDoor : MonoBehaviour
             }
         }
 
+      
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
         if (Physics.Raycast(ray, out RaycastHit hit, 5f))
         {
-            if (((shop.EnemiesKilled / 50) < requiredKills || !interactable.hasKey) && (hit.transform == door1 || hit.transform == door2))
+            if (((shop.EnemiesKilled / 50) < requiredKills || !interactable.hasBossKey) && (hit.transform == door1 || hit.transform == door2))
             {
                 interaction_text.text = "Locked.";
                 interaction_Info_UI.SetActive(true);
@@ -135,7 +137,8 @@ public class BossDoor : MonoBehaviour
 
     private IEnumerator MoveDoor()
     {
-        if ((shop.EnemiesKilled / 50) < requiredKills || !interactable.hasKey)
+  
+        if ((shop.EnemiesKilled / 50) < requiredKills || !interactable.hasBossKey)
         {
             showingLockedMessage = true;
             interaction_text.text = "Locked.";
@@ -179,3 +182,4 @@ public class BossDoor : MonoBehaviour
         transform.rotation = endRotate;
     }
 }
+
