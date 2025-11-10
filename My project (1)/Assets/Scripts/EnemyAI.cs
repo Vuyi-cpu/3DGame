@@ -117,7 +117,11 @@ public class EnemyAI : MonoBehaviour
             }
         }
 
-
+        if(agent == null)
+        {
+            flameflow.Stop();
+            attack.Stop();
+        }
         CheckIfStuck();
     }
 
