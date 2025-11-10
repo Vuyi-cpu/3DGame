@@ -78,7 +78,6 @@ public class EnemyAI : MonoBehaviour
 
         if ((!flameShooting || !gameObject.CompareTag("Daisuke")) && hasLineOfSight)
         {
-            Debug.Log("I HAVE LINE OF SITE");
             if (distanceToPlayer > sightDistance)
             {
                 agent.speed = patrolSpeed;
