@@ -134,36 +134,36 @@ public class BossAI: MonoBehaviour
 
        
         transform.LookAt(targetPos);
-        if (!Attacked && gameObject.CompareTag("Boss"))
-        {
-            StartCoroutine(flameShoot());
-            Invoke(nameof(ResetAttack), timeDelayAttacks);
-            Attacked = true;
-        }
+        //if (!Attacked && gameObject.CompareTag("Boss"))
+        //{
+        //    StartCoroutine(flameShoot());
+        //    Invoke(nameof(ResetAttack), timeDelayAttacks);
+        //    Attacked = true;
+        //}
     }
 
 
-    IEnumerator flameShoot()
-    {
-        attack.Play();
-        flameflow.Play();
-        flameShooting = true;
-        flameShooting = true;
-        fire.transform.position = firePos.position;
-        fire.transform.SetParent(firePos);
-        fire.transform.localEulerAngles = new Vector3(0f, 0f, 0f);
-        fire.Play();
+    //IEnumerator flameShoot()
+    //{
+    //    attack.Play();
+    //    flameflow.Play();
+    //    flameShooting = true;
+    //    flameShooting = true;
+    //    fire.transform.position = firePos.position;
+    //    fire.transform.SetParent(firePos);
+    //    fire.transform.localEulerAngles = new Vector3(0f, 0f, 0f);
+    //    fire.Play();
         
-        yield return new WaitForSeconds(0.7f);
-        flameCollider.enabled = true;
-        yield return new WaitForSeconds(2.3f);
-        fire.Stop();
-        attack.Stop();
-        flameflow.Stop();
-        fire.transform.SetParent(null);
-        flameShooting = false;
-        flameCollider.enabled = false; 
-    }
+    //    yield return new WaitForSeconds(0.7f);
+    //    flameCollider.enabled = true;
+    //    yield return new WaitForSeconds(2.3f);
+    //    fire.Stop();
+    //    attack.Stop();
+    //    flameflow.Stop();
+    //    fire.transform.SetParent(null);
+    //    flameShooting = false;
+    //    flameCollider.enabled = false; 
+    //}
 
     private void ResetAttack()
     {
