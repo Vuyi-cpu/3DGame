@@ -18,7 +18,7 @@ public class Level2 : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            if (shop.EnemiesKilled/50 >= 6 && BossDead)
+            if (shop.EnemiesKilled/50 >= 0 && BossDead)
             {
 
                 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
