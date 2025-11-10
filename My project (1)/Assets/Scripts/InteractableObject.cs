@@ -13,6 +13,7 @@ public class InteractableObject : MonoBehaviour
     public GameObject StunTut; //INSERT TELEPHONE TUT IN INSPECTOR
 
     public string ItemName;
+    public bool hasKey = false;
     public SelectionManager SelectionManager;
     GameObject Weapon, health;
     public GameObject key;
@@ -56,8 +57,7 @@ public class InteractableObject : MonoBehaviour
 
     private void Awake()
     {
-        doorRotate.locked = true;
-        doorRotate2.locked = true;
+      
         throwWeapon.enabled = false;
         stunThrow1.enabled = false;
         //stunThrow2.enabled = false;
@@ -161,20 +161,26 @@ public class InteractableObject : MonoBehaviour
             
         }
     }
-
+    private void Start()
+    {
+        doorRotate.locked = true;
+        doorRotate2.locked = true;
+    }
     private void Pickup()
     {
         if (isKey)
         {
             pickup.Play();
             key.SetActive(false);
-            doorRotate.locked = false;
-            doorRotate2.locked = false;
+            isKey = false;
+            hasKey = true;
+            return;
         }
 
         if (isHealth)
         {
             pickup.Play();
+          
             PlayerState.currentHealth += 70;
             if (PlayerState.currentHealth > 200) PlayerState.currentHealth = 200;
             Destroy(health);

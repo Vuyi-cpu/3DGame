@@ -34,12 +34,7 @@ public class EnemyAI : MonoBehaviour
 
     private void Awake()
     {
-        if (transform.parent != null)
-        {
-            fire = transform.parent.GetComponentInChildren<ParticleSystem>();
-            if (fire != null) fire.Stop();
-        }
-
+        fire = transform.parent.GetComponentInChildren<ParticleSystem>();
         if (fire != null ) fire.Stop();
         agent = GetComponent<NavMeshAgent>();
         walkPointSet = false;

@@ -16,7 +16,6 @@ public class DoorRotate : MonoBehaviour
     private Coroutine coroutine;
     public int requiredKills;
     public Shop shop;
-    public GameObject requiredKey;
     public InteractableObject interactable;
 
     public GameObject interaction_Info_UI;
@@ -26,7 +25,6 @@ public class DoorRotate : MonoBehaviour
     public Transform door2;
 
     PlayerControls controls;
-    Enemystate enemystate;
 
     public AudioSource fightSong;
     public AudioSource wakeSong;
@@ -35,7 +33,6 @@ public class DoorRotate : MonoBehaviour
     public GameObject pause;
     private AudioSource lastPlayedSong;
 
-   
     private bool showingLockedMessage = false;
 
     private void Awake()
@@ -72,16 +69,21 @@ public class DoorRotate : MonoBehaviour
         rotationshut = transform.rotation;
         rotationopen = Quaternion.Euler(transform.eulerAngles + new Vector3(0, -open + mult * 35f, 0));
         interaction_text = interaction_Info_UI.GetComponent<TextMeshProUGUI>();
+
         if (wakeSong != null)
         {
             lastPlayedSong = wakeSong;
             wakeSong.Play();
         }
+
+        if (interactable == null)
+        {
+            interactable = FindFirstObjectByType<InteractableObject>();
+        }
     }
 
     void Update()
     {
-       
         if (showingLockedMessage) return;
 
         if (pause != null && pause.activeSelf)
@@ -112,7 +114,7 @@ public class DoorRotate : MonoBehaviour
 
         if (Physics.Raycast(ray, out RaycastHit hit, 5f))
         {
-            if ((((shop.EnemiesKilled / 50) < requiredKills||locked) && (hit.transform == door1 || hit.transform == door2)))
+            if (((shop.EnemiesKilled / 50) < requiredKills || !interactable.hasKey) && (hit.transform == door1 || hit.transform == door2))
             {
                 interaction_text.text = "Locked.";
                 interaction_Info_UI.SetActive(true);
@@ -133,26 +135,7 @@ public class DoorRotate : MonoBehaviour
 
     private IEnumerator MoveDoor()
     {
-        if (locked)
-        {
-            if (interactable.key == null || interactable.key.name != requiredKey.name)
-            {
-                
-                showingLockedMessage = true;
-                interaction_text.text = "Locked.";
-                interaction_Info_UI.SetActive(true);
-                yield return new WaitForSeconds(1.5f);
-                showingLockedMessage = false;
-                yield break;
-            }
-            else
-            {
-                
-                locked = false;
-            }
-        }
-
-        if ((shop.EnemiesKilled / 50) < requiredKills)
+        if ((shop.EnemiesKilled / 50) < requiredKills || !interactable.hasKey)
         {
             showingLockedMessage = true;
             interaction_text.text = "Locked.";
@@ -162,7 +145,6 @@ public class DoorRotate : MonoBehaviour
             yield break;
         }
 
-       
         if (isopen)
         {
             doorclosSound.Stop();
@@ -197,6 +179,7 @@ public class DoorRotate : MonoBehaviour
         transform.rotation = endRotate;
     }
 }
+
 
 
 
