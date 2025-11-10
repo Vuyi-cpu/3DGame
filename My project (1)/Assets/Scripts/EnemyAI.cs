@@ -34,7 +34,12 @@ public class EnemyAI : MonoBehaviour
 
     private void Awake()
     {
-        fire = transform.parent.GetComponentInChildren<ParticleSystem>();
+        if (transform.parent != null)
+        {
+            fire = transform.parent.GetComponentInChildren<ParticleSystem>();
+            if (fire != null) fire.Stop();
+        }
+
         if (fire != null ) fire.Stop();
         agent = GetComponent<NavMeshAgent>();
         walkPointSet = false;
@@ -196,7 +201,7 @@ public class EnemyAI : MonoBehaviour
         else if (!Attacked && gameObject.CompareTag("Daisuke"))
         {
             fire.Play();
-            /*if (targetPos.magnitude > 0.1f)
+            if (targetPos.magnitude > 0.1f)
             {
                 // Target rotation
                 Quaternion targetRotation = Quaternion.LookRotation(targetPos);
@@ -206,7 +211,7 @@ public class EnemyAI : MonoBehaviour
                     targetRotation,
                     turnSpeed * Time.deltaTime
                 );
-            }*/
+            }
             Invoke(nameof(ResetAttack), timeDelayAttacks);
             fire.Stop();
             Attacked = true;
