@@ -20,6 +20,7 @@ TagManager:
   - Shooter
   - Melee
   - Daisuke
+  - fire
   layers:
   - Default
   - TransparentFX

@@ -129,7 +129,7 @@ public class ThrowWeapon : MonoBehaviour
             isThrown = false;
             isReturning = true;
 
-            if (collision.gameObject.CompareTag("Shooter") || collision.gameObject.CompareTag("Melee"))
+            if (collision.gameObject.CompareTag("Shooter") || collision.gameObject.CompareTag("Melee") || collision.gameObject.CompareTag("Daisuke"))
             {
                 ContactPoint contact = collision.contacts[0];
                 scrapeParticles.transform.position = contact.point;
@@ -138,31 +138,48 @@ public class ThrowWeapon : MonoBehaviour
                 Enemystate enemy = collision.gameObject.GetComponentInParent<Enemystate>();
                 if (enemy != null)
                 {
-                    enemy.currentHealth -= scytheDamage;
-                    if (enemy.currentHealth <= 0)
+                    if (collision.gameObject.CompareTag("Shooter") || collision.gameObject.CompareTag("Melee"))
                     {
-                        if (shopTut != null) {
-                            shopTut.SetActive(true);
-                            PlayerMovement.enabled = false;
-                            MouseMovement.enabled = false;
-                            UnityEngine.Cursor.lockState = CursorLockMode.None;
-                            UnityEngine.Cursor.visible = true;
-                            shopButton.shopActive = true;
+                        enemy.currentHealth -= scytheDamage;
+                        if (enemy.currentHealth <= 0)
+                        {
+                            if (shopTut != null)
+                            {
+                                shopTut.SetActive(true);
+                                PlayerMovement.enabled = false;
+                                MouseMovement.enabled = false;
+                                UnityEngine.Cursor.lockState = CursorLockMode.None;
+                                UnityEngine.Cursor.visible = true;
+                                shopButton.shopActive = true;
+                            }
+                            killed.Play();
+                            Destroy(enemy.enemy);
+                            playerHealth.currentHealth += 50;
+                            if (playerHealth.currentHealth >= playerHealth.maxHealth) playerHealth.currentHealth = playerHealth.maxHealth;
+                            shop.neuronCount += 50f;
+                            shop.EnemiesKilled += 50f;
+                            neuronText.text = shop.neuronCount.ToString();
                         }
-                        killed.Play();
-                        Destroy(enemy.enemy);
-                        playerHealth.currentHealth += 50;
-                        if(playerHealth.currentHealth >= playerHealth.maxHealth) playerHealth.currentHealth = playerHealth.maxHealth;
-                        shop.neuronCount += 50f;
-                        shop.EnemiesKilled += 50f;
-                        neuronText.text = shop.neuronCount.ToString();
+                        else
+                        {
+                            dmg.Play();
+                        }
                     }
-                    else
+                    if (collision.gameObject.CompareTag("Daisuke"))
                     {
-                        dmg.Play();
+                        enemy.currentHealth -= scytheDamage;
+                        if (enemy.currentHealth <= 0)
+                        {
+                            //killed.Play();
+                            Destroy(enemy.enemy);
+                            playerHealth.currentHealth += 100f;
+                            if (playerHealth.currentHealth >= playerHealth.maxHealth) playerHealth.currentHealth = playerHealth.maxHealth;
+                            shop.neuronCount += 200f;
+                            neuronText.text = shop.neuronCount.ToString();
+                        }
                     }
                 }
-            }
+            }  
         }
     }
 

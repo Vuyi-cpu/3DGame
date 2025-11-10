@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem.Processors;
@@ -55,22 +56,35 @@ public class PlayerState : MonoBehaviour
     {
         if (other.CompareTag("Bullet"))
         {
-            takeDamage();
+            takeDamage(10f);
+        }
+        else if(other.CompareTag("fire"))
+        {
+            takeDamage(10f);
+            StartCoroutine(dot());
+        }
+    }
+    IEnumerator dot()
+    {
+        for (int i = 0; i < 3; i++)
+        {
+            yield return new WaitForSeconds(1f);
+            takeDamage(2.5f);
         }
     }
     
-    public void takeDamage()
+    public void takeDamage(float damageDealt)
     {
             if (hit != null)
             {
                 hit.TriggerDamageEffect();
             }
 
-            currentHealth -= 10;
+            currentHealth -= damageDealt;
 
             currentHealth = Mathf.Max(currentHealth, 0);
 
-            if (currentHealth == 0)
+            if (currentHealth <= 0)
             {
                 dead();
             }

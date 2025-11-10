@@ -1,4 +1,5 @@
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -20,12 +21,14 @@ public class EnemyAI : MonoBehaviour
 
     // Attacking
     public float timeDelayAttacks, timeDelayBurst, burst;
-    private bool Attacked, flameShooting;
+    private bool Attacked;
+    public bool flameShooting;
     public Transform firePos;
 
     // States
     public float sightDistance, attackDistance, rejectDistance;
     public ParticleSystem fire;
+    public Collider flameCollider;
 
     public float patrolSpeed = 3.5f;
     public float chaseSpeed = 6f;
@@ -33,12 +36,13 @@ public class EnemyAI : MonoBehaviour
     public float distanceToPlayer;
 
     public AudioSource gunshot;
-    
+
 
     private void Awake()
     {
+        flameCollider.enabled = false;
         flameShooting = false;
-        if (fire != null ) fire.Stop();
+        if (fire != null) fire.Stop();
         agent = GetComponent<NavMeshAgent>();
         walkPointSet = false;
         defaultSpeed = patrolSpeed;
@@ -57,10 +61,10 @@ public class EnemyAI : MonoBehaviour
 
     private void Update()
     {
-      
+
         distanceToPlayer = Vector3.Distance(transform.position, player.position);
 
-      
+
         hasLineOfSight = false;
         Vector3 directionToPlayer = (player.position - transform.position).normalized;
         if (Physics.Raycast(transform.position + Vector3.up * 1f, directionToPlayer, out RaycastHit hit, sightDistance + 40f))
@@ -75,16 +79,8 @@ public class EnemyAI : MonoBehaviour
         {
             if (hasLineOfSight && distanceToPlayer > sightDistance)
             {
-                if (gameObject.CompareTag("Daisuke"))
-                {
-                    agent.speed = chaseSpeed;
-                    ChasePlayer();
-                }
-                else
-                {
-                    agent.speed = patrolSpeed;
-                    Patrolling();
-                }
+                agent.speed = patrolSpeed;
+                Patrolling();
             }
             else if (hasLineOfSight && distanceToPlayer > attackDistance)
             {
@@ -103,8 +99,24 @@ public class EnemyAI : MonoBehaviour
                 AttackPlayer();
             }
         }
+        else if (hasLineOfSight)
+        {
+            Vector3 targetDir = player.position - transform.position;
+            targetDir.y = 0f;
+            if (targetDir.magnitude > 0.1f)
+            {
+                // Target rotation
+                Quaternion targetRotation = Quaternion.LookRotation(targetDir);
 
-      
+                transform.rotation = Quaternion.RotateTowards(
+                    transform.rotation,
+                    targetRotation,
+                    turnSpeed * Time.deltaTime
+                );
+            }
+        }
+
+
         CheckIfStuck();
     }
 
@@ -162,8 +174,8 @@ public class EnemyAI : MonoBehaviour
     {
         Vector3 targetPos = new Vector3(player.position.x, transform.position.y, player.position.z);
 
-        //if (gameObject.CompareTag("Shooter") || gameObject.CompareTag("Melee") || Attacked) 
-            transform.LookAt(targetPos);
+        //if (!gameObject.CompareTag("Daisuke") || Attacked) 
+        transform.LookAt(targetPos);
         if (!Attacked && gameObject.CompareTag("Shooter"))
         {
             burst++;
@@ -190,40 +202,39 @@ public class EnemyAI : MonoBehaviour
             Invoke(nameof(ResetAttack), timeDelayAttacks);
             if (hasLineOfSight && distanceToPlayer <= attackDistance)
             {
-                state.takeDamage();
+                state.takeDamage(20f);
             }
             Attacked = true;
         }
         else if (!Attacked && gameObject.CompareTag("Daisuke"))
         {
             StartCoroutine(flameShoot());
+            Invoke(nameof(ResetAttack), timeDelayAttacks);
+            Attacked = true;
         }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        
     }
 
     IEnumerator flameShoot()
     {
         flameShooting = true;
+        flameShooting = true;
         fire.transform.position = firePos.position;
         fire.transform.SetParent(firePos);
         fire.transform.localEulerAngles = new Vector3(0f, 0f, 0f);
         fire.Play();
-        /*if (targetPos.magnitude > 0.1f)
-        {
-            // Target rotation
-            Quaternion targetRotation = Quaternion.LookRotation(targetPos);
-
-            transform.rotation = Quaternion.RotateTowards(
-                transform.rotation,
-                targetRotation,
-                turnSpeed * Time.deltaTime
-            );
-        }*/
-        Invoke(nameof(ResetAttack), timeDelayAttacks);
-        Attacked = true;
-        yield return new WaitForSeconds(2f);
+        
+        yield return new WaitForSeconds(0.7f);
+        flameCollider.enabled = true;
+        yield return new WaitForSeconds(2.2f);
         fire.Stop();
         fire.transform.SetParent(null);
         flameShooting = false;
+        flameCollider.enabled = false; // disables the collider
     }
 
     private void ResetAttack()
