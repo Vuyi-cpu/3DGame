@@ -62,7 +62,7 @@ public class Enemystate : MonoBehaviour
             RaycastHit hit;
             if (interactableObject.swordEquipped == true)
             {
-                StartCoroutine(SwordSwing());
+                if (!swinging) StartCoroutine(SwordSwing());
                 if (Physics.Raycast(ray, out hit) && swinging && hit.transform.gameObject == enemy && hit.distance <= 3)
                 {
                     scrapeParticles.transform.position = hit.point;
