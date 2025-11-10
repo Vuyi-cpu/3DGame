@@ -216,9 +216,10 @@ public class InteractableObject : MonoBehaviour
 
             if (scytheEquipped) currentScythe.SetActive(false);
             if (swordEquipped) currentSword.SetActive(false);
+            return;
         }
 
-        if (Weapon.tag == "sword" && !swordEquipped)
+        else if (Weapon.tag == "sword" && !swordEquipped)
         {
             currentSword = Weapon;
             currentWeapon = currentSword;

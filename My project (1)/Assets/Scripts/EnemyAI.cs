@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -11,7 +12,7 @@ public class EnemyAI : MonoBehaviour
 
     // Patrolling
     public Vector3 walkPoint;
-    bool walkPointSet;
+    private bool walkPointSet, hasLineOfSight;
     public float walkPointRange;
     private float stuckCheckTimer;
     public float stuckCheckInterval = 2f, turnSpeed;
@@ -19,22 +20,24 @@ public class EnemyAI : MonoBehaviour
 
     // Attacking
     public float timeDelayAttacks, timeDelayBurst, burst;
-    bool Attacked;
+    private bool Attacked, flameShooting;
+    public Transform firePos;
 
     // States
     public float sightDistance, attackDistance, rejectDistance;
-    public bool playerSeenDistance, playerAttackDistance, playerRejectDistance;
-    private ParticleSystem fire;
+    public ParticleSystem fire;
+
     public float patrolSpeed = 3.5f;
     public float chaseSpeed = 6f;
     private float defaultSpeed;
+    public float distanceToPlayer;
 
     public AudioSource gunshot;
     
 
     private void Awake()
     {
-        fire = transform.parent.GetComponentInChildren<ParticleSystem>();
+        flameShooting = false;
         if (fire != null ) fire.Stop();
         agent = GetComponent<NavMeshAgent>();
         walkPointSet = false;
@@ -55,10 +58,10 @@ public class EnemyAI : MonoBehaviour
     private void Update()
     {
       
-        float distanceToPlayer = Vector3.Distance(transform.position, player.position);
+        distanceToPlayer = Vector3.Distance(transform.position, player.position);
 
       
-        bool hasLineOfSight = false;
+        hasLineOfSight = false;
         Vector3 directionToPlayer = (player.position - transform.position).normalized;
         if (Physics.Raycast(transform.position + Vector3.up * 1f, directionToPlayer, out RaycastHit hit, sightDistance + 40f))
         {
@@ -68,38 +71,37 @@ public class EnemyAI : MonoBehaviour
             }
         }
 
-       
-        if (hasLineOfSight && distanceToPlayer > sightDistance)
+        if (!flameShooting || !gameObject.CompareTag("Daisuke"))
         {
-            if (gameObject.CompareTag("Daisuke"))
+            if (hasLineOfSight && distanceToPlayer > sightDistance)
+            {
+                if (gameObject.CompareTag("Daisuke"))
+                {
+                    agent.speed = chaseSpeed;
+                    ChasePlayer();
+                }
+                else
+                {
+                    agent.speed = patrolSpeed;
+                    Patrolling();
+                }
+            }
+            else if (hasLineOfSight && distanceToPlayer > attackDistance)
             {
                 agent.speed = chaseSpeed;
                 ChasePlayer();
             }
-            else
+            else if (hasLineOfSight && distanceToPlayer <= attackDistance)
             {
-                agent.speed = patrolSpeed;
-                Patrolling();
+                agent.SetDestination(transform.position);
+                if (distanceToPlayer < rejectDistance)
+                {
+                    Vector3 dirToPlayer = (transform.position - player.position).normalized;
+                    Vector3 targetPos = player.position + dirToPlayer * rejectDistance;
+                    agent.SetDestination(targetPos);
+                }
+                AttackPlayer();
             }
-        }
-        else if (hasLineOfSight && distanceToPlayer > attackDistance)
-        {
-           
-            agent.speed = chaseSpeed;
-            ChasePlayer();
-        }
-        else if (hasLineOfSight && distanceToPlayer <= attackDistance)
-        {
-           
-            agent.SetDestination(transform.position); 
-            if (distanceToPlayer < rejectDistance)
-            {
-             
-                Vector3 dirToPlayer = (transform.position - player.position).normalized;
-                Vector3 targetPos = player.position + dirToPlayer * rejectDistance;
-                agent.SetDestination(targetPos);
-            }
-            AttackPlayer();
         }
 
       
@@ -183,11 +185,10 @@ public class EnemyAI : MonoBehaviour
         else if (!Attacked && gameObject.CompareTag("Melee"))
         {
             ParticleSystem[] glint = GetComponentsInChildren<ParticleSystem>();
-            Invoke(nameof(ResetAttack), timeDelayAttacks);
             glint[0].Play();
             glint[1].Play();
             Invoke(nameof(ResetAttack), timeDelayAttacks);
-            if (playerSeenDistance && playerAttackDistance)
+            if (hasLineOfSight && distanceToPlayer <= attackDistance)
             {
                 state.takeDamage();
             }
@@ -195,22 +196,34 @@ public class EnemyAI : MonoBehaviour
         }
         else if (!Attacked && gameObject.CompareTag("Daisuke"))
         {
-            fire.Play();
-            /*if (targetPos.magnitude > 0.1f)
-            {
-                // Target rotation
-                Quaternion targetRotation = Quaternion.LookRotation(targetPos);
-
-                transform.rotation = Quaternion.RotateTowards(
-                    transform.rotation,
-                    targetRotation,
-                    turnSpeed * Time.deltaTime
-                );
-            }*/
-            Invoke(nameof(ResetAttack), timeDelayAttacks);
-            fire.Stop();
-            Attacked = true;
+            StartCoroutine(flameShoot());
         }
+    }
+
+    IEnumerator flameShoot()
+    {
+        flameShooting = true;
+        fire.transform.position = firePos.position;
+        fire.transform.SetParent(firePos);
+        fire.transform.localEulerAngles = new Vector3(0f, 0f, 0f);
+        fire.Play();
+        /*if (targetPos.magnitude > 0.1f)
+        {
+            // Target rotation
+            Quaternion targetRotation = Quaternion.LookRotation(targetPos);
+
+            transform.rotation = Quaternion.RotateTowards(
+                transform.rotation,
+                targetRotation,
+                turnSpeed * Time.deltaTime
+            );
+        }*/
+        Invoke(nameof(ResetAttack), timeDelayAttacks);
+        Attacked = true;
+        yield return new WaitForSeconds(2f);
+        fire.Stop();
+        fire.transform.SetParent(null);
+        flameShooting = false;
     }
 
     private void ResetAttack()
@@ -226,7 +239,7 @@ public class EnemyAI : MonoBehaviour
         {
             float distanceMoved = Vector3.Distance(transform.position, lastPosition);
 
-            if (distanceMoved < 0.5f && !playerSeenDistance)
+            if (distanceMoved < 0.5f && distanceToPlayer > sightDistance)
             {
                 walkPointSet = false;
                 SearchWalkPoint();
@@ -235,18 +248,6 @@ public class EnemyAI : MonoBehaviour
             lastPosition = transform.position;
             stuckCheckTimer = 0f;
         }
-    }
-    bool HasLineOfSight()
-    {
-        Vector3 dir = (player.position - transform.position).normalized;
-        if (Physics.Raycast(transform.position + Vector3.up * 1f, dir, out RaycastHit hit, sightDistance))
-        {
-            if (hit.transform.CompareTag("Player"))
-            {
-                return true;
-            }
-        }
-        return false;
     }
 
 }
