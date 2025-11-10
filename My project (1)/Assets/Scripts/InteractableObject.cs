@@ -191,8 +191,8 @@ public class InteractableObject : MonoBehaviour
         if (isHealth)
         {
             pickup.Play();
-            PlayerState.currentHealth += 70;
-            if (PlayerState.currentHealth > 200) PlayerState.currentHealth = 200;
+            PlayerState.currentHealth += 50;
+            if (PlayerState.currentHealth > PlayerState.maxHealth) PlayerState.currentHealth = PlayerState.maxHealth;
             Destroy(health);
         }
 
