@@ -228,7 +228,8 @@ public class EnemyAI : MonoBehaviour
         flameShooting = true;
         fire.transform.position = firePos.position;
         fire.transform.SetParent(firePos);
-        fire.transform.localEulerAngles = new Vector3(0f, 0f, 0f);
+        fire.transform.localEulerAngles = new Vector3(0f, 0, 0f);
+        fire.transform.localScale = new Vector3(1f, 1f, 2f);
         fire.Play();
         
         yield return new WaitForSeconds(0.7f);
