@@ -22,6 +22,7 @@ public class Enemystate : MonoBehaviour
     public GameObject healthBar;
     public GameObject neuronInfo;
     public GameObject shopTut;
+    public GameObject BossKey;
     public ButtonGotIt shopButton;
 
     [Header("Animation")]
@@ -106,13 +107,17 @@ public class Enemystate : MonoBehaviour
 
     private void TakeDamage(float damage)
     {
-        if (enemy.CompareTag("Shooter") || enemy.CompareTag("Melee") || enemy.CompareTag("Daisuke"))
+        if (enemy.CompareTag("Shooter") || enemy.CompareTag("Melee") || enemy.CompareTag("Daisuke") || enemy.CompareTag("Boss"))
             {
                 if (enemy != null)
                 {
                     currentHealth -= damage;
                     if (currentHealth <= 0)
                     {
+                    if (enemy.CompareTag("Daisuke")){
+                        BossKey.SetActive(true);
+
+                    }
                         killed.Play();
                         Destroy(enemy);
                         if (enemy.CompareTag("Shooter") || enemy.CompareTag("Melee"))
@@ -123,7 +128,7 @@ public class Enemystate : MonoBehaviour
                             shop.EnemiesKilled += 50f;
                             
                         }
-                        else if (enemy.CompareTag("Daisuke"))
+                        else if (enemy.CompareTag("Daisuke") || enemy.CompareTag("Boss"))
                         {
                             playerHealth.currentHealth += 100f;
                             if (playerHealth.currentHealth >= playerHealth.maxHealth) playerHealth.currentHealth = playerHealth.maxHealth;

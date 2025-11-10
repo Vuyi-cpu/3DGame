@@ -14,6 +14,7 @@ public class InteractableObject : MonoBehaviour
 
     public string ItemName;
     public bool hasKey = false;
+    public bool hasBossKey = false; 
     public SelectionManager SelectionManager;
     GameObject Weapon, health;
     public GameObject key;
@@ -29,7 +30,6 @@ public class InteractableObject : MonoBehaviour
     public PlayerState PlayerState;
     public StunThrow stunThrow;
     public StunThrow stunThrow1;
-    //public StunThrow stunThrow2;
 
     //vuyi edits
     public Transform gunPos;
@@ -41,12 +41,13 @@ public class InteractableObject : MonoBehaviour
     public GameObject currentStun;
     public Rotator stunRotate;
 
-    public GameObject activeWeapon; 
+    public GameObject activeWeapon;
 
     public bool swordEquipped;
     public bool scytheEquipped;
     public bool stunEquipped;
     public bool isKey = false;
+    public bool isBossKey = false; 
     public bool isHealth;
     public bool isStun;
     public static List<InteractableObject> AllInteractables = new List<InteractableObject>();
@@ -57,10 +58,8 @@ public class InteractableObject : MonoBehaviour
 
     private void Awake()
     {
-      
         throwWeapon.enabled = false;
         stunThrow1.enabled = false;
-        //stunThrow2.enabled = false;
         stunRotate.enabled = false;
         controls = new PlayerControls();
         controls.Player.Interact.performed += ctx =>
@@ -73,23 +72,23 @@ public class InteractableObject : MonoBehaviour
 
         controls.Player.scythe.performed += ctx =>
         {
-            if (scytheEquipped) 
+            if (scytheEquipped)
             {
                 if (swordEquipped) currentSword.SetActive(false);
                 if (stunEquipped) currentStun.SetActive(false);
                 currentScythe.SetActive(true);
-                activeWeapon = currentScythe; 
+                activeWeapon = currentScythe;
             }
         };
 
         controls.Player.Katana.performed += ctx =>
         {
-            if (swordEquipped && !(throwWeapon.isThrown || throwWeapon.isReturning)) 
+            if (swordEquipped && !(throwWeapon.isThrown || throwWeapon.isReturning))
             {
                 if (scytheEquipped) currentScythe.SetActive(false);
                 if (stunEquipped) currentStun.SetActive(false);
                 currentSword.SetActive(true);
-                activeWeapon = currentSword; 
+                activeWeapon = currentSword;
             }
         };
 
@@ -103,9 +102,7 @@ public class InteractableObject : MonoBehaviour
                 activeWeapon = currentStun;
             }
         };
-
     }
-
 
     void OnEnable()
     {
@@ -118,7 +115,6 @@ public class InteractableObject : MonoBehaviour
         controls.Player.Disable();
         AllInteractables.Remove(this);
     }
-
 
     private void Update()
     {
@@ -149,22 +145,30 @@ public class InteractableObject : MonoBehaviour
                 key = hit.transform.gameObject;
                 Weapon = null;
             }
+            else if (hit.transform.tag == "Boss Key") 
+            {
+                isBossKey = true;
+                key = hit.transform.gameObject;
+                Weapon = null;
+            }
             else if (hit.transform.tag == "healthPack")
             {
                 isHealth = true;
                 health = hit.transform.gameObject;
                 Weapon = null;
             }
-            
         }
     }
+
     private void Start()
     {
         doorRotate.locked = true;
         doorRotate2.locked = true;
     }
+
     private void Pickup()
     {
+       
         if (isKey)
         {
             pickup.Play();
@@ -174,10 +178,19 @@ public class InteractableObject : MonoBehaviour
             return;
         }
 
+        
+        if (isBossKey)
+        {
+            pickup.Play();
+            key.SetActive(false);
+            isBossKey = false;
+            hasBossKey = true;
+            return;
+        }
+
         if (isHealth)
         {
             pickup.Play();
-          
             PlayerState.currentHealth += 70;
             if (PlayerState.currentHealth > 200) PlayerState.currentHealth = 200;
             Destroy(health);
@@ -185,6 +198,7 @@ public class InteractableObject : MonoBehaviour
 
         if (Weapon == null) return;
 
+        
         if (Weapon.tag == "stun" && !stunEquipped)
         {
             stunThrow = Weapon.GetComponent<StunThrow>();
@@ -206,7 +220,6 @@ public class InteractableObject : MonoBehaviour
                 MouseMovement.enabled = false;
                 Cursor.lockState = CursorLockMode.None;
                 Cursor.visible = true;
-                MouseMovement.enabled = false;
                 stunThrow.enabled = false;
                 stunButton.stunActive = true;
             }
@@ -216,6 +229,7 @@ public class InteractableObject : MonoBehaviour
             return;
         }
 
+        
         else if (Weapon.tag == "sword" && !swordEquipped)
         {
             currentSword = Weapon;
@@ -240,7 +254,7 @@ public class InteractableObject : MonoBehaviour
                 Cursor.visible = true;
                 katanaButton.katanaActive = true;
             }
-            
+
             if (scytheEquipped) currentScythe.SetActive(false);
             if (stunEquipped) currentStun.SetActive(false);
 
@@ -248,9 +262,10 @@ public class InteractableObject : MonoBehaviour
             activeWeapon = currentSword;
             return;
         }
+
+        
         else if (Weapon.tag == "scythe" && !scytheEquipped)
         {
-         
             currentScythe = Weapon;
             currentWeapon = currentScythe;
             scytheEquipped = true;
@@ -261,10 +276,9 @@ public class InteractableObject : MonoBehaviour
             currentScythe.GetComponent<Rigidbody>().isKinematic = true;
 
             throwWeapon.enabled = true;
-            
+
             emptyIM.SetActive(false);
             scytheIM.SetActive(true);
-            
 
             if (ScytheTut != null)
             {
@@ -283,7 +297,6 @@ public class InteractableObject : MonoBehaviour
             return;
         }
     }
-
 
     public string GetItemName()
     {
