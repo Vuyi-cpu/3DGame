@@ -106,45 +106,37 @@ public class Enemystate : MonoBehaviour
 
     private void TakeDamage(float damage)
     {
-        currentHealth -= damage;
-        if (currentHealth <= 0 && !isDead)
-        {
-            isDead = true;
-            killed.Play();
-            // Stop agent and trigger death animation
-            if (agent != null) agent.isStopped = true;
-            if (animator != null)
+        if (enemy.CompareTag("Shooter") || enemy.CompareTag("Melee") || enemy.CompareTag("Daisuke"))
             {
-                animator.SetBool("IsDead", true);
-            }
-
-            // Disable collider
-            Collider col = enemy.GetComponent<Collider>();
-            if (col) col.enabled = false;
-
-            // Rewards / UI
-            if (shopTut != null)
-            {
-                shopTut.SetActive(true);
-                PlayerMovement.enabled = false;
-                MouseMovement.enabled = false;
-                Cursor.lockState = CursorLockMode.None;
-                Cursor.visible = true;
-                shopButton.shopActive = true;
-            }
-
-            playerHealth.currentHealth = Mathf.Min(playerHealth.currentHealth + 50, playerHealth.maxHealth);
-            shop.neuronCount += 80f;
-            shop.EnemiesKilled += 80f;
-            neuronText.text = shop.neuronCount.ToString();
-
-            // Destroy after delay
-            Destroy(enemy, 1f);
-        }
-        else
-        {
-            dmg.Play();
-        }
+                if (enemy != null)
+                {
+                    currentHealth -= damage;
+                    if (currentHealth <= 0)
+                    {
+                        killed.Play();
+                        Destroy(enemy);
+                        if (enemy.CompareTag("Shooter") || enemy.CompareTag("Melee"))
+                        {
+                            playerHealth.currentHealth += 50;
+                            if (playerHealth.currentHealth >= playerHealth.maxHealth) playerHealth.currentHealth = playerHealth.maxHealth;
+                            shop.neuronCount += 50f;
+                            shop.EnemiesKilled += 50f;
+                            
+                        }
+                        else if (enemy.CompareTag("Daisuke"))
+                        {
+                            playerHealth.currentHealth += 100f;
+                            if (playerHealth.currentHealth >= playerHealth.maxHealth) playerHealth.currentHealth = playerHealth.maxHealth;
+                            shop.neuronCount += 200f;
+                        }
+                        neuronText.text = shop.neuronCount.ToString();
+                    }
+                    else
+                    {
+                       dmg.Play();
+                    }
+                }
+            }  
     }
 
     private void OnCollisionEnter(Collision collision)

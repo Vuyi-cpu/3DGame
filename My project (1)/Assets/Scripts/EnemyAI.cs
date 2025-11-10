@@ -35,7 +35,8 @@ public class EnemyAI : MonoBehaviour
     private float defaultSpeed;
     public float distanceToPlayer;
 
-    public AudioSource gunshot;
+    public AudioSource attack;
+    public AudioSource flameflow;
 
 
     private void Awake()
@@ -75,19 +76,19 @@ public class EnemyAI : MonoBehaviour
             }
         }
 
-        if (!flameShooting || !gameObject.CompareTag("Daisuke"))
+        if ((!flameShooting || !gameObject.CompareTag("Daisuke")) && hasLineOfSight)
         {
-            if (hasLineOfSight && distanceToPlayer > sightDistance)
+            if (distanceToPlayer > sightDistance)
             {
                 agent.speed = patrolSpeed;
                 Patrolling();
             }
-            else if (hasLineOfSight && distanceToPlayer > attackDistance)
+            else if (distanceToPlayer > attackDistance)
             {
                 agent.speed = chaseSpeed;
                 ChasePlayer();
             }
-            else if (hasLineOfSight && distanceToPlayer <= attackDistance)
+            else if (distanceToPlayer <= attackDistance)
             {
                 agent.SetDestination(transform.position);
                 if (distanceToPlayer < rejectDistance)
@@ -183,7 +184,7 @@ public class EnemyAI : MonoBehaviour
             Rigidbody rb = Instantiate(projectile, enemyGun, Quaternion.identity).GetComponent<Rigidbody>();
             projectile.SetActive(true);
             rb.AddForce(transform.forward * 20f, ForceMode.Impulse);
-            gunshot.Play();
+            attack.Play();
 
             if (burst < 3f)
                 Invoke(nameof(ResetAttack), timeDelayAttacks);
@@ -198,7 +199,7 @@ public class EnemyAI : MonoBehaviour
         {
             ParticleSystem[] glint = GetComponentsInChildren<ParticleSystem>();
             glint[0].Play();
-            glint[1].Play();
+            attack.Play();
             Invoke(nameof(ResetAttack), timeDelayAttacks);
             if (hasLineOfSight && distanceToPlayer <= attackDistance)
             {
@@ -214,13 +215,11 @@ public class EnemyAI : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        
-    }
 
     IEnumerator flameShoot()
     {
+        attack.Play();
+        flameflow.Play();
         flameShooting = true;
         flameShooting = true;
         fire.transform.position = firePos.position;
@@ -230,8 +229,10 @@ public class EnemyAI : MonoBehaviour
         
         yield return new WaitForSeconds(0.7f);
         flameCollider.enabled = true;
-        yield return new WaitForSeconds(2.2f);
+        yield return new WaitForSeconds(2.3f);
         fire.Stop();
+        attack.Stop();
+        flameflow.Stop();
         fire.transform.SetParent(null);
         flameShooting = false;
         flameCollider.enabled = false; // disables the collider

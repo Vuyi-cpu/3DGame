@@ -31,11 +31,14 @@ public class ThrowWeapon : MonoBehaviour
     public ButtonGotIt shopButton;
 
     public ParticleSystem scrapeParticles;
+    public ParticleSystem scrapeParticles2;
     public ParticleSystem distortParticles;
     public TrailRenderer trail;
 
     public AudioSource dmg;
+    public AudioSource dmg2;
     public AudioSource killed;
+    public AudioSource killed2;
 
     private void Awake()
     {
@@ -132,17 +135,30 @@ public class ThrowWeapon : MonoBehaviour
             if (collision.gameObject.CompareTag("Shooter") || collision.gameObject.CompareTag("Melee") || collision.gameObject.CompareTag("Daisuke"))
             {
                 ContactPoint contact = collision.contacts[0];
-                scrapeParticles.transform.position = contact.point;
-                scrapeParticles.transform.rotation = Quaternion.LookRotation(contact.normal);
-                scrapeParticles.Play();
+                if (collision.gameObject.CompareTag("Shooter") || collision.gameObject.CompareTag("Melee") )
+                {
+                    scrapeParticles.transform.position = contact.point;
+                    scrapeParticles.transform.rotation = Quaternion.LookRotation(contact.normal);
+                    scrapeParticles.Play();
+                }
+                if (collision.gameObject.CompareTag("Daisuke"))
+                {
+                    scrapeParticles2.transform.position = contact.point;
+                    scrapeParticles2.transform.rotation = Quaternion.LookRotation(contact.normal);
+                    scrapeParticles2.Play();
+                }
+
                 Enemystate enemy = collision.gameObject.GetComponentInParent<Enemystate>();
                 if (enemy != null)
                 {
-                    if (collision.gameObject.CompareTag("Shooter") || collision.gameObject.CompareTag("Melee"))
+                    enemy.currentHealth -= scytheDamage;
+                    if (enemy.currentHealth <= 0)
                     {
-                        enemy.currentHealth -= scytheDamage;
-                        if (enemy.currentHealth <= 0)
+                        
+                        Destroy(enemy.enemy);
+                        if (collision.gameObject.CompareTag("Shooter") || collision.gameObject.CompareTag("Melee"))
                         {
+                            killed.Play();
                             if (shopTut != null)
                             {
                                 shopTut.SetActive(true);
@@ -152,31 +168,26 @@ public class ThrowWeapon : MonoBehaviour
                                 UnityEngine.Cursor.visible = true;
                                 shopButton.shopActive = true;
                             }
-                            killed.Play();
-                            Destroy(enemy.enemy);
+                            
                             playerHealth.currentHealth += 50;
                             if (playerHealth.currentHealth >= playerHealth.maxHealth) playerHealth.currentHealth = playerHealth.maxHealth;
                             shop.neuronCount += 50f;
                             shop.EnemiesKilled += 50f;
-                            neuronText.text = shop.neuronCount.ToString();
+                            
                         }
-                        else
+                        else if (collision.gameObject.CompareTag("Daisuke"))
                         {
-                            dmg.Play();
-                        }
-                    }
-                    if (collision.gameObject.CompareTag("Daisuke"))
-                    {
-                        enemy.currentHealth -= scytheDamage;
-                        if (enemy.currentHealth <= 0)
-                        {
-                            //killed.Play();
-                            Destroy(enemy.enemy);
+                            killed2.Play();
                             playerHealth.currentHealth += 100f;
                             if (playerHealth.currentHealth >= playerHealth.maxHealth) playerHealth.currentHealth = playerHealth.maxHealth;
                             shop.neuronCount += 200f;
-                            neuronText.text = shop.neuronCount.ToString();
                         }
+                        neuronText.text = shop.neuronCount.ToString();
+                    }
+                    else
+                    {
+                        if (!collision.gameObject.CompareTag("Daisuke")) dmg.Play();
+                        else { dmg2.Play(); }
                     }
                 }
             }  
