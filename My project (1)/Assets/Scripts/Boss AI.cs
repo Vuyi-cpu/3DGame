@@ -12,12 +12,10 @@ public class BossAI: MonoBehaviour
     public PlayerState state;
 
     // Patrolling
-    public Vector3 walkPoint;
+   
     private bool walkPointSet, hasLineOfSight;
     public float walkPointRange;
-    private float stuckCheckTimer;
-    public float stuckCheckInterval = 2f, turnSpeed;
-    private Vector3 lastPosition;
+    public float  turnSpeed;
 
     // Attacking
     public float timeDelayAttacks, timeDelayBurst, burst;
@@ -30,7 +28,7 @@ public class BossAI: MonoBehaviour
     public ParticleSystem fire;
     public Collider flameCollider;
 
-    public float patrolSpeed = 3.5f;
+
     public float chaseSpeed = 6f;
     private float defaultSpeed;
     public float distanceToPlayer;
@@ -46,7 +44,7 @@ public class BossAI: MonoBehaviour
         if (fire != null) fire.Stop();
         agent = GetComponent<NavMeshAgent>();
         walkPointSet = false;
-        defaultSpeed = patrolSpeed;
+     
         agent.speed = defaultSpeed;
 
         Rigidbody rb = GetComponent<Rigidbody>();
@@ -80,7 +78,7 @@ public class BossAI: MonoBehaviour
         {
             if (distanceToPlayer > sightDistance)
             {
-                agent.speed = patrolSpeed;
+              
                // Patrolling();
             }
             else if (distanceToPlayer > attackDistance)
@@ -118,36 +116,10 @@ public class BossAI: MonoBehaviour
         }
 
 
-       // CheckIfStuck();
     }
 
 
-    //private void SearchWalkPoint()
-    //{
-    //    for (int i = 0; i < 10; i++)
-    //    {
-    //        float randZ = Random.Range(-walkPointRange, walkPointRange);
-    //        float randX = Random.Range(-walkPointRange, walkPointRange);
-
-    //        Vector3 potentialPoint = new Vector3(
-    //            transform.position.x + randX,
-    //            transform.position.y + 5f,
-    //            transform.position.z + randZ
-    //        );
-
-    //        if (Physics.Raycast(potentialPoint, Vector3.down, out RaycastHit hit, 20f, GroundCheck))
-    //        {
-    //            walkPoint = hit.point;
-    //            walkPointSet = true;
-    //            return;
-    //        }
-    //    }
-    //}
-
-    //private void ResetWalkPoint()
-    //{
-    //    walkPointSet = false;
-    //}
+   
 
     private void ChasePlayer()
     {
@@ -160,7 +132,7 @@ public class BossAI: MonoBehaviour
     {
         Vector3 targetPos = new Vector3(player.position.x, transform.position.y, player.position.z);
 
-        //if (!gameObject.CompareTag("Daisuke") || Attacked) 
+       
         transform.LookAt(targetPos);
         if (!Attacked && gameObject.CompareTag("Boss"))
         {
@@ -190,31 +162,12 @@ public class BossAI: MonoBehaviour
         flameflow.Stop();
         fire.transform.SetParent(null);
         flameShooting = false;
-        flameCollider.enabled = false; // disables the collider
+        flameCollider.enabled = false; 
     }
 
     private void ResetAttack()
     {
         Attacked = false;
     }
-
-    //private void CheckIfStuck()
-    //{
-    //    stuckCheckTimer += Time.deltaTime;
-
-    //    if (stuckCheckTimer >= stuckCheckInterval)
-    //    {
-    //        float distanceMoved = Vector3.Distance(transform.position, lastPosition);
-
-    //        if (distanceMoved < 0.5f && distanceToPlayer > sightDistance)
-    //        {
-    //            walkPointSet = false;
-    //            SearchWalkPoint();
-    //        }
-
-    //        lastPosition = transform.position;
-    //        stuckCheckTimer = 0f;
-    //    }
-    //}
 
 }

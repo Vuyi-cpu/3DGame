@@ -62,6 +62,9 @@ public class PlayerState : MonoBehaviour
         {
             takeDamage(10f);
             StartCoroutine(dot());
+        }else if (other.CompareTag("Boss"))
+        {
+            takeDamage(20f);
         }
     }
     IEnumerator dot()
