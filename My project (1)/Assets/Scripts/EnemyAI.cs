@@ -10,6 +10,7 @@ public class EnemyAI : MonoBehaviour
     public LayerMask GroundCheck, PlayerCheck, obstructionMask;
     public GameObject projectile;
     public PlayerState state;
+    
 
     // Patrolling
     public Vector3 walkPoint;
@@ -84,6 +85,7 @@ public class EnemyAI : MonoBehaviour
             {
                 agent.speed = patrolSpeed;
                 Patrolling();
+               
             }
             else if (distanceToPlayer > attackDistance)
             {
@@ -100,6 +102,7 @@ public class EnemyAI : MonoBehaviour
                     agent.SetDestination(targetPos);
                 }
                 AttackPlayer();
+               
             }
         }
         else if (hasLineOfSight)
@@ -224,6 +227,7 @@ public class EnemyAI : MonoBehaviour
 
     IEnumerator flameShoot()
     {
+        
         dkAnimator.SetBool("isAttacking", true);
         attack.Play();
         flameflow.Play();
