@@ -84,7 +84,7 @@ public class BossAI: MonoBehaviour
             else if (distanceToPlayer > attackDistance)
             {
                 agent.speed = chaseSpeed;
-                ChasePlayer();
+               
             }
             else if (distanceToPlayer <= attackDistance)
             {
@@ -119,55 +119,10 @@ public class BossAI: MonoBehaviour
     }
 
 
-   
-
-    private void ChasePlayer()
-    {
-        Vector3 direction = (player.position - transform.position).normalized;
-        Vector3 targetPosition = player.position - direction;
-        agent.SetDestination(targetPosition);
-    }
-
     private void AttackPlayer()
     {
         Vector3 targetPos = new Vector3(player.position.x, transform.position.y, player.position.z);
-
-       
         transform.LookAt(targetPos);
-        //if (!Attacked && gameObject.CompareTag("Boss"))
-        //{
-        //    StartCoroutine(flameShoot());
-        //    Invoke(nameof(ResetAttack), timeDelayAttacks);
-        //    Attacked = true;
-        //}
+    
     }
-
-
-    //IEnumerator flameShoot()
-    //{
-    //    attack.Play();
-    //    flameflow.Play();
-    //    flameShooting = true;
-    //    flameShooting = true;
-    //    fire.transform.position = firePos.position;
-    //    fire.transform.SetParent(firePos);
-    //    fire.transform.localEulerAngles = new Vector3(0f, 0f, 0f);
-    //    fire.Play();
-        
-    //    yield return new WaitForSeconds(0.7f);
-    //    flameCollider.enabled = true;
-    //    yield return new WaitForSeconds(2.3f);
-    //    fire.Stop();
-    //    attack.Stop();
-    //    flameflow.Stop();
-    //    fire.transform.SetParent(null);
-    //    flameShooting = false;
-    //    flameCollider.enabled = false; 
-    //}
-
-    private void ResetAttack()
-    {
-        Attacked = false;
-    }
-
 }
